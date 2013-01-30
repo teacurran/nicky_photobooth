@@ -1,0 +1,11 @@
+.idea
+*.iml
+.DS_Store
+
+web/bundles/
+app/bootstrap.php.cache
+app/cache/*
+app/logs/*
+build/
+vendor
+composer.phar
