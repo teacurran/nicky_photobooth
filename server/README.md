@@ -1,0 +1,2 @@
+NickyDigital Photobooth Server App
+==================================
