@@ -1,3 +1,13 @@
+nicky_digital_photobooth:
+    resource: "@NickyDigitalPhotoboothBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+nicky_digital_bundle_photobooth:
+    resource: "@NickyDigitalBundlePhotoboothBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 # Internal routing configuration to handle ESI
 # ****** WARNING ******
 # This route should be enabled with caution as it can open a security vulnerability
