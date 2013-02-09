@@ -24,7 +24,9 @@
 		"jms/serializer": "dev-master",
 		"jms/serializer-bundle": "dev-master",
 		"kriswallsmith/assetic": "1.1.*@dev",
-		"phpunit/phpunit": "3.7.*"
+		"phpunit/phpunit": "3.7.*",
+		"cedriclombardot/admingenerator-generator-bundle": "dev-master",
+		"cedriclombardot/twig-generator": "dev-master"
 	},
 	"scripts": {
 		"post-install-cmd": [

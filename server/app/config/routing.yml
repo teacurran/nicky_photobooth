@@ -1,12 +1,13 @@
+NickyDigitalPhotoboothAdminBundle_admin_nicky_digital_photobooth_admin_bundle:
+    resource: "@NickyDigitalPhotoboothAdminBundle/Controller/"
+    type:     admingenerator
+    prefix:   /admin
+
 nicky_digital_photobooth:
     resource: "@NickyDigitalPhotoboothBundle/Controller/"
     type:     annotation
     prefix:   /
 
-nicky_digital_bundle_photobooth:
-    resource: "@NickyDigitalBundlePhotoboothBundle/Controller/"
-    type:     annotation
-    prefix:   /
 
 # Internal routing configuration to handle ESI
 # ****** WARNING ******

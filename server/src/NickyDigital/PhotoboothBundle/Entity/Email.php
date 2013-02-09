@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table()
  * @ORM\Entity
  */
-class Emails
+class Email
 {
     /**
      * @var integer
@@ -37,16 +37,15 @@ class Emails
 	protected $email;
 
 	/**
-	 * @param \DateTime $created
+	 * @ORM\ManyToOne(targetEntity="Event", inversedBy="emails")
 	 */
+	private $event;
+
 	public function setCreated($created)
 	{
 		$this->created = $created;
 	}
 
-	/**
-	 * @return \DateTime $created
-	 */
 	public function getCreated()
 	{
 		return $this->created;
@@ -60,6 +59,16 @@ class Emails
 	public function getEmail()
 	{
 		return $this->email;
+	}
+
+	public function setEvent($event)
+	{
+		$this->event = $event;
+	}
+
+	public function getEvent()
+	{
+		return $this->event;
 	}
 
 	/**
@@ -77,6 +86,8 @@ class Emails
 	{
 		return $this->id;
 	}
+
+
 
 	
 }

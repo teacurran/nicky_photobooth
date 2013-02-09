@@ -27,6 +27,22 @@ class Photo
 	 */
 	private $event;
 
+	/**
+	 * @ORM\Column(type="string", length=200)
+	 */
+	protected $filename;
+
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $missing;
+
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $deleted;
+	
+
 	// TODO: figure out why Timestampable isn't populating
 	/**
 	 * @var datetime $created
@@ -46,24 +62,28 @@ class Photo
 	protected $updated;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="FacebookShares", mappedBy="photo")
+	 * @ORM\OneToMany(targetEntity="FacebookShare", mappedBy="photo")
 	 */
 	protected $facebookShares;
 
-	/**
-	 * @param \NickyDigital\PhotoboothBundle\Entity\datetime $created
-	 */
 	public function setCreated($created)
 	{
 		$this->created = $created;
 	}
 
-	/**
-	 * @return \NickyDigital\PhotoboothBundle\Entity\datetime
-	 */
 	public function getCreated()
 	{
 		return $this->created;
+	}
+
+	public function setDeleted($deleted)
+	{
+		$this->deleted = $deleted;
+	}
+
+	public function getDeleted()
+	{
+		return $this->deleted;
 	}
 
 	public function setEvent($event)
@@ -86,6 +106,16 @@ class Photo
 		return $this->facebookShares;
 	}
 
+	public function setFilename($filename)
+	{
+		$this->filename = $filename;
+	}
+
+	public function getFilename()
+	{
+		return $this->filename;
+	}
+
 	/**
 	 * @param int $id
 	 */
@@ -102,8 +132,18 @@ class Photo
 		return $this->id;
 	}
 
+	public function setMissing($missing)
+	{
+		$this->missing = $missing;
+	}
+
+	public function getMissing()
+	{
+		return $this->missing;
+	}
+
 	/**
-	 * @param \NickyDigital\PhotoboothBundle\Entity\datetime $updated
+	 * @param $updated
 	 */
 	public function setUpdated($updated)
 	{
@@ -111,14 +151,11 @@ class Photo
 	}
 
 	/**
-	 * @return \NickyDigital\PhotoboothBundle\Entity\datetime
+	 * @return 
 	 */
 	public function getUpdated()
 	{
 		return $this->updated;
 	}
-
-
-
 
 }

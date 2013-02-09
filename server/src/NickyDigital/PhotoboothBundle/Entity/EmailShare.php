@@ -6,12 +6,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * TwitterShares
+ * EmailShares
  *
  * @ORM\Table()
  * @ORM\Entity
  */
-class TwitterShares
+class EmailShare
 {
 	/**
 	 * @var integer
@@ -23,9 +23,24 @@ class TwitterShares
 	private $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Photo", inversedBy="twitterShares")
+	 * @ORM\Column(type="string", length=200)
 	 */
-	private $photo;
+	protected $emailFromo;
+
+	/**
+	 * @ORM\Column(type="string", length=200)
+	 */
+	protected $emailTo;
+
+	/**
+	 * @ORM\Column(type="string", length=200)
+	 */
+	protected $subject;
+
+	/**
+	 * @ORM\Column(type="text")
+	 */
+	protected $body;
 
 	// TODO: figure out why Timestampable isn't populating
 	/**
@@ -43,6 +58,16 @@ class TwitterShares
 	 * @ORM\Column(type="datetime", nullable=true)
 	 */
 	protected $dateSent;
+
+	public function setBody($body)
+	{
+		$this->body = $body;
+	}
+
+	public function getBody()
+	{
+		return $this->body;
+	}
 
 	/**
 	 * @param \NickyDigital\PhotoboothBundle\Entity\created $created
@@ -76,6 +101,26 @@ class TwitterShares
 		return $this->dateSent;
 	}
 
+	public function setEmailFromo($emailFromo)
+	{
+		$this->emailFromo = $emailFromo;
+	}
+
+	public function getEmailFromo()
+	{
+		return $this->emailFromo;
+	}
+
+	public function setEmailTo($emailTo)
+	{
+		$this->emailTo = $emailTo;
+	}
+
+	public function getEmailTo()
+	{
+		return $this->emailTo;
+	}
+
 	/**
 	 * @param int $id
 	 */
@@ -92,15 +137,16 @@ class TwitterShares
 		return $this->id;
 	}
 
-	public function setPhoto($photo)
+	public function setSubject($subject)
 	{
-		$this->photo = $photo;
+		$this->subject = $subject;
 	}
 
-	public function getPhoto()
+	public function getSubject()
 	{
-		return $this->photo;
+		return $this->subject;
 	}
 
 
+	
 }

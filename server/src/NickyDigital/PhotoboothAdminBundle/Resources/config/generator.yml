@@ -1,0 +1,40 @@
+generator: admingenerator.generator.doctrine
+params:
+  model: NickyDigital\PhotoboothAdminBundle\Entity\YourModel
+  namespace_prefix: NickyDigital
+  bundle_name: PhotoboothAdminBundle
+  fields: ~
+
+builders:
+  list:
+    params:
+      title: List for PhotoboothAdminBundle
+      display: ~
+      actions:
+        new: ~
+      object_actions:
+        edit: ~
+        delete: ~
+  filters:
+    params:
+      display: ~
+  new:
+    params:
+      title: New object for PhotoboothAdminBundle
+      display: ~
+      actions:
+        list: ~
+  edit:
+    params:
+      title: "You're editing the object \"%object%\"|{ %object%: YourModel.title }|"
+      display: ~
+      actions:
+        list: ~
+  show:
+    params:
+      title: "You're viewing the object \"%object%\"|{ %object%: YourModel.title }|"
+      display: ~
+      actions:
+        list: ~
+        new: ~
+  delete: ~

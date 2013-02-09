@@ -9,3 +9,6 @@ app/logs/*
 build/
 vendor
 composer.phar
+*.sqlite
+
+photos/*

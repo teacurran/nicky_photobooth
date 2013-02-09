@@ -23,9 +23,49 @@ class Event
 	private $id;
 
 	/**
+	 * @ORM\Column(type="string", length=100)
+	 */
+	protected $eventName;
+
+	/**
+	 * @ORM\Column(type="string", length=100)
+	 */
+	protected $albumName;
+
+	/**
+	 * @ORM\Column(type="string", length=200)
+	 */
+	protected $banner;
+
+	/**
+	 * @ORM\Column(type="string", length=100)
+	 */
+	protected $shortShareText;
+
+	/**
+	 * @ORM\Column(type="text")
+	 */
+	protected $longShareText;
+
+	/**
+	 * @ORM\Column(type="boolean")
+	 */
+	protected $current;
+
+	/**
 	 * @ORM\OneToMany(targetEntity="Photo", mappedBy="event")
 	 */
 	protected $photos;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Email", mappedBy="event")
+	 */
+	protected $emails;
+
+	/**
+	 * @ORM\Column(type="date", nullable=true)
+	 */
+	protected $eventDate;
 
 	// TODO: figure out why Timestampable isn't populating
 	/**
@@ -45,6 +85,26 @@ class Event
 	 */
 	protected $updated;
 
+	public function setAlbumName($albumName)
+	{
+		$this->albumName = $albumName;
+	}
+
+	public function getAlbumName()
+	{
+		return $this->albumName;
+	}
+
+	public function setBanner($banner)
+	{
+		$this->banner = $banner;
+	}
+
+	public function getBanner()
+	{
+		return $this->banner;
+	}
+
 	/**
 	 * @param \NickyDigital\PhotoboothBundle\Entity\datetime $created
 	 */
@@ -59,6 +119,46 @@ class Event
 	public function getCreated()
 	{
 		return $this->created;
+	}
+
+	public function setCurrent($current)
+	{
+		$this->current = $current;
+	}
+
+	public function getCurrent()
+	{
+		return $this->current;
+	}
+
+	public function setEmails($emails)
+	{
+		$this->emails = $emails;
+	}
+
+	public function getEmails()
+	{
+		return $this->emails;
+	}
+
+	public function setEventDate($eventDate)
+	{
+		$this->eventDate = $eventDate;
+	}
+
+	public function getEventDate()
+	{
+		return $this->eventDate;
+	}
+
+	public function setEventName($eventName)
+	{
+		$this->eventName = $eventName;
+	}
+
+	public function getEventName()
+	{
+		return $this->eventName;
 	}
 
 	/**
@@ -77,6 +177,16 @@ class Event
 		return $this->id;
 	}
 
+	public function setLongShareText($longShareText)
+	{
+		$this->longShareText = $longShareText;
+	}
+
+	public function getLongShareText()
+	{
+		return $this->longShareText;
+	}
+
 	public function setPhotos($photos)
 	{
 		$this->photos = $photos;
@@ -85,6 +195,16 @@ class Event
 	public function getPhotos()
 	{
 		return $this->photos;
+	}
+
+	public function setShortShareText($shortShareText)
+	{
+		$this->shortShareText = $shortShareText;
+	}
+
+	public function getShortShareText()
+	{
+		return $this->shortShareText;
 	}
 
 	/**
@@ -104,5 +224,4 @@ class Event
 	}
 
 
-	
 }
