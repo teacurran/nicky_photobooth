@@ -23,7 +23,7 @@ class Photo
 	private $id;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Event", inversedBy="photos")
+	 * @ORM\ManyToOne(targetEntity="PhotoEvent", inversedBy="photos")
 	 */
 	private $event;
 

@@ -1,7 +1,8 @@
-NickyDigitalPhotoboothAdminBundle_admin_nicky_digital_photobooth_admin_bundle:
-    resource: "@NickyDigitalPhotoboothAdminBundle/Controller/"
+NickyDigitalPhotoboothAdminBundle_admin_nicky_digital_photobooth_admin_bundle_Event:
+    resource: "@NickyDigitalPhotoboothAdminBundle/Controller/Event/"
     type:     admingenerator
-    prefix:   /admin
+    prefix:   /admin/event
+
 
 nicky_digital_photobooth:
     resource: "@NickyDigitalPhotoboothBundle/Controller/"
@@ -9,11 +10,29 @@ nicky_digital_photobooth:
     prefix:   /
 
 
-# Internal routing configuration to handle ESI
-# ****** WARNING ******
-# This route should be enabled with caution as it can open a security vulnerability
-# see http://symfony.com/blog/security-release-symfony-2-0-20-and-2-1-5-released for more information
-# ****** WARNING ******
-#_internal:
-#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#    prefix:   /_internal
+
+AdmingeneratorDashboard_welcome:
+    pattern:   /admin/dashboard
+    defaults:  { _controller: AdmingeneratorGeneratorBundle:Dashboard:welcome }
+    
+AdmingeneratorDashboard_documentation:
+    pattern:   /admin/documentation/{document}
+    defaults:  { _controller: AdmingeneratorGeneratorBundle:Dashboard:documentation }
+
+
+## FOS User
+fos_user_security:
+    resource: "@FOSUserBundle/Resources/config/routing/security.xml"
+
+fos_user_profile:
+    resource: "@FOSUserBundle/Resources/config/routing/profile.xml"
+    prefix: /profile
+
+fos_user_register:
+    resource: "@FOSUserBundle/Resources/config/routing/registration.xml"
+    prefix: /register
+
+fos_user_resetting:
+    resource: "@FOSUserBundle/Resources/config/routing/resetting.xml"
+    prefix: /resetting
+    

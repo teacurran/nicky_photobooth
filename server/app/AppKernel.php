@@ -15,16 +15,30 @@ class AppKernel extends Kernel
 			new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
 			new Symfony\Bundle\AsseticBundle\AsseticBundle(),
 			new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+			new FOS\UserBundle\FOSUserBundle(),
 			new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
 			new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 			new JMS\AopBundle\JMSAopBundle(),
 			new JMS\DiExtraBundle\JMSDiExtraBundle($this),
 			new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
-			new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
-			new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-			new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+			
+			
+			//Menu
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
+
+            //Pager
+            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
+
+            //Generator
+            new Admingenerator\GeneratorBundle\AdmingeneratorGeneratorBundle(),
+            new Admingenerator\UserBundle\AdmingeneratorUserBundle(),
+
+            //Doctrine
+            new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
+
+			// Nicky Digital
 			new NickyDigital\PhotoboothBundle\NickyDigitalPhotoboothBundle(),
-            new NickyDigital\PhotoboothAdminBundle\NickyDigitalPhotoboothAdminBundle()
+            new NickyDigital\PhotoboothAdminBundle\NickyDigitalPhotoboothAdminBundle(),
 		);
 
 		if (in_array($this->getEnvironment(), array('dev', 'test'))) {

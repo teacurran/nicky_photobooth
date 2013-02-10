@@ -60,17 +60,22 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-admingenerator_generator:
-    # choose only one
-    use_propel:           false
-    use_doctrine_orm:     true
-    use_doctrine_odm:     false
-
 knp_menu:
     twig:
         template: AdmingeneratorGeneratorBundle:KnpMenu:knp_menu_trans.html.twig
 
 admingenerator_generator:
     # choose and uncomment only one
-#    base_admin_template: AdmingeneratorGeneratorBundle::base_admin.html.twig
+    #    base_admin_template: AdmingeneratorGeneratorBundle::base_admin.html.twig
     base_admin_template: AdmingeneratorGeneratorBundle::base_admin_assetic_less.html.twig
+    # choose only one
+    #use_propel:           false
+    #use_doctrine_odm:     false
+    use_doctrine_orm:     true
+
+fos_user:
+    service:
+        mailer: fos_user.mailer.noop
+    user_class:  NickyDigital\PhotoboothBundle\Entity\User
+    db_driver: orm
+    firewall_name: main

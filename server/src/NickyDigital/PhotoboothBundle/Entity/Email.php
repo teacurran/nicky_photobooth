@@ -37,7 +37,7 @@ class Email
 	protected $email;
 
 	/**
-	 * @ORM\ManyToOne(targetEntity="Event", inversedBy="emails")
+	 * @ORM\ManyToOne(targetEntity="PhotoEvent", inversedBy="emails")
 	 */
 	private $event;
 

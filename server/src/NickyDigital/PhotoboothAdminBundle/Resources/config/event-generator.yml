@@ -1,14 +1,14 @@
 generator: admingenerator.generator.doctrine
 params:
-  model: NickyDigital\PhotoboothAdminBundle\Entity\YourModel
+  model: NickyDigital\PhotoboothBundle\Entity\PhotoEvent
   namespace_prefix: NickyDigital
   bundle_name: PhotoboothAdminBundle
-  fields: ~
+  fields: id, eventName, current
 
 builders:
   list:
     params:
-      title: List for PhotoboothAdminBundle
+      title: Events
       display: ~
       actions:
         new: ~
@@ -20,7 +20,7 @@ builders:
       display: ~
   new:
     params:
-      title: New object for PhotoboothAdminBundle
+      title: New Event
       display: ~
       actions:
         list: ~
