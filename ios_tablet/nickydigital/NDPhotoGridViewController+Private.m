@@ -7,7 +7,7 @@
 //
 
 #import "NDPhotoGridViewController+Private.h"
-#define kNumberOfPhotos 25
+#define kNumberOfPhotos 40
 @implementation NDPhotoGridViewController (Private)
 
 -(void)buildBarButtons
@@ -54,10 +54,21 @@
         UIImage *image = [images objectAtIndex:i];
         imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
         
-        [self performSelector:@selector(animateUpdate:) 
+//		imageView.image = image;
+//		imageView.alpha = 1;
+		
+		
+        [self performSelector:@selector(animateUpdate:)
                    withObject:[NSArray arrayWithObjects:imageView, image, nil]
-                   afterDelay:0.2 + (arc4random()%3) + (arc4random() %10 * 0.1)];
+				   afterDelay: 0.5];
+//                   afterDelay:0.2 + (arc4random()%3) + (arc4random() %10 * 0.1)];
     }
+
+//	NSArray *visibleRowInfos =  [self visibleRowInfos];
+//	for (BDRowInfo *rowInfo in visibleRowInfos) {
+//		[self updateLayoutWithRow:rowInfo animiated:NO];
+//	}
+
 }
 
 - (void) animateUpdate:(NSArray*)objects
