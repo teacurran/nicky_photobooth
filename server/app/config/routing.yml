@@ -1,15 +1,20 @@
+nickydigital_photobooth_api:
+    resource: "@NickyDigitalPhotoboothBundle/Controller/"
+    type:     annotation
+    prefix:   /api
+    defaults: {_format: json}
+
+
 NickyDigitalPhotoboothAdminBundle_admin_nicky_digital_photobooth_admin_bundle_Event:
     resource: "@NickyDigitalPhotoboothAdminBundle/Controller/Event/"
     type:     admingenerator
     prefix:   /admin/event
 
 
-nicky_digital_photobooth:
-    resource: "@NickyDigitalPhotoboothBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
-
+#nicky_digital_photobooth:
+#    resource: "@NickyDigitalPhotoboothBundle/Controller/"
+#    type:     annotation
+#    prefix:   /
 
 AdmingeneratorDashboard_welcome:
     pattern:   /admin/dashboard

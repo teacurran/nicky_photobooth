@@ -11,4 +11,26 @@ vendor
 composer.phar
 *.sqlite
 
-photos/*
+web/photos/*
+
+ios_tablet/.idea
+ios_tablet/Pods/*
+ios_tablet/Podfile.lock
+ios_tablet/build/
+ios_tablet/xcuserdata
+ios_tablet/DerivedData
+ios_tablet/profile
+
+# Xcode
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xcworkspace
+!default.xcworkspace
+*.moved-aside
+*.orig
