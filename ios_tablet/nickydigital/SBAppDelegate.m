@@ -6,13 +6,26 @@
 //  Copyright (c) 2013 Terrence Curran. All rights reserved.
 //
 
+#import "NDPhotoGridViewController.h"
+#import "NDPhotoGridViewController+Private.h"
 #import "SBAppDelegate.h"
 
 @implementation SBAppDelegate
 
+@synthesize window = _window;
+@synthesize viewController = _viewController;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
+    self.viewController = [[NDPhotoGridViewController alloc] init];
+//    self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+//    self.window.rootViewController = self.navigationController;
+
+    self.window.rootViewController = self.viewController;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 							

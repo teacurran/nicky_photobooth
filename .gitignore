@@ -8,10 +8,10 @@ server/app/cache/*
 server/app/logs/*
 server/build/
 server/vendor
+server/web/photos/*
 composer.phar
 *.sqlite
 
-web/photos/*
 
 ios_tablet/.idea
 ios_tablet/Pods/*
