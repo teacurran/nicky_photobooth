@@ -41,29 +41,32 @@
 {
     _items = [NSArray array];
     //load the placeholder image
-    for (int i=0; i < kNumberOfPhotos; i++) {
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
-        imageView.frame = CGRectMake(0, 0, 44, 44);
-        imageView.clipsToBounds = YES;
-        _items = [_items arrayByAddingObject:imageView];
-    }
-    [self reloadData];
+
+//    for (int i=0; i < kNumberOfPhotos; i++) {
+//        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
+//        imageView.frame = CGRectMake(0, 0, 44, 44);
+//        imageView.clipsToBounds = YES;
+//        _items = [_items arrayByAddingObject:imageView];
+//    }
+
     NSArray *images = [self _imagesFromBundle];
     for (int i = 0; i < images.count; i++) {
-        UIImageView *imageView = [_items objectAtIndex:i];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
+        imageView.clipsToBounds = YES;
+
         UIImage *image = [images objectAtIndex:i];
         imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-        
-//		imageView.image = image;
-//		imageView.alpha = 1;
+		imageView.image = image;
 		
+        _items = [_items arrayByAddingObject:imageView];
 		
-        [self performSelector:@selector(animateUpdate:)
-                   withObject:[NSArray arrayWithObjects:imageView, image, nil]
-				   afterDelay: 0.5];
+//        [self performSelector:@selector(animateUpdate:)
+//                   withObject:[NSArray arrayWithObjects:imageView, image, nil]];
 //                   afterDelay:0.2 + (arc4random()%3) + (arc4random() %10 * 0.1)];
     }
 
+    [self reloadData];
+	
 //	NSArray *visibleRowInfos =  [self visibleRowInfos];
 //	for (BDRowInfo *rowInfo in visibleRowInfos) {
 //		[self updateLayoutWithRow:rowInfo animiated:NO];
@@ -80,7 +83,7 @@
                          imageView.alpha = 0.f;
                      } completion:^(BOOL finished) {
                          imageView.image = image;
-                         [UIView animateWithDuration:0.5
+                         [UIView animateWithDuration:0.2
                                           animations:^{
                                               imageView.alpha = 1;
                                           } completion:^(BOOL finished) {

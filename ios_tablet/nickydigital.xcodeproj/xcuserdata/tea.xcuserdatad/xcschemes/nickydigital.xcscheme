@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "93E8C69C169E956F00A43F4A"
-               BuildableName = "nickydigital.app"
+               BuildableName = "Nicky Digital.app"
                BlueprintName = "Nicky Digital"
                ReferencedContainer = "container:nickydigital.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "93E8C69C169E956F00A43F4A"
-            BuildableName = "nickydigital.app"
+            BuildableName = "Nicky Digital.app"
             BlueprintName = "Nicky Digital"
             ReferencedContainer = "container:nickydigital.xcodeproj">
          </BuildableReference>
@@ -52,7 +52,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "93E8C69C169E956F00A43F4A"
-            BuildableName = "nickydigital.app"
+            BuildableName = "Nicky Digital.app"
             BlueprintName = "Nicky Digital"
             ReferencedContainer = "container:nickydigital.xcodeproj">
          </BuildableReference>
@@ -70,7 +70,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "93E8C69C169E956F00A43F4A"
-            BuildableName = "nickydigital.app"
+            BuildableName = "Nicky Digital.app"
             BlueprintName = "Nicky Digital"
             ReferencedContainer = "container:nickydigital.xcodeproj">
          </BuildableReference>

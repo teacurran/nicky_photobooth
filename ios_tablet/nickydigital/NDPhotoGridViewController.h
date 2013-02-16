@@ -11,6 +11,7 @@
 
 @interface NDPhotoGridViewController : BDDynamicGridViewController<BDDynamicGridViewDelegate>{
     NSArray * _items;
+	
 }
 
 

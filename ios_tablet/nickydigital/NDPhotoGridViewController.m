@@ -9,6 +9,8 @@
 #import "NDPhotoGridViewController.h"
 #import "NDPhotoGridViewController+Private.h"
 #import "BDRowInfo.h"
+#import "UAModalPanel.h"
+#import "NDPhotoDetailModalPanel.h"
 
 @interface NDPhotoGridViewController ()
 
@@ -30,6 +32,18 @@
     self.onDoubleTap = ^(UIView* view, NSInteger viewIndex){
         NSLog(@"Double tap on %@, at %d", view, viewIndex);
     };
+	
+	self.onSingleTap = ^(UIView* view, NSInteger viewIndex) {
+		
+		CGRect frameRect = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
+		
+		UAModalPanel *modalPanel = [[NDPhotoDetailModalPanel alloc] initWithFrame:frameRect title:@"test"];
+		[self.view addSubview:modalPanel];
+//		[modalPanel showFromPoint:[sender center]];
+		
+	};
+	
+	
     [self _demoAsyncDataLoading];
     [self buildBarButtons];
     

@@ -15,6 +15,7 @@
 		9330C4D216A4C4F200A0BF84 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9330C4D116A4C4F200A0BF84 /* Photo.m */; };
 		9330C4D516A4C70400A0BF84 /* SBApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9330C4D416A4C70400A0BF84 /* SBApiManager.m */; };
 		9330C4D816A4C7D200A0BF84 /* SBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9330C4D716A4C7D200A0BF84 /* SBConstants.m */; };
+		9338379516CB3DF00010EC17 /* NDPhotoDetailModalPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */; };
 		9368E0E416C8AAFE009407B1 /* NDPhotoGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E0E116C8AAFE009407B1 /* NDPhotoGridViewController.m */; };
 		9368E0E516C8AAFE009407B1 /* NDPhotoGridViewController+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E0E316C8AAFE009407B1 /* NDPhotoGridViewController+Private.m */; };
 		9368E11A16C8B116009407B1 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 9368E10016C8B116009407B1 /* placeholder.png */; };
@@ -100,6 +101,8 @@
 		9330C4D416A4C70400A0BF84 /* SBApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBApiManager.m; sourceTree = "<group>"; };
 		9330C4D616A4C7D200A0BF84 /* SBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBConstants.h; sourceTree = "<group>"; };
 		9330C4D716A4C7D200A0BF84 /* SBConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBConstants.m; sourceTree = "<group>"; };
+		9338379316CB3DF00010EC17 /* NDPhotoDetailModalPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDPhotoDetailModalPanel.h; sourceTree = "<group>"; };
+		9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDPhotoDetailModalPanel.m; sourceTree = "<group>"; };
 		9368E0E016C8AAFE009407B1 /* NDPhotoGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDPhotoGridViewController.h; sourceTree = "<group>"; };
 		9368E0E116C8AAFE009407B1 /* NDPhotoGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDPhotoGridViewController.m; sourceTree = "<group>"; };
 		9368E0E216C8AAFE009407B1 /* NDPhotoGridViewController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NDPhotoGridViewController+Private.h"; sourceTree = "<group>"; };
@@ -163,7 +166,7 @@
 		9368E16F16C8B9C1009407B1 /* 49.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 49.jpg; sourceTree = "<group>"; };
 		9368E17016C8B9C1009407B1 /* 50.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 50.jpg; sourceTree = "<group>"; };
 		938B263A16ABEAE800F8176E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
-		93E8C69D169E956F00A43F4A /* nickydigital.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = nickydigital.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		93E8C69D169E956F00A43F4A /* Nicky Digital.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nicky Digital.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93E8C6A1169E956F00A43F4A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		93E8C6A3169E956F00A43F4A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		93E8C6A5169E956F00A43F4A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -291,7 +294,7 @@
 		93E8C69E169E956F00A43F4A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				93E8C69D169E956F00A43F4A /* nickydigital.app */,
+				93E8C69D169E956F00A43F4A /* Nicky Digital.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -320,6 +323,8 @@
 				93E8C6BC169E956F00A43F4A /* SBViewController.h */,
 				93E8C6BD169E956F00A43F4A /* SBViewController.m */,
 				93E8C6A8169E956F00A43F4A /* Supporting Files */,
+				9338379316CB3DF00010EC17 /* NDPhotoDetailModalPanel.h */,
+				9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */,
 			);
 			path = nickydigital;
 			sourceTree = "<group>";
@@ -360,7 +365,7 @@
 			);
 			name = "Nicky Digital";
 			productName = nickydigital;
-			productReference = 93E8C69D169E956F00A43F4A /* nickydigital.app */;
+			productReference = 93E8C69D169E956F00A43F4A /* Nicky Digital.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -495,6 +500,7 @@
 				9368E15516C8B3B2009407B1 /* BDDynamicGridCell.m in Sources */,
 				9368E15616C8B3B2009407B1 /* BDDynamicGridViewController.m in Sources */,
 				9368E15716C8B3B2009407B1 /* BDRowInfo.m in Sources */,
+				9338379516CB3DF00010EC17 /* NDPhotoDetailModalPanel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -542,6 +548,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				"INFOPLIST_PREPROCESSOR_DEFINITIONS[sdk=*]" = "UAMODALVIEW_DEBUG=true";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -578,6 +585,11 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nickydigital/nickydigital-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"UAMODALVIEW_DEBUG=1",
+				);
 				INFOPLIST_FILE = "nickydigital/nickydigital-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
