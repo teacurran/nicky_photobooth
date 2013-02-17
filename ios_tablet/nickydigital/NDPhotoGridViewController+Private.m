@@ -16,6 +16,8 @@
 #define kNumberOfPhotos 40
 @implementation NDPhotoGridViewController (Private)
 
+NSLock *itemLock;
+
 -(void)buildBarButtons
 {
     UIBarButtonItem * reloadButton = [[UIBarButtonItem alloc] initWithTitle:@"Lay it!"
@@ -42,6 +44,13 @@
     return images;
 }
 
+-(NSLock*) getItemLock {
+	if (itemLock == Nil) {
+		itemLock = [[NSLock alloc] init];
+	}
+	return itemLock;
+}
+
 -(void) loadPhotos
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -54,6 +63,9 @@
 	}
 	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 		Boolean itemsChanged = false;
+
+		NSLock *arrayLock = [self getItemLock];
+		[arrayLock lock];
 
 		for(id jsonImage in JSON)
 		{
@@ -96,6 +108,7 @@
 		}
 
 		// look for items to delete
+		NSMutableArray *itemsToDelete = [NSMutableArray array];
 		for (id photo in _items) {
 			Boolean found = false;
 			for(id jsonImage in JSON)
@@ -108,13 +121,17 @@
 			}
 			
 			if (!found) {
-				[_items removeObject:photo];
+				[itemsToDelete addObject:photo];
 				itemsChanged = true;
 			}
+		}
+		for (id photo in itemsToDelete) {
+			[_items removeObject:photo];
 		}
 		if (itemsChanged) {
 			[self reloadData];
 		}
+		[arrayLock unlock];
 
 	} failure:nil];
 	
