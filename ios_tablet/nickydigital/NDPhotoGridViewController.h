@@ -10,7 +10,7 @@
 #import "BDDynamicGridViewController.h"
 
 @interface NDPhotoGridViewController : BDDynamicGridViewController<BDDynamicGridViewDelegate>{
-    NSArray * _items;
+    NSMutableArray * _items;
 	
 }
 

@@ -11,8 +11,12 @@
 
 @implementation Photo
 
-@dynamic datecreated;
-@dynamic filename;
-@dynamic id;
++ (void)initialize {
+	[super initialize];
+}
+
+@synthesize filename;
+@synthesize fileId;
+@synthesize thumbView;
 
 @end

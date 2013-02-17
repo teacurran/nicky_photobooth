@@ -11,6 +11,7 @@
 #import "UIImageView+AFNetworking.h"
 #import "AFJSONRequestOperation.h"
 #import "NDConstants.h"
+#import "Photo.h"
 
 #define kNumberOfPhotos 40
 @implementation NDPhotoGridViewController (Private)
@@ -48,29 +49,73 @@
 	NSURL *photoListUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",  [defaults stringForKey:kPrefServerUrlKey], @"/api/photos"]];
 	NSURLRequest *request = [NSURLRequest requestWithURL:photoListUrl];
 	
-	_items = [NSArray array];
+	if (_items == nil) {
+		_items = [NSMutableArray array];
+	}
 	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+		Boolean itemsChanged = false;
+
 		for(id jsonImage in JSON)
 		{
 			NSString *filename = [jsonImage valueForKeyPath:@"filename"];
-			NSLog(@"photo: %@", filename);
+			NSNumber *fileId = [jsonImage valueForKeyPath:@"id"];
+	
+			Boolean found = false;
+			for (id photo in _items) {
+				if ([filename isEqualToString:[photo filename]]) {
+					found = true;
+					break;
+				}
+			}
 
-			UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
-			imageView.clipsToBounds = YES;
+			if (!found) {
+				NSLog(@"adding photo: %@", filename);
+
+				UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
+				imageView.clipsToBounds = YES;
+				
+				[imageView setImageWithURL:[
+								NSURL URLWithString:[
+										NSString stringWithFormat:@"%@/%@/%@",  [defaults stringForKey:kPrefServerUrlKey], @"api/photo/200", filename]
+								]
+						placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+				 ];
+
+				imageView.frame = CGRectMake(0, 0, 200, 150);
+
+				Photo *photo = [[Photo alloc] init];
+				[photo setFilename:filename];
+				[photo setFileId:fileId];
+				[photo setThumbView:imageView];
+				
+				[_items addObject:photo];
+				itemsChanged = true;
+				//_items = [_items arrayByAddingObject:photo];
+
+			}
+		}
+
+		// look for items to delete
+		for (id photo in _items) {
+			Boolean found = false;
+			for(id jsonImage in JSON)
+			{
+				NSString *filename = [jsonImage valueForKeyPath:@"filename"];
+				if ([filename isEqualToString:[photo filename]]) {
+					found = true;
+					break;
+				}
+			}
 			
-			[imageView setImageWithURL:[
-							NSURL URLWithString:[
-									NSString stringWithFormat:@"%@/%@/%@",  [defaults stringForKey:kPrefServerUrlKey], @"api/photo/200", filename]
-							]
-					placeholderImage:[UIImage imageNamed:@"placeholder.png"]
-			 ];
-
-			imageView.frame = CGRectMake(0, 0, 200, 150);
-
-			_items = [_items arrayByAddingObject:imageView];
-
+			if (!found) {
+				[_items removeObject:photo];
+				itemsChanged = true;
+			}
+		}
+		if (itemsChanged) {
 			[self reloadData];
 		}
+
 	} failure:nil];
 	
 	[operation start];

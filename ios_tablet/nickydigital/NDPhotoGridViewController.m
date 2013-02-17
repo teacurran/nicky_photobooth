@@ -11,6 +11,7 @@
 #import "BDRowInfo.h"
 #import "UAModalPanel.h"
 #import "NDPhotoDetailModalPanel.h"
+#import "Photo.h"
 
 @interface NDPhotoGridViewController ()
 
@@ -134,7 +135,10 @@ UAModalPanel *detailPanel;
 
 - (UIView *)viewAtIndex:(NSUInteger)index rowInfo:(BDRowInfo *)rowInfo
 {
-    UIImageView * imageView = [_items objectAtIndex:index];
+	Photo *photo = [_items objectAtIndex:(_items.count - index - 1) ];
+	
+    UIImageView * imageView = photo.thumbView;
+
     return imageView;
 }
 

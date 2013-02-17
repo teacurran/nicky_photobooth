@@ -10,10 +10,11 @@
 #import <CoreData/CoreData.h>
 
 
-@interface Photo : NSManagedObject
+@interface Photo : NSObject
 
-@property (nonatomic, retain) NSDate * datecreated;
-@property (nonatomic, retain) NSString * filename;
-@property (nonatomic, retain) NSNumber * id;
+
+@property NSString * filename;
+@property NSNumber * fileId;
+@property UIImageView * thumbView;
 
 @end
