@@ -10,6 +10,4 @@
 
 @interface NDPhotoGridViewController (Private)
 - (void) loadPhotos;
-- (void) _demoAsyncDataLoading;
-- (void) buildBarButtons;
 @end

@@ -25,7 +25,30 @@ UAModalPanel *detailPanel;
 {
 
     [super viewDidLoad];
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    //self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+	
+//	[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"banner_default.png"] forBarMetrics:UIBarMetricsDefault];
+
+	//self.navigationController.navigationBar.frame = CGRectMake(0, 0, 1536, 150);
+
+	//return [self initWithCGImage:[[UIImage imageWithData:[NSData dataWithContentsOfFile:path]] CGImage] scale:2.0 orientation:UIImageOrientationUp];
+
+	
+	//UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.navigationController.navigationBar.frame];
+	//imageView.contentMode = UIViewContentModeLeft;
+	//imageView.image = [[UIImage imageNamed:@"banner_default.png"] CGImage;
+
+	//imageView.image.scale = 1;
+
+	//[self.navigationController.navigationBar insertSubview:imageView atIndex:0];
+
+	
+    
+	//    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: reloadButton, nil];
+
+	
+	//[[UINavigationBar appearance] setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+	
     self.delegate = self;
     
     self.onLongPress = ^(UIView* view, NSInteger viewIndex){
@@ -60,6 +83,9 @@ UAModalPanel *detailPanel;
 
 		//[modalPanel showFromPoint:[sender center]];
 	};
+	
+	[self setBackgroundColor:[UIColor whiteColor]];
+	[self setBorderWidth:2];
 
 	
     //[self _demoAsyncDataLoading];
@@ -71,12 +97,6 @@ UAModalPanel *detailPanel;
 									repeats:YES];
 
 
-}
-
-- (void)animateReload
-{
-    _items = [NSArray new];
-    [self _demoAsyncDataLoading];
 }
 
 - (NSUInteger)numberOfViews
@@ -109,11 +129,11 @@ UAModalPanel *detailPanel;
 	while (accumNumOfViews < self.delegate.numberOfViews) {
 		NSUInteger numOfViews = 0;
 		if (row < 2) {
-			numOfViews = 4;
-		} else if (row < 4) {
-			numOfViews = 5;
+			numOfViews = 3;
+		} else if (row < 6) {
+			numOfViews = 6;
 		} else {
-			numOfViews = 10;
+			numOfViews = 12;
 		}
 		
 		numOfViews = (accumNumOfViews+numOfViews <= self.delegate.numberOfViews)?numOfViews:(self.delegate.numberOfViews-accumNumOfViews);

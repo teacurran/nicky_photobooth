@@ -6,8 +6,7 @@
 //  Copyright (c) 2013 Terrence Curran. All rights reserved.
 //
 
-#import "NDPhotoGridViewController.h"
-#import "NDPhotoGridViewController+Private.h"
+#import "NDMainViewController.h"
 #import "SBAppDelegate.h"
 #import "NDConstants.h"
 
@@ -21,9 +20,12 @@
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.viewController = [[NDPhotoGridViewController alloc] init];
-//    self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
-//    self.window.rootViewController = self.navigationController;
+    self.viewController = [[NDMainViewController alloc] init];
+
+	//self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
+    //self.window.rootViewController = self.navigationController;
+	
+	self.window.rootViewController = self.viewController;
 
 	
 	// Set the application defaults
@@ -32,9 +34,10 @@
 	[defaults registerDefaults:appDefaults];
 	[defaults synchronize];
 	
-    self.window.rootViewController = self.viewController;
+
     [self.window makeKeyAndVisible];
     return YES;
+
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application

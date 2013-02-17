@@ -57,7 +57,7 @@
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
         _gridContainerView = [[UIView alloc] initWithFrame:CGRectZero];
-        _gridContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight; 
+        _gridContainerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.contentView addSubview:_gridContainerView];
 
         self.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -31,7 +31,10 @@ class ApiController extends FOSRestController
 	 */
 	public function eventAction()
 	{
-		return array('event' => "event");
+		return array(
+			"event" => "Event Title",
+			"banner" => "/event/default.png"
+		);
 	}
 
 	/**

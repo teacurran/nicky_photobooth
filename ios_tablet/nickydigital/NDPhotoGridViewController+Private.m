@@ -13,36 +13,9 @@
 #import "NDConstants.h"
 #import "Photo.h"
 
-#define kNumberOfPhotos 40
 @implementation NDPhotoGridViewController (Private)
 
 NSLock *itemLock;
-
--(void)buildBarButtons
-{
-    UIBarButtonItem * reloadButton = [[UIBarButtonItem alloc] initWithTitle:@"Lay it!"
-                                                                      style:UIBarButtonItemStylePlain 
-                                                                     target:self 
-                                                                     action:@selector(animateReload)];
-
-    
-    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: reloadButton, nil];
-
-}
-
--(NSArray*)_imagesFromBundle
-{   
-    NSArray *images = [NSArray array];
-    NSBundle *bundle = [NSBundle mainBundle];
-    for (int i=0; i< kNumberOfPhotos; i++) {
-        NSString *path = [bundle pathForResource:[NSString stringWithFormat:@"%d", i + 1] ofType:@"jpg"];
-        UIImage *image = [UIImage imageWithContentsOfFile:path];
-        if (image) {
-            images = [images arrayByAddingObject:image];
-        }
-    }
-    return images;
-}
 
 -(NSLock*) getItemLock {
 	if (itemLock == Nil) {
@@ -83,7 +56,7 @@ NSLock *itemLock;
 			if (!found) {
 				NSLog(@"adding photo: %@", filename);
 
-				UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
+				UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape.png"]];
 				imageView.clipsToBounds = YES;
 				
 				[imageView setImageWithURL:[
@@ -103,6 +76,10 @@ NSLock *itemLock;
 				[_items addObject:photo];
 				itemsChanged = true;
 				//_items = [_items arrayByAddingObject:photo];
+				
+				//        [self performSelector:@selector(animateUpdate:)
+				//                   withObject:[NSArray arrayWithObjects:imageView, image, nil]];
+				//                   afterDelay:0.2 + (arc4random()%3) + (arc4random() %10 * 0.1)];
 
 			}
 		}
@@ -128,6 +105,73 @@ NSLock *itemLock;
 		for (id photo in itemsToDelete) {
 			[_items removeObject:photo];
 		}
+		
+		// put in some placeholders if we don't have enough images to fill out a row.
+		int bufferPlaceholders = 0;
+		int photoCount = _items.count;
+
+		//int lastRowSlots = 0;
+		//int lastRowPhotos = 0;
+		//
+		//if (photoCount <= 8) {
+		//	lastRowSlots = 4;
+		//} else if (photoCount <= 18) {
+		//	lastRowSlots = 5;
+		//} else {
+		//	lastRowSlots = 10;
+		//}
+
+		if (photoCount < 3) {
+
+			bufferPlaceholders = 3 - photoCount;
+
+		} else if (photoCount > 3 && photoCount < 6) {
+
+			bufferPlaceholders = 6 - photoCount;
+
+		} else if (photoCount > 6 && photoCount < 12) {
+			
+			bufferPlaceholders = 12 - photoCount;
+
+		} else if (photoCount > 12 && photoCount < 18) {
+
+			bufferPlaceholders = 18 - photoCount;
+
+		} else if (photoCount > 18 && photoCount < 24) {
+			
+			bufferPlaceholders = 24 - photoCount;
+
+		} else if (photoCount > 24 && photoCount < 30) {
+			
+			bufferPlaceholders = 30 - photoCount;
+
+		} else if (photoCount > 30) {
+
+			bufferPlaceholders = 12 - ((photoCount - 30) % 12);
+
+		}
+		
+		
+		NSLog(@"inserting placeholders:%d", bufferPlaceholders);
+		if (bufferPlaceholders > 0) {
+			for (int i=0; i<bufferPlaceholders; i++) {
+				UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape.png"]];
+				imageView.clipsToBounds = YES;
+				
+				//imageView.frame = CGRectMake(0, 0, 200, 150);
+				
+				Photo *photo = [[Photo alloc] init];
+				[photo setFilename:Nil];
+				[photo setFileId:0];
+				[photo setThumbView:imageView];
+				
+				[_items insertObject:photo atIndex:0];
+				itemsChanged = true;
+			}
+		}
+
+		
+		
 		if (itemsChanged) {
 			[self reloadData];
 		}
@@ -137,43 +181,6 @@ NSLock *itemLock;
 	
 	[operation start];
 	
-}
-
-- (void)_demoAsyncDataLoading
-{
-    _items = [NSArray array];
-    //load the placeholder image
-
-//    for (int i=0; i < kNumberOfPhotos; i++) {
-//        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
-//        imageView.frame = CGRectMake(0, 0, 44, 44);
-//        imageView.clipsToBounds = YES;
-//        _items = [_items arrayByAddingObject:imageView];
-//    }
-
-    NSArray *images = [self _imagesFromBundle];
-    for (int i = 0; i < images.count; i++) {
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
-        imageView.clipsToBounds = YES;
-
-        UIImage *image = [images objectAtIndex:i];
-        imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
-		imageView.image = image;
-		
-        _items = [_items arrayByAddingObject:imageView];
-		
-//        [self performSelector:@selector(animateUpdate:)
-//                   withObject:[NSArray arrayWithObjects:imageView, image, nil]];
-//                   afterDelay:0.2 + (arc4random()%3) + (arc4random() %10 * 0.1)];
-    }
-
-    [self reloadData];
-	
-//	NSArray *visibleRowInfos =  [self visibleRowInfos];
-//	for (BDRowInfo *rowInfo in visibleRowInfos) {
-//		[self updateLayoutWithRow:rowInfo animiated:NO];
-//	}
-
 }
 
 - (void) animateUpdate:(NSArray*)objects
