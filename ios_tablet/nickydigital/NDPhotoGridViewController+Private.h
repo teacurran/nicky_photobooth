@@ -8,7 +8,8 @@
 
 #import "NDPhotoGridViewController.h"
 
-@interface NDPhotoGridViewController (Private) 
+@interface NDPhotoGridViewController (Private)
+- (void) loadPhotos;
 - (void) _demoAsyncDataLoading;
 - (void) buildBarButtons;
 @end

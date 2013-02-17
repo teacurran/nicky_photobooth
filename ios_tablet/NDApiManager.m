@@ -1,20 +1,22 @@
 //
-//  SBApiManager.m
+//  NDApiManager.m
 //  smilebooth
 //
 //  Created by Terrence Curran on 1/14/13.
 //  Copyright (c) 2013 Terrence Curran. All rights reserved.
 //
 
-#import "SBApiManager.h"
-#import "SBConstants.h"
+#import "NDApiManager.h"
+#import "NDConstants.h"
 #import "Photo.h"
 
-@implementation SBApiManager
+@implementation NDApiManager
 
 + (void)initialize {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
     // make sure that RestKit is ready to go
-    [self managerWithBaseURL:[NSURL URLWithString:kSmileBoothUploaderUrl]];
+    [self managerWithBaseURL:[NSURL URLWithString:[defaults stringForKey:kPrefServerUrlKey]]];
     
     // show the network activity spinner during requests
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;

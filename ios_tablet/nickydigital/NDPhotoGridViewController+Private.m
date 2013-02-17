@@ -7,6 +7,11 @@
 //
 
 #import "NDPhotoGridViewController+Private.h"
+
+#import "UIImageView+AFNetworking.h"
+#import "AFJSONRequestOperation.h"
+#import "NDConstants.h"
+
 #define kNumberOfPhotos 40
 @implementation NDPhotoGridViewController (Private)
 
@@ -36,6 +41,41 @@
     return images;
 }
 
+-(void) loadPhotos
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	NSURL *photoListUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",  [defaults stringForKey:kPrefServerUrlKey], @"/api/photos"]];
+	NSURLRequest *request = [NSURLRequest requestWithURL:photoListUrl];
+	
+	_items = [NSArray array];
+	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+		for(id jsonImage in JSON)
+		{
+			NSString *filename = [jsonImage valueForKeyPath:@"filename"];
+			NSLog(@"photo: %@", filename);
+
+			UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
+			imageView.clipsToBounds = YES;
+			
+			[imageView setImageWithURL:[
+							NSURL URLWithString:[
+									NSString stringWithFormat:@"%@/%@/%@",  [defaults stringForKey:kPrefServerUrlKey], @"api/photo/200", filename]
+							]
+					placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+			 ];
+
+			imageView.frame = CGRectMake(0, 0, 200, 150);
+
+			_items = [_items arrayByAddingObject:imageView];
+
+			[self reloadData];
+		}
+	} failure:nil];
+	
+	[operation start];
+	
+}
 
 - (void)_demoAsyncDataLoading
 {

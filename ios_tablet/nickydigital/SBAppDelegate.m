@@ -9,6 +9,7 @@
 #import "NDPhotoGridViewController.h"
 #import "NDPhotoGridViewController+Private.h"
 #import "SBAppDelegate.h"
+#import "NDConstants.h"
 
 @implementation SBAppDelegate
 
@@ -24,6 +25,13 @@
 //    self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
 //    self.window.rootViewController = self.navigationController;
 
+	
+	// Set the application defaults
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	NSDictionary *appDefaults = [NSDictionary dictionaryWithObject:kPrefServerUrlDefault forKey:kPrefServerUrlKey];
+	[defaults registerDefaults:appDefaults];
+	[defaults synchronize];
+	
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     return YES;

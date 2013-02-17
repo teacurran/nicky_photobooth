@@ -1,5 +1,5 @@
 //
-//  SBConstants.h
+//  NDConstants.h
 //  smilebooth
 //
 //  Created by Terrence Curran on 1/14/13.
@@ -8,9 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SBConstants : NSObject
+@interface NDConstants : NSObject
 
-extern NSString* const kSmileBoothUploaderUrl;
 extern NSString* const kSMileBoothAuthUrl;
 
 extern NSString* const kFacebookAppId;
@@ -19,5 +18,7 @@ extern NSString* const kFacebookRedirect;
 extern NSString* const kFacebookScope;
 extern NSString* const kFacebookOauth;
 
+extern NSString* const kPrefServerUrlKey;
+extern NSString* const kPrefServerUrlDefault;
 
 @end

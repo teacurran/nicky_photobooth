@@ -18,6 +18,8 @@
 
 @implementation NDPhotoGridViewController
 
+UAModalPanel *detailPanel;
+
 - (void)viewDidLoad
 {
 
@@ -33,20 +35,41 @@
         NSLog(@"Double tap on %@, at %d", view, viewIndex);
     };
 	
+	__weak NDPhotoGridViewController *blockSelf = self;
 	self.onSingleTap = ^(UIView* view, NSInteger viewIndex) {
+
+		// create the detail panel the first time we load.
+		if (detailPanel == nil) {
+			detailPanel = [[NDPhotoDetailModalPanel alloc] initWithFrame:blockSelf.view.bounds title:@"test"];
+			//[detailPanel hide];
+			detailPanel.shouldBounce = NO;
+		}
 		
-		CGRect frameRect = CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
-		
-		UAModalPanel *modalPanel = [[NDPhotoDetailModalPanel alloc] initWithFrame:frameRect title:@"test"];
-		[self.view addSubview:modalPanel];
-//		[modalPanel showFromPoint:[sender center]];
-		
+        NSLog(@"Single tap on %@, at %d", view, viewIndex);
+
+		//		NDPhotoGridViewController *strongSelf = blockSelf;
+		//		detailPanel.frame = CGRectMake(0, 0, strongSelf.view.frame.size.width, strongSelf.view.frame.size.height);
+
+		[blockSelf.view addSubview:detailPanel];
+
+		//[self.view addSubview:detailPanel];
+		//[detailPanel showFromPoint:[view center]];
+		[detailPanel show];
+		//NDPhotoGridViewController *strongSelf = blockSelf;
+
+		//[modalPanel showFromPoint:[sender center]];
 	};
+
 	
-	
-    [self _demoAsyncDataLoading];
-    [self buildBarButtons];
-    
+    //[self _demoAsyncDataLoading];
+
+	[NSTimer scheduledTimerWithTimeInterval:2.0
+									 target:self
+								   selector:@selector(loadPhotos)
+								   userInfo:nil
+									repeats:YES];
+
+
 }
 
 - (void)animateReload

@@ -1,5 +1,5 @@
 //
-//  SBApiManager.h
+//  NDApiManager.h
 //  smilebooth
 //
 //  Created by Terrence Curran on 1/14/13.
@@ -10,6 +10,6 @@
 #import <RestKit/RestKit.h>
 #import <RestKit/CoreData.h>
 
-@interface SBApiManager : RKObjectManager
+@interface NDApiManager : RKObjectManager
 
 @end

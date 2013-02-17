@@ -13,8 +13,8 @@
 		9330C4AE16A3D14100A0BF84 /* icon144x144.png in Resources */ = {isa = PBXBuildFile; fileRef = 9330C4AD16A3D14100A0BF84 /* icon144x144.png */; };
 		9330C4C016A4B96A00A0BF84 /* nickydigital.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9330C4BE16A4B96A00A0BF84 /* nickydigital.xcdatamodeld */; };
 		9330C4D216A4C4F200A0BF84 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9330C4D116A4C4F200A0BF84 /* Photo.m */; };
-		9330C4D516A4C70400A0BF84 /* SBApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9330C4D416A4C70400A0BF84 /* SBApiManager.m */; };
-		9330C4D816A4C7D200A0BF84 /* SBConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9330C4D716A4C7D200A0BF84 /* SBConstants.m */; };
+		9330C4D516A4C70400A0BF84 /* NDApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9330C4D416A4C70400A0BF84 /* NDApiManager.m */; };
+		9330C4D816A4C7D200A0BF84 /* NDConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 9330C4D716A4C7D200A0BF84 /* NDConstants.m */; };
 		9338379516CB3DF00010EC17 /* NDPhotoDetailModalPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */; };
 		9368E0E416C8AAFE009407B1 /* NDPhotoGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E0E116C8AAFE009407B1 /* NDPhotoGridViewController.m */; };
 		9368E0E516C8AAFE009407B1 /* NDPhotoGridViewController+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E0E316C8AAFE009407B1 /* NDPhotoGridViewController+Private.m */; };
@@ -97,10 +97,10 @@
 		9330C4BF16A4B96A00A0BF84 /* nickydigital.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = nickydigital.xcdatamodel; sourceTree = "<group>"; };
 		9330C4D016A4C4F200A0BF84 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		9330C4D116A4C4F200A0BF84 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
-		9330C4D316A4C70400A0BF84 /* SBApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBApiManager.h; sourceTree = "<group>"; };
-		9330C4D416A4C70400A0BF84 /* SBApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBApiManager.m; sourceTree = "<group>"; };
-		9330C4D616A4C7D200A0BF84 /* SBConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBConstants.h; sourceTree = "<group>"; };
-		9330C4D716A4C7D200A0BF84 /* SBConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBConstants.m; sourceTree = "<group>"; };
+		9330C4D316A4C70400A0BF84 /* NDApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDApiManager.h; sourceTree = "<group>"; };
+		9330C4D416A4C70400A0BF84 /* NDApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDApiManager.m; sourceTree = "<group>"; };
+		9330C4D616A4C7D200A0BF84 /* NDConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDConstants.h; sourceTree = "<group>"; };
+		9330C4D716A4C7D200A0BF84 /* NDConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDConstants.m; sourceTree = "<group>"; };
 		9338379316CB3DF00010EC17 /* NDPhotoDetailModalPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDPhotoDetailModalPanel.h; sourceTree = "<group>"; };
 		9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDPhotoDetailModalPanel.m; sourceTree = "<group>"; };
 		9368E0E016C8AAFE009407B1 /* NDPhotoGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDPhotoGridViewController.h; sourceTree = "<group>"; };
@@ -277,10 +277,10 @@
 				9368E14D16C8B3B2009407B1 /* BDDynamicGridViewController */,
 				9368E0E616C8B116009407B1 /* images */,
 				938B263A16ABEAE800F8176E /* Settings.bundle */,
-				9330C4D616A4C7D200A0BF84 /* SBConstants.h */,
-				9330C4D716A4C7D200A0BF84 /* SBConstants.m */,
-				9330C4D316A4C70400A0BF84 /* SBApiManager.h */,
-				9330C4D416A4C70400A0BF84 /* SBApiManager.m */,
+				9330C4D616A4C7D200A0BF84 /* NDConstants.h */,
+				9330C4D716A4C7D200A0BF84 /* NDConstants.m */,
+				9330C4D316A4C70400A0BF84 /* NDApiManager.h */,
+				9330C4D416A4C70400A0BF84 /* NDApiManager.m */,
 				9330C4D016A4C4F200A0BF84 /* Photo.h */,
 				9330C4D116A4C4F200A0BF84 /* Photo.m */,
 				9330C4BE16A4B96A00A0BF84 /* nickydigital.xcdatamodeld */,
@@ -493,8 +493,8 @@
 				93E8C6BE169E956F00A43F4A /* SBViewController.m in Sources */,
 				9330C4C016A4B96A00A0BF84 /* nickydigital.xcdatamodeld in Sources */,
 				9330C4D216A4C4F200A0BF84 /* Photo.m in Sources */,
-				9330C4D516A4C70400A0BF84 /* SBApiManager.m in Sources */,
-				9330C4D816A4C7D200A0BF84 /* SBConstants.m in Sources */,
+				9330C4D516A4C70400A0BF84 /* NDApiManager.m in Sources */,
+				9330C4D816A4C7D200A0BF84 /* NDConstants.m in Sources */,
 				9368E0E416C8AAFE009407B1 /* NDPhotoGridViewController.m in Sources */,
 				9368E0E516C8AAFE009407B1 /* NDPhotoGridViewController+Private.m in Sources */,
 				9368E15516C8B3B2009407B1 /* BDDynamicGridCell.m in Sources */,
@@ -586,11 +586,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nickydigital/nickydigital-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"$(inherited)",
 					"UAMODALVIEW_DEBUG=1",
 				);
 				INFOPLIST_FILE = "nickydigital/nickydigital-Info.plist";
+				"INFOPLIST_PREPROCESSOR_DEFINITIONS[sdk=*]" = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -602,6 +602,7 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "nickydigital/nickydigital-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "nickydigital/nickydigital-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
