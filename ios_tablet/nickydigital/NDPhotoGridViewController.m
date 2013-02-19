@@ -20,13 +20,22 @@
 
 @implementation NDPhotoGridViewController
 
-UAModalPanel *detailPanel;
+NDPhotoDetailModalPanel *detailPanel;
+
 
 - (void)viewDidLoad
 {
 
     [super viewDidLoad];
-    //self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+
+	_placeholders = [NSMutableArray array];
+	for(int i=0; i<[self maximumViewsPerCell]; i++) {
+		UIImageView *placeholderView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape.png"]];
+		placeholderView.clipsToBounds = YES;
+		[_placeholders addObject:placeholderView];
+	}
+    
+	//self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 	
 //	[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"banner_default.png"] forBarMetrics:UIBarMetricsDefault];
 
@@ -61,6 +70,7 @@ UAModalPanel *detailPanel;
     };
 	
 	__weak NDPhotoGridViewController *blockSelf = self;
+	__weak NSArray *blockItems = _items;
 	self.onSingleTap = ^(UIView* view, NSInteger viewIndex) {
 
 		// create the detail panel the first time we load.
@@ -75,11 +85,21 @@ UAModalPanel *detailPanel;
 		//		NDPhotoGridViewController *strongSelf = blockSelf;
 		//		detailPanel.frame = CGRectMake(0, 0, strongSelf.view.frame.size.width, strongSelf.view.frame.size.height);
 
-		[blockSelf.view addSubview:detailPanel];
 
-		//[self.view addSubview:detailPanel];
-		//[detailPanel showFromPoint:[view center]];
-		[detailPanel show];
+		if (viewIndex < _items.count - 1) {
+			Photo *photo = [_items objectAtIndex:(_items.count - viewIndex - 1) ];
+			UIImageView * imageView = photo.thumbView;
+			
+			[detailPanel setPhoto:imageView];
+			
+			[blockSelf.view addSubview:detailPanel];
+
+			//[self.view addSubview:detailPanel];
+			//[detailPanel showFromPoint:[view center]];
+			[detailPanel show];
+			
+		}
+		
 		//NDPhotoGridViewController *strongSelf = blockSelf;
 
 		//[modalPanel showFromPoint:[sender center]];
@@ -102,7 +122,7 @@ UAModalPanel *detailPanel;
 
 - (NSUInteger)numberOfViews
 {
-    return _items.count;
+    return _items.count + _placeholderCount;
 }
 
 /* Won't be used because we are using a custom layout */
@@ -157,11 +177,14 @@ UAModalPanel *detailPanel;
 
 - (UIView *)viewAtIndex:(NSUInteger)index rowInfo:(BDRowInfo *)rowInfo
 {
-	Photo *photo = [_items objectAtIndex:(_items.count - index - 1) ];
-	
-    UIImageView * imageView = photo.thumbView;
+	if (index < _items.count) {
+		Photo *photo = [_items objectAtIndex:(_items.count - index - 1) ];
+		
+		UIImageView * imageView = photo.thumbView;
+		return imageView;
+	}
 
-    return imageView;
+	return [_placeholders objectAtIndex:(index - _items.count)];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation

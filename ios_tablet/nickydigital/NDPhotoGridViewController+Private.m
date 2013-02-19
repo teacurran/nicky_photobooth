@@ -106,73 +106,68 @@ NSLock *itemLock;
 			[_items removeObject:photo];
 		}
 		
-		// put in some placeholders if we don't have enough images to fill out a row.
-		int bufferPlaceholders = 0;
-		int photoCount = _items.count;
-
-		//int lastRowSlots = 0;
-		//int lastRowPhotos = 0;
-		//
-		//if (photoCount <= 8) {
-		//	lastRowSlots = 4;
-		//} else if (photoCount <= 18) {
-		//	lastRowSlots = 5;
-		//} else {
-		//	lastRowSlots = 10;
-		//}
-
-		if (photoCount < 3) {
-
-			bufferPlaceholders = 3 - photoCount;
-
-		} else if (photoCount > 3 && photoCount < 6) {
-
-			bufferPlaceholders = 6 - photoCount;
-
-		} else if (photoCount > 6 && photoCount < 12) {
-			
-			bufferPlaceholders = 12 - photoCount;
-
-		} else if (photoCount > 12 && photoCount < 18) {
-
-			bufferPlaceholders = 18 - photoCount;
-
-		} else if (photoCount > 18 && photoCount < 24) {
-			
-			bufferPlaceholders = 24 - photoCount;
-
-		} else if (photoCount > 24 && photoCount < 30) {
-			
-			bufferPlaceholders = 30 - photoCount;
-
-		} else if (photoCount > 30) {
-
-			bufferPlaceholders = 12 - ((photoCount - 30) % 12);
-
-		}
-		
-		
-		NSLog(@"inserting placeholders:%d", bufferPlaceholders);
-		if (bufferPlaceholders > 0) {
-			for (int i=0; i<bufferPlaceholders; i++) {
-				UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape.png"]];
-				imageView.clipsToBounds = YES;
-				
-				//imageView.frame = CGRectMake(0, 0, 200, 150);
-				
-				Photo *photo = [[Photo alloc] init];
-				[photo setFilename:Nil];
-				[photo setFileId:0];
-				[photo setThumbView:imageView];
-				
-				[_items insertObject:photo atIndex:0];
-				itemsChanged = true;
-			}
-		}
-
-		
-		
 		if (itemsChanged) {
+
+			// put in some placeholders if we don't have enough images to fill out a row.
+			int bufferPlaceholders = 0;
+			int photoCount = _items.count;
+
+			if (photoCount < 3) {
+
+				bufferPlaceholders = 3 - photoCount;
+
+			} else if (photoCount > 3 && photoCount < 6) {
+
+				bufferPlaceholders = 6 - photoCount;
+
+			} else if (photoCount > 6 && photoCount < 12) {
+				
+				bufferPlaceholders = 12 - photoCount;
+
+			} else if (photoCount > 12 && photoCount < 18) {
+
+				bufferPlaceholders = 18 - photoCount;
+
+			} else if (photoCount > 18 && photoCount < 24) {
+				
+				bufferPlaceholders = 24 - photoCount;
+
+			} else if (photoCount > 24 && photoCount < 30) {
+				
+				bufferPlaceholders = 30 - photoCount;
+
+			} else if (photoCount > 30) {
+
+				bufferPlaceholders = 12 - ((photoCount - 30) % 12);
+
+			}
+
+			NSLog(@"inserting placeholders:%d", bufferPlaceholders);
+			_placeholderCount = bufferPlaceholders;
+			
+			/*
+			if (bufferPlaceholders > 0) {
+				for (int i=0; i<bufferPlaceholders; i++) {
+					UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape.png"]];
+					imageView.clipsToBounds = YES;
+					
+					//imageView.frame = CGRectMake(0, 0, 200, 150);
+					
+					Photo *photo = [[Photo alloc] init];
+					[photo setFilename:Nil];
+					[photo setFileId:0];
+					[photo setThumbView:imageView];
+					
+					[_items insertObject:photo atIndex:0];
+					itemsChanged = true;
+				}
+			}
+			*/
+			
+			
+			
+			
+			
 			[self reloadData];
 		}
 		[arrayLock unlock];

@@ -15,7 +15,10 @@
 
 @property (nonatomic, retain) IBOutlet UIView *viewLoadedFromXib;
 
+@property (nonatomic, retain) IBOutlet UIImageView *photoView;
+
 - (id)initWithFrame:(CGRect)frame title:(NSString *)title;
 - (IBAction)buttonPressed:(id)sender;
+- (void)setPhoto:(UIImageView*)imageView;
 
 @end

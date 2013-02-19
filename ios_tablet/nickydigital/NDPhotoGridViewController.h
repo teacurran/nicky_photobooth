@@ -11,7 +11,9 @@
 
 @interface NDPhotoGridViewController : BDDynamicGridViewController<BDDynamicGridViewDelegate>{
     NSMutableArray * _items;
-	
+	int _placeholderCount;
+	NSMutableArray * _placeholders;
+
 }
 
 

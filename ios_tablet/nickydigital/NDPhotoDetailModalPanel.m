@@ -13,6 +13,7 @@
 @implementation NDPhotoDetailModalPanel
 
 @synthesize viewLoadedFromXib;
+@synthesize photoView;
 
 - (id)initWithFrame:(CGRect)frame title:(NSString *)title {
 	if ((self = [super initWithFrame:frame])) {
@@ -82,6 +83,8 @@
 
 		[[NSBundle mainBundle] loadNibNamed:@"PhotoDetail" owner:self options:nil];
 		viewLoadedFromXib.frame = self.contentView.frame;
+
+		
 		[self.contentView addSubview:viewLoadedFromXib];
 
 		
@@ -108,6 +111,11 @@
 		
 	}
 	return self;
+}
+
+-(void)setPhoto:(UIImageView*)imageView {
+	self.photoView.image = imageView.image;
+	
 }
 
 - (void)layoutSubviews {
