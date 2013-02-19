@@ -27,7 +27,7 @@
 	
 	self.window.rootViewController = self.viewController;
 
-	[[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+	[[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
 	
 	// Set the application defaults
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
