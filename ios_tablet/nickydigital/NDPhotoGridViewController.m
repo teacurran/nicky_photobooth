@@ -12,6 +12,7 @@
 #import "UAModalPanel.h"
 #import "NDPhotoDetailModalPanel.h"
 #import "Photo.h"
+#import "NDConstants.h"
 
 @interface NDPhotoGridViewController ()
 
@@ -85,7 +86,7 @@ UAModalPanel *detailPanel;
 	};
 	
 	[self setBackgroundColor:[UIColor whiteColor]];
-	[self setBorderWidth:2];
+	[self setBorderWidth:kGridBorderWidth];
 
 	
     //[self _demoAsyncDataLoading];
@@ -104,9 +105,10 @@ UAModalPanel *detailPanel;
     return _items.count;
 }
 
+/* Won't be used because we are using a custom layout */
 -(NSUInteger)maximumViewsPerCell
 {
-    return 5;
+    return 12;
 }
 
 - (NSArray*) customLayout
@@ -171,30 +173,11 @@ UAModalPanel *detailPanel;
 
 - (CGFloat)rowHeightForRowInfo:(BDRowInfo *)rowInfo
 {
-	
-	int photo_width = self.view.frame.size.width / rowInfo.viewsPerCell;
+	int photo_width = (self.view.frame.size.width - (rowInfo.viewsPerCell * kGridBorderWidth) - kGridBorderWidth) / rowInfo.viewsPerCell;
 	
 	int row_height = 3 * photo_width / 4;
 	
 	return row_height;
-	
-	
-//	if (rowInfo.order < 2) {
-//		return 200;
-//	} else if (rowInfo.order < 4) {
-//		return 100;
-//	} else {
-//		return 50;
-//	}
-	
-	
-	
-    //    if (rowInfo.viewsPerCell == 1) {
-    //        return 125  + (arc4random() % 55);
-    //    }else {
-    //        return 100;
-    //    }
-//    return 200 + (arc4random() % 125);
 }
 
 @end

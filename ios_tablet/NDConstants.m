@@ -10,6 +10,8 @@
 
 @implementation NDConstants
 
+int const kGridBorderWidth = 2;
+
 NSString* const kFacebookAppId = @"596065173744275";
 NSString* const kFacebookSecret = @"272dec3fa799dc5751205642ad90318a";
 NSString* const kFacebookRedirect = @"http://www.nickydigital.com/facebook/auth";

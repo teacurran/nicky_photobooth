@@ -79,6 +79,11 @@
 			[self headerLabel].font = [UIFont boldSystemFontOfSize:floor(self.titleBarHeight / 2.0)];
 		}
 		
+
+		[[NSBundle mainBundle] loadNibNamed:@"PhotoDetail" owner:self options:nil];
+		viewLoadedFromXib.frame = self.contentView.frame;
+		[self.contentView addSubview:viewLoadedFromXib];
+
 		
 		//////////////////////////////////////
 		// SETUP RANDOM CONTENT
@@ -93,9 +98,9 @@
 //		[iv setImage:[UIImage imageNamed:@"UrbanApps.png"]];
 //		[iv setContentMode:UIViewContentModeScaleAspectFit];
 //		
-//		[[NSBundle mainBundle] loadNibNamed:@"UAExampleView" owner:self options:nil];
+//		//[[NSBundle mainBundle] loadNibNamed:@"UAExampleView" owner:self options:nil];
 //		
-//		NSArray *contentArray = [NSArray arrayWithObjects:wv, tv, iv, viewLoadedFromXib, nil];
+//		NSArray *contentArray = [NSArray arrayWithObjects:wv, tv, iv, nil];
 //		
 //		int i = arc4random() % [contentArray count];
 //		v = [contentArray objectAtIndex:i];

@@ -18,6 +18,8 @@ extern NSString* const kFacebookRedirect;
 extern NSString* const kFacebookScope;
 extern NSString* const kFacebookOauth;
 
+extern int const kGridBorderWidth;
+
 extern NSString* const kPrefServerUrlKey;
 extern NSString* const kPrefServerUrlDefault;
 
