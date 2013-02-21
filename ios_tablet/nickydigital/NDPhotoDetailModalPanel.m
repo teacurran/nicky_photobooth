@@ -19,11 +19,8 @@
 	if ((self = [super initWithFrame:frame])) {
 		
 		CGFloat colors[8] = BLACK_BAR_COMPONENTS;
-		[self.titleBar setColorComponents:colors];
-		self.headerLabel.text = title;
 		
 		self.contentColor = [UIColor whiteColor];
-		self.titleBarHeight = 0;
 		
 		////////////////////////////////////
 		// RANDOMLY CUSTOMIZE IT
@@ -58,26 +55,26 @@
 			[self.actionButton setTitle:@"Foobar" forState:UIControlStateNormal];
 			
 			// Height of the title view. Default = 40.0f
-			[self setTitleBarHeight:((arc4random() % 5) + 2) * 20.0f];
+			//[self setTitleBarHeight:((arc4random() % 5) + 2) * 20.0f];
 			
 			// The background color gradient of the title
 			CGFloat colors[8] = {
 				(arc4random() % 2), (arc4random() % 2), (arc4random() % 2), 1,
 				(arc4random() % 2), (arc4random() % 2), (arc4random() % 2), 1
 			};
-			[[self titleBar] setColorComponents:colors];
+			//[[self titleBar] setColorComponents:colors];
 			
 			// The gradient style (Linear, linear reversed, radial, radial reversed, center highlight). Default = UAGradientBackgroundStyleLinear
-			[[self titleBar] setGradientStyle:(arc4random() % 5)];
+			//[[self titleBar] setGradientStyle:(arc4random() % 5)];
 			
 			// The line mode of the gradient view (top, bottom, both, none). Top is a white line, bottom is a black line.
-			[[self titleBar] setLineMode: pow(2, (arc4random() % 3))];
+			//[[self titleBar] setLineMode: pow(2, (arc4random() % 3))];
 			
 			// The noise layer opacity. Default = 0.4
-			[[self titleBar] setNoiseOpacity:(((arc4random() % 10) + 1) * 0.1)];
+			//[[self titleBar] setNoiseOpacity:(((arc4random() % 10) + 1) * 0.1)];
 			
 			// The header label, a UILabel with the same frame as the titleBar
-			[self headerLabel].font = [UIFont boldSystemFontOfSize:floor(self.titleBarHeight / 2.0)];
+			//[self headerLabel].font = [UIFont boldSystemFontOfSize:floor(self.titleBarHeight / 2.0)];
 		}
 		
 

@@ -8,7 +8,7 @@
 
 #import "UATitledModalPanel.h"
 
-@interface NDPhotoDetailModalPanel : UATitledModalPanel <UITableViewDataSource> {
+@interface NDPhotoDetailModalPanel : UAModalPanel <UITableViewDataSource> {
 	UIView			*v;
 	IBOutlet UIView	*viewLoadedFromXib;
 }

@@ -30,7 +30,8 @@ NDPhotoDetailModalPanel *detailPanel;
 
 	_placeholders = [NSMutableArray array];
 	for(int i=0; i<[self maximumViewsPerCell]; i++) {
-		UIImageView *placeholderView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape.png"]];
+		UIImageView *placeholderView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape_x.png"]];
+		placeholderView.frame = CGRectMake(0, 0, 300, 200);
 		placeholderView.clipsToBounds = YES;
 		[_placeholders addObject:placeholderView];
 	}
@@ -75,7 +76,18 @@ NDPhotoDetailModalPanel *detailPanel;
 
 		// create the detail panel the first time we load.
 		if (detailPanel == nil) {
+			
+			
 			detailPanel = [[NDPhotoDetailModalPanel alloc] initWithFrame:blockSelf.view.bounds title:@"test"];
+			
+
+//			CGRect detailBounds = CGRectMake(0, 0, detailPanel.contentContainer.frame.size.width, detailPanel.contentContainer.frame.size.height);
+
+//			CGSize contentSize = CGSizeMake(detailPanel.contentContainer.frame.size.width, detailPanel.contentContainer.frame.size.height - 400);
+			//detailPanel.contentContainer.center
+//			detailPanel.contentContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewContentModeTop;
+//			detailPanel.contentContainer.frame = detailBounds;
+
 			//[detailPanel hide];
 			detailPanel.shouldBounce = NO;
 		}
@@ -86,7 +98,7 @@ NDPhotoDetailModalPanel *detailPanel;
 		//		detailPanel.frame = CGRectMake(0, 0, strongSelf.view.frame.size.width, strongSelf.view.frame.size.height);
 
 
-		if (viewIndex < _items.count - 1) {
+		if (viewIndex < _items.count) {
 			Photo *photo = [_items objectAtIndex:(_items.count - viewIndex - 1) ];
 			UIImageView * imageView = photo.thumbView;
 			
@@ -198,7 +210,7 @@ NDPhotoDetailModalPanel *detailPanel;
 {
 	int photo_width = (self.view.frame.size.width - (rowInfo.viewsPerCell * kGridBorderWidth) - kGridBorderWidth) / rowInfo.viewsPerCell;
 	
-	int row_height = 3 * photo_width / 4;
+	int row_height = 2 * photo_width / 3;
 	
 	return row_height;
 }

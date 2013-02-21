@@ -19,12 +19,14 @@ NDPhotoGridViewController *photoGridController;
 {
     [super viewDidLoad];
 
+	int windowWidth = CGRectGetWidth(self.view.bounds);
+	int windowHeight = CGRectGetHeight(self.view.bounds);
 	
 	UIImage *bannerImage = [UIImage imageNamed:@"banner_default.png"];
 	UIImageView* bannerView = [[UIImageView alloc] initWithImage:bannerImage];
-	int bannerWidth = self.view.frame.size.height;
-	int bannerHeight = (self.view.frame.size.height / bannerImage.size.width) * bannerImage.size.height;
-	[bannerView setFrame:CGRectMake(0, 0, bannerWidth, bannerHeight)];
+
+	int bannerHeight = (windowWidth / bannerImage.size.width) * bannerImage.size.height;
+	[bannerView setFrame:CGRectMake(0, 0, windowWidth, bannerHeight)];
 	[self.view addSubview:bannerView];
 	
 	
@@ -34,14 +36,14 @@ NDPhotoGridViewController *photoGridController;
 	
 	UIView *photoGridContainer = [[UIView alloc] init];
 	
-	[photoGridContainer setFrame:CGRectMake(0, bannerHeight, self.view.frame.size.height, self.view.frame.size.width - bannerHeight)];
+	[photoGridContainer setFrame:CGRectMake(0, bannerHeight, windowWidth, windowHeight - bannerHeight)];
 //	photoGridContainer.frame.size = self.view.frame.size; // CGRectMake(0, 0, self.window.frame.size, CGFloat height)
 	[self.view addSubview:photoGridContainer];
 	
 	//set the frame for the photogrid
 	CGFloat width = photoGridContainer.frame.size.width;
 	CGFloat height = photoGridContainer.frame.size.height;
-	NSLog(@"width:%d, height:%d", (int)width, (int)height);
+	NSLog(@"width:%d, height:%d", windowWidth, windowHeight);
 
 	photoGridController.view.frame = CGRectMake(0, 0, width, height);
 
@@ -50,6 +52,11 @@ NDPhotoGridViewController *photoGridController;
 	
 	
 	//[self.view :photoGridController];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+	NSLog(@"FRAME:%f", CGRectGetWidth(self.view.bounds));
 }
 
 

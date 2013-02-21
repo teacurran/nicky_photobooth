@@ -56,17 +56,17 @@ NSLock *itemLock;
 			if (!found) {
 				NSLog(@"adding photo: %@", filename);
 
-				UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape.png"]];
+				UIImageView *imageView = [[UIImageView alloc] init];
 				imageView.clipsToBounds = YES;
 				
 				[imageView setImageWithURL:[
 								NSURL URLWithString:[
 										NSString stringWithFormat:@"%@/%@/%@",  [defaults stringForKey:kPrefServerUrlKey], @"api/photo/300", filename]
 								]
-						placeholderImage:[UIImage imageNamed:@"placeholder.png"]
+						placeholderImage:[UIImage imageNamed:@"placeholder_landscape.png"]
 				 ];
 
-				imageView.frame = CGRectMake(0, 0, 200, 150);
+				imageView.frame = CGRectMake(0, 0, 300, 200);
 
 				Photo *photo = [[Photo alloc] init];
 				[photo setFilename:filename];
@@ -77,9 +77,9 @@ NSLock *itemLock;
 				itemsChanged = true;
 				//_items = [_items arrayByAddingObject:photo];
 				
-				//        [self performSelector:@selector(animateUpdate:)
-				//                   withObject:[NSArray arrayWithObjects:imageView, image, nil]];
-				//                   afterDelay:0.2 + (arc4random()%3) + (arc4random() %10 * 0.1)];
+//				        [self performSelector:@selector(animateUpdate:)
+//				                   withObject:[NSArray arrayWithObjects:imageView, imageView.image, nil]
+//				                   afterDelay:0.2 + (arc4random()%3) + (arc4random() %10 * 0.1)];
 
 			}
 		}
