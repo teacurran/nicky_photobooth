@@ -7,6 +7,7 @@
 //
 
 #import "Photo.h"
+#import "UIImageView+AFNetworking.h"
 
 
 @implementation Photo
@@ -18,5 +19,6 @@
 @synthesize filename;
 @synthesize fileId;
 @synthesize thumbView;
+@synthesize detailView;
 
 @end

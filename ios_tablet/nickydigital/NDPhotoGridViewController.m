@@ -8,11 +8,14 @@
 
 #import "NDPhotoGridViewController.h"
 #import "NDPhotoGridViewController+Private.h"
+#import "NDConstants.h"
+#import "NDPhotoDetailModalPanel.h"
+
 #import "BDRowInfo.h"
 #import "UAModalPanel.h"
-#import "NDPhotoDetailModalPanel.h"
 #import "Photo.h"
-#import "NDConstants.h"
+#import "UIImageView+AFNetworking.h"
+#import "AFJSONRequestOperation.h"
 
 @interface NDPhotoGridViewController ()
 
@@ -98,11 +101,47 @@ NDPhotoDetailModalPanel *detailPanel;
 		//		detailPanel.frame = CGRectMake(0, 0, strongSelf.view.frame.size.width, strongSelf.view.frame.size.height);
 
 
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
 		if (viewIndex < _items.count) {
 			Photo *photo = [_items objectAtIndex:(_items.count - viewIndex - 1) ];
-			UIImageView * imageView = photo.thumbView;
+
+			if (photo.detailView == nil) {
+				UIImageView *imageView = [[UIImageView alloc] init];
+				imageView.clipsToBounds = YES;
+				
+				[detailPanel setPhoto:photo.thumbView];
+
+				NSURL *url = [NSURL URLWithString:[
+											NSString stringWithFormat:@"%@/%@/%@",  [defaults stringForKey:kPrefServerUrlKey], @"api/photo/640", photo.filename]
+				];
+
+				NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+				[request setHTTPShouldHandleCookies:NO];
+				[request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+
+				[imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+					
+					photo.detailView.image = image;
+					detailPanel.photoView.image = image;
+					
+				} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+					
+				}];
+				//[imageView setImageWithURL:url
+				//			placeholderImage:photo.thumbView.image
+				//	];
+
+				photo.detailView = imageView;
+				[detailPanel setPhoto:photo.detailView];
+
+				//imageView.frame = CGRectMake(0, 0, 300, 200);
+				
+			} else {
+				[detailPanel setPhoto:photo.detailView];
+			}
 			
-			[detailPanel setPhoto:imageView];
+			//UIImageView * imageView = photo.thumbView;
 			
 			[blockSelf.view addSubview:detailPanel];
 
