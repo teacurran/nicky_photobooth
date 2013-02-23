@@ -8,8 +8,7 @@
 
 #import "UATitledModalPanel.h"
 
-@interface NDPhotoDetailModalPanel : UAModalPanel <UITableViewDataSource> {
-	UIView			*v;
+@interface NDPhotoDetailModalPanel : UIViewController<UIWebViewDelegate> {
 	IBOutlet UIView	*viewLoadedFromXib;
 }
 
@@ -17,8 +16,15 @@
 
 @property (nonatomic, retain) IBOutlet UIImageView *photoView;
 
+@property (nonatomic, retain) UAModalPanel *detailPanel;
+
 - (id)initWithFrame:(CGRect)frame title:(NSString *)title;
-- (IBAction)buttonPressed:(id)sender;
 - (void)setPhoto:(UIImageView*)imageView;
+
+- (IBAction)btnFacebookShareClick:(id)sender;
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView;
+
+-(id)initWithFrame:(CGRect)frame;
 
 @end

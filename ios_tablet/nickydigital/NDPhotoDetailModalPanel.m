@@ -7,107 +7,41 @@
 //
 
 #import "NDPhotoDetailModalPanel.h"
-
-#define BLACK_BAR_COMPONENTS				{ 0.22, 0.22, 0.22, 1.0, 0.07, 0.07, 0.07, 1.0 }
+#import "NDConstants.h"
 
 @implementation NDPhotoDetailModalPanel
 
 @synthesize viewLoadedFromXib;
 @synthesize photoView;
 
-- (id)initWithFrame:(CGRect)frame title:(NSString *)title {
-	if ((self = [super initWithFrame:frame])) {
-		
-		CGFloat colors[8] = BLACK_BAR_COMPONENTS;
-		
-		self.contentColor = [UIColor whiteColor];
-		
-		////////////////////////////////////
-		// RANDOMLY CUSTOMIZE IT
-		////////////////////////////////////
-		// Show the defaults mostly, but once in awhile show a completely random funky one
-		if (false && arc4random() % 4 == 0) {
-			// Funky time.
-			UADebugLog(@"Showing a randomized panel for modalPanel: %@", self);
-			
-			// Margin between edge of container frame and panel. Default = {20.0, 20.0, 20.0, 20.0}
-			self.margin = UIEdgeInsetsMake(((arc4random() % 4) + 1) * 20.0f, ((arc4random() % 4) + 1) * 20.0f, ((arc4random() % 4) + 1) * 20.0f, ((arc4random() % 4) + 1) * 20.0f);
-			
-			// Margin between edge of panel and the content area. Default = {20.0, 20.0, 20.0, 20.0}
-			self.padding = UIEdgeInsetsMake(((arc4random() % 4) + 1) * 20.0f, ((arc4random() % 4) + 1) * 20.0f, ((arc4random() % 4) + 1) * 20.0f, ((arc4random() % 4) + 1) * 20.0f);
-			
-			// Border color of the panel. Default = [UIColor whiteColor]
-			self.borderColor = [UIColor colorWithRed:(arc4random() % 2) green:(arc4random() % 2) blue:(arc4random() % 2) alpha:1.0];
-			
-			// Border width of the panel. Default = 1.5f;
-			self.borderWidth = ((arc4random() % 21)) * 0.5f;
-			
-			// Corner radius of the panel. Default = 4.0f
-			self.cornerRadius = (arc4random() % 21);
-			
-			// Color of the panel itself. Default = [UIColor colorWithWhite:0.0 alpha:0.8]
-			self.contentColor = [UIColor colorWithRed:(arc4random() % 2) green:(arc4random() % 2) blue:(arc4random() % 2) alpha:1.0];
-			
-			// Shows the bounce animation. Default = YES
-			self.shouldBounce = (arc4random() % 2);
-			
-			// Shows the actionButton. Default title is nil, thus the button is hidden by default
-			[self.actionButton setTitle:@"Foobar" forState:UIControlStateNormal];
-			
-			// Height of the title view. Default = 40.0f
-			//[self setTitleBarHeight:((arc4random() % 5) + 2) * 20.0f];
-			
-			// The background color gradient of the title
-			CGFloat colors[8] = {
-				(arc4random() % 2), (arc4random() % 2), (arc4random() % 2), 1,
-				(arc4random() % 2), (arc4random() % 2), (arc4random() % 2), 1
-			};
-			//[[self titleBar] setColorComponents:colors];
-			
-			// The gradient style (Linear, linear reversed, radial, radial reversed, center highlight). Default = UAGradientBackgroundStyleLinear
-			//[[self titleBar] setGradientStyle:(arc4random() % 5)];
-			
-			// The line mode of the gradient view (top, bottom, both, none). Top is a white line, bottom is a black line.
-			//[[self titleBar] setLineMode: pow(2, (arc4random() % 3))];
-			
-			// The noise layer opacity. Default = 0.4
-			//[[self titleBar] setNoiseOpacity:(((arc4random() % 10) + 1) * 0.1)];
-			
-			// The header label, a UILabel with the same frame as the titleBar
-			//[self headerLabel].font = [UIFont boldSystemFontOfSize:floor(self.titleBarHeight / 2.0)];
-		}
-		
+CGRect theFrame;
 
-		[[NSBundle mainBundle] loadNibNamed:@"PhotoDetail" owner:self options:nil];
-		viewLoadedFromXib.frame = self.contentView.frame;
+-(id)initWithFrame:(CGRect)frame {
+	
+	theFrame = frame;
 
-		
-		[self.contentView addSubview:viewLoadedFromXib];
+	return [super init];
+}
 
-		
-		//////////////////////////////////////
-		// SETUP RANDOM CONTENT
-		//////////////////////////////////////
-//		UIWebView *wv = [[UIWebView alloc] initWithFrame:CGRectZero];
-//		[wv loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://urbanapps.com/product_list"]]];
-//		
-//		UITableView *tv = [[UITableView alloc] initWithFrame:CGRectZero];
-//		[tv setDataSource:self];
-//		
-//		UIImageView *iv = [[UIImageView alloc] initWithFrame:CGRectZero];
-//		[iv setImage:[UIImage imageNamed:@"UrbanApps.png"]];
-//		[iv setContentMode:UIViewContentModeScaleAspectFit];
-//		
-//		//[[NSBundle mainBundle] loadNibNamed:@"UAExampleView" owner:self options:nil];
-//		
-//		NSArray *contentArray = [NSArray arrayWithObjects:wv, tv, iv, nil];
-//		
-//		int i = arc4random() % [contentArray count];
-//		v = [contentArray objectAtIndex:i];
-//		[self.contentView addSubview:v];
-		
-	}
-	return self;
+
+- (void)loadView
+{
+	//if (theFrame.size.width == NULL) {
+	//	theFrame = [[UIScreen mainScreen] applicationFrame];
+	//}
+	
+	UAModalPanel *view = [[UAModalPanel alloc] initWithFrame:theFrame];
+	view.contentColor = [UIColor whiteColor];
+	view.shouldBounce = NO;
+
+	[[NSBundle mainBundle] loadNibNamed:@"PhotoDetail" owner:self options:nil];
+	viewLoadedFromXib.frame = view.contentView.frame;
+	
+	[view.contentView addSubview:viewLoadedFromXib];
+	
+	// add subviews
+	self.detailPanel = view;
+	self.view = view;
 }
 
 -(void)setPhoto:(UIImageView*)imageView {
@@ -115,44 +49,114 @@
 	
 }
 
-- (void)layoutSubviews {
-	[super layoutSubviews];
+//- (void)layoutSubviews {
+//	[super layoutSubviews];
+//	
+//	[v setFrame:self.contentView.bounds];
+//}
+
+- (IBAction)btnFacebookShareClick:(id)sender {
+    
+    NSString *facebookOauthUrl = [NSString stringWithFormat:kFacebookOauth, kFacebookAppId, kFacebookRedirect, @"state123", kFacebookScope];
 	
-	[v setFrame:self.contentView.bounds];
+    
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]) {
+        [storage deleteCookie:cookie];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	//
+	//    UIWebView *webView = [[UIWebView alloc] init];
+	//    NSString *fullURL = @"http://www.google.com"; NSURL *url = [NSURL URLWithString:fullURL]; NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+	//    [webView loadRequest:requestObj];
+	//
+	//
+    
+	//    UINavigationController *navController = [[UINavigationController alloc]
+	//                     initWithRootViewController:modalDialog];
+	//
+	//    [self presentViewController:navController animated:YES completion:^{
+	//        // nothing;
+	//    }];
+    
+    [self presentViewController:modalDialog animated:YES completion:^{
+        // nothing
+    }];
+    
+    //[V1 presentModalViewController:V2 animated:YES];
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+    
+    UIWebView *webView =[[UIWebView alloc] initWithFrame:CGRectMake(0,0,600,400)];
+    //    webView.delegate = self;
+	
+    NSURL *url = [NSURL URLWithString:facebookOauthUrl];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    [webView setDelegate:self];
+    [webView loadRequest:requestObj];
+    [modalDialog.view addSubview:webView];
+    
+    modalDialog.view.superview.center = centerOfView;
+	
+	
+	//    [V2.view addSubview:webView];
+	
+	
+	//    CGRect frame = CGRectMake(0,0,200,200);
+	//    UIWebView *vw2 =[[UIWebView alloc] initWithFrame:frame];
+	////    webView.delegate = self;
+	//        NSString *fullURL = @"http://www.google.com"; NSURL *url = [NSURL URLWithString:fullURL]; NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+	//        [vw2 loadRequest:requestObj];
+	//
+	//    [self.view addSubview:vw2];
+    
+    
+    //[V1 release];
 }
 
-#pragma mark - TableView
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 100;
-}
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+    NSString *url = [[request URL] absoluteString];
+    
 	
-	NSString *cellIdentifier = @"UAModalPanelCell";
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-	if (cell == nil) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-	}
-	
-	[cell.textLabel setText:[NSString stringWithFormat:@"Row %d", indexPath.row]];
-	
-	return cell;
-}
-
-#pragma mark - Actions
-- (IBAction)buttonPressed:(id)sender {
-	// The button was pressed. Lets do something with it.
-	
-	// Maybe the delegate wants something to do with it...
-	if ([delegate respondsToSelector:@selector(superAwesomeButtonPressed:)]) {
-		[delegate performSelector:@selector(superAwesomeButtonPressed:) withObject:sender];
+    NSInteger nickyDigitalInUrl = [url rangeOfString:kFacebookRedirect].location;
+    if (nickyDigitalInUrl != NSNotFound && nickyDigitalInUrl == 0) {
 		
-		// Or perhaps someone is listening for notifications
-	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"SuperAwesomeButtonPressed" object:sender];
-	}
-	
-	NSLog(@"Super Awesome Button pressed!");
+        NSArray *authUrlComponents = [url componentsSeparatedByString:@"&"];
+		
+        NSString *oauthToken;
+        for (NSString *authUrlComponent in authUrlComponents) {
+            NSLog(@"url %@", authUrlComponent);
+            NSInteger authTokenParameterPosition = [authUrlComponent rangeOfString:@"access_token="].location;
+            NSLog(@"position %d", authTokenParameterPosition);
+            if (authTokenParameterPosition != NSNotFound && authTokenParameterPosition == 0) {
+                oauthToken = [authUrlComponent substringFromIndex:@"access_token=".length];
+            }
+        }
+        
+        [[[UIAlertView alloc]
+          initWithTitle:@"OAuth Token"
+          message: oauthToken
+          delegate:self
+          cancelButtonTitle:@"Ok"
+          otherButtonTitles: nil] show];
+        
+        return false;
+    }
+    return true;
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)webView {
+    NSString *url = [[[webView request] URL] absoluteString];
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
 }
 
 @end

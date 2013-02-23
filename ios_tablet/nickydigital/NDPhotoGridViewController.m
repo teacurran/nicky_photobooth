@@ -81,18 +81,8 @@ NDPhotoDetailModalPanel *detailPanel;
 		if (detailPanel == nil) {
 			
 			
-			detailPanel = [[NDPhotoDetailModalPanel alloc] initWithFrame:blockSelf.view.bounds title:@"test"];
+			detailPanel = [[NDPhotoDetailModalPanel alloc] initWithFrame:blockSelf.view.bounds];
 			
-
-//			CGRect detailBounds = CGRectMake(0, 0, detailPanel.contentContainer.frame.size.width, detailPanel.contentContainer.frame.size.height);
-
-//			CGSize contentSize = CGSizeMake(detailPanel.contentContainer.frame.size.width, detailPanel.contentContainer.frame.size.height - 400);
-			//detailPanel.contentContainer.center
-//			detailPanel.contentContainer.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewContentModeTop;
-//			detailPanel.contentContainer.frame = detailBounds;
-
-			//[detailPanel hide];
-			detailPanel.shouldBounce = NO;
 		}
 		
         NSLog(@"Single tap on %@, at %d", view, viewIndex);
@@ -143,11 +133,11 @@ NDPhotoDetailModalPanel *detailPanel;
 			
 			//UIImageView * imageView = photo.thumbView;
 			
-			[blockSelf.view addSubview:detailPanel];
+			[blockSelf.view addSubview:detailPanel.view];
 
 			//[self.view addSubview:detailPanel];
 			//[detailPanel showFromPoint:[view center]];
-			[detailPanel show];
+			[detailPanel.detailPanel show];
 			
 		}
 		
