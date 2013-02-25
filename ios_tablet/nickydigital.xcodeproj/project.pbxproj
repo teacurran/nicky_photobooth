@@ -28,6 +28,7 @@
 		933837B016D2F0F40010EC17 /* 20121218_234744.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 933837AF16D2F0F40010EC17 /* 20121218_234744.jpg */; };
 		933837B316D4535F0010EC17 /* placeholder_landscape_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837B116D4535F0010EC17 /* placeholder_landscape_x.png */; };
 		933837B416D4535F0010EC17 /* placeholder_portrait_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837B216D4535F0010EC17 /* placeholder_portrait_x.png */; };
+		93665B4716D940D300D233B3 /* NDPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93665B4616D940D300D233B3 /* NDPhotoDetailViewController.m */; };
 		9368E0E416C8AAFE009407B1 /* NDPhotoGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E0E116C8AAFE009407B1 /* NDPhotoGridViewController.m */; };
 		9368E0E516C8AAFE009407B1 /* NDPhotoGridViewController+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E0E316C8AAFE009407B1 /* NDPhotoGridViewController+Private.m */; };
 		9368E11A16C8B116009407B1 /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 9368E10016C8B116009407B1 /* placeholder.png */; };
@@ -78,6 +79,8 @@
 		933837AF16D2F0F40010EC17 /* 20121218_234744.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 20121218_234744.jpg; sourceTree = "<group>"; };
 		933837B116D4535F0010EC17 /* placeholder_landscape_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_landscape_x.png; sourceTree = "<group>"; };
 		933837B216D4535F0010EC17 /* placeholder_portrait_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_portrait_x.png; sourceTree = "<group>"; };
+		93665B4516D940D300D233B3 /* NDPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDPhotoDetailViewController.h; sourceTree = "<group>"; };
+		93665B4616D940D300D233B3 /* NDPhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDPhotoDetailViewController.m; sourceTree = "<group>"; };
 		9368E0E016C8AAFE009407B1 /* NDPhotoGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDPhotoGridViewController.h; sourceTree = "<group>"; };
 		9368E0E116C8AAFE009407B1 /* NDPhotoGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDPhotoGridViewController.m; sourceTree = "<group>"; };
 		9368E0E216C8AAFE009407B1 /* NDPhotoGridViewController+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NDPhotoGridViewController+Private.h"; sourceTree = "<group>"; };
@@ -213,6 +216,8 @@
 				93E8C6A8169E956F00A43F4A /* Supporting Files */,
 				9338379316CB3DF00010EC17 /* NDPhotoDetailModalPanel.h */,
 				9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */,
+				93665B4516D940D300D233B3 /* NDPhotoDetailViewController.h */,
+				93665B4616D940D300D233B3 /* NDPhotoDetailViewController.m */,
 			);
 			path = nickydigital;
 			sourceTree = "<group>";
@@ -351,6 +356,7 @@
 				9368E15716C8B3B2009407B1 /* BDRowInfo.m in Sources */,
 				9338379516CB3DF00010EC17 /* NDPhotoDetailModalPanel.m in Sources */,
 				933837A116D18ECE0010EC17 /* NDMainViewController.m in Sources */,
+				93665B4716D940D300D233B3 /* NDPhotoDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,7 +9,7 @@
 #import "NDPhotoGridViewController.h"
 #import "NDPhotoGridViewController+Private.h"
 #import "NDConstants.h"
-#import "NDPhotoDetailModalPanel.h"
+#import "NDPhotoDetailViewController.h"
 
 #import "BDRowInfo.h"
 #import "UAModalPanel.h"
@@ -23,7 +23,7 @@
 
 @implementation NDPhotoGridViewController
 
-NDPhotoDetailModalPanel *detailPanel;
+NDPhotoDetailViewController *detailViewController;
 
 
 - (void)viewDidLoad
@@ -40,14 +40,14 @@ NDPhotoDetailModalPanel *detailPanel;
 	}
     
 	//self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
-	
+
 //	[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"banner_default.png"] forBarMetrics:UIBarMetricsDefault];
 
 	//self.navigationController.navigationBar.frame = CGRectMake(0, 0, 1536, 150);
 
 	//return [self initWithCGImage:[[UIImage imageWithData:[NSData dataWithContentsOfFile:path]] CGImage] scale:2.0 orientation:UIImageOrientationUp];
 
-	
+
 	//UIImageView* imageView = [[UIImageView alloc] initWithFrame:self.navigationController.navigationBar.frame];
 	//imageView.contentMode = UIViewContentModeLeft;
 	//imageView.image = [[UIImage imageNamed:@"banner_default.png"] CGImage;
@@ -56,13 +56,13 @@ NDPhotoDetailModalPanel *detailPanel;
 
 	//[self.navigationController.navigationBar insertSubview:imageView atIndex:0];
 
-	
-    
+
+
 	//    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects: reloadButton, nil];
 
-	
+
 	//[[UINavigationBar appearance] setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-	
+
     self.delegate = self;
     
     self.onLongPress = ^(UIView* view, NSInteger viewIndex){
@@ -74,21 +74,21 @@ NDPhotoDetailModalPanel *detailPanel;
     };
 	
 	__weak NDPhotoGridViewController *blockSelf = self;
-	__weak NSArray *blockItems = _items;
+	//__weak NSArray *blockItems = _items;
 	self.onSingleTap = ^(UIView* view, NSInteger viewIndex) {
 
 		// create the detail panel the first time we load.
-		if (detailPanel == nil) {
+		if (detailViewController == nil) {
 			
 			
-			detailPanel = [[NDPhotoDetailModalPanel alloc] initWithFrame:blockSelf.view.bounds];
+			detailViewController = [[NDPhotoDetailViewController alloc] initWithFrame:CGRectMake(0, 0, blockSelf.view.bounds.size.width, blockSelf.view.bounds.size.height)];
 			
 		}
 		
         NSLog(@"Single tap on %@, at %d", view, viewIndex);
 
 		//		NDPhotoGridViewController *strongSelf = blockSelf;
-		//		detailPanel.frame = CGRectMake(0, 0, strongSelf.view.frame.size.width, strongSelf.view.frame.size.height);
+		//detailPanel.detailPanel. = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 50);
 
 
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -100,7 +100,7 @@ NDPhotoDetailModalPanel *detailPanel;
 				UIImageView *imageView = [[UIImageView alloc] init];
 				imageView.clipsToBounds = YES;
 				
-				[detailPanel setPhoto:photo.thumbView];
+				[detailViewController setPhoto:photo.thumbView];
 
 				NSURL *url = [NSURL URLWithString:[
 											NSString stringWithFormat:@"%@/%@/%@",  [defaults stringForKey:kPrefServerUrlKey], @"api/photo/640", photo.filename]
@@ -113,7 +113,7 @@ NDPhotoDetailModalPanel *detailPanel;
 				[imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 					
 					photo.detailView.image = image;
-					detailPanel.photoView.image = image;
+					[detailViewController setPhoto:photo.detailView];
 					
 				} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
 					
@@ -123,21 +123,21 @@ NDPhotoDetailModalPanel *detailPanel;
 				//	];
 
 				photo.detailView = imageView;
-				[detailPanel setPhoto:photo.detailView];
+				[detailViewController setPhoto:photo.detailView];
 
 				//imageView.frame = CGRectMake(0, 0, 300, 200);
 				
 			} else {
-				[detailPanel setPhoto:photo.detailView];
+				[detailViewController setPhoto:photo.detailView];
 			}
 			
 			//UIImageView * imageView = photo.thumbView;
 			
-			[blockSelf.view addSubview:detailPanel.view];
+			[blockSelf.view addSubview:detailViewController.view];
 
 			//[self.view addSubview:detailPanel];
-			//[detailPanel showFromPoint:[view center]];
-			[detailPanel.detailPanel show];
+			//[detailPanel.detailPanel showFromPoint:CGPointMake([view center].x, [view center].y - 300)];
+			[detailViewController.detailPanel show];
 			
 		}
 		
