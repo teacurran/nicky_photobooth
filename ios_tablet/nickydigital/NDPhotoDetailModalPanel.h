@@ -21,4 +21,5 @@
 -(id)initWithFrame:(CGRect)frame content:(UIView*)content;
 -(void)setPhoto:(UIImageView*)imageView;
 
+
 @end

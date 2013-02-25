@@ -46,7 +46,6 @@
 		93E8C6B6169E956F00A43F4A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93E8C6B5169E956F00A43F4A /* Default@2x.png */; };
 		93E8C6B8169E956F00A43F4A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93E8C6B7169E956F00A43F4A /* Default-568h@2x.png */; };
 		93E8C6BB169E956F00A43F4A /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93E8C6B9169E956F00A43F4A /* MainStoryboard.storyboard */; };
-		93E8C6BE169E956F00A43F4A /* SBViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93E8C6BD169E956F00A43F4A /* SBViewController.m */; };
 		DDFD09DA8A1B426987973F0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 368A0FC0069D44048CF44C3F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -108,8 +107,6 @@
 		93E8C6B5169E956F00A43F4A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		93E8C6B7169E956F00A43F4A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		93E8C6BA169E956F00A43F4A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		93E8C6BC169E956F00A43F4A /* SBViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SBViewController.h; sourceTree = "<group>"; };
-		93E8C6BD169E956F00A43F4A /* SBViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SBViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,8 +208,6 @@
 				93E8C6B0169E956F00A43F4A /* SBAppDelegate.h */,
 				93E8C6B1169E956F00A43F4A /* SBAppDelegate.m */,
 				93E8C6B9169E956F00A43F4A /* MainStoryboard.storyboard */,
-				93E8C6BC169E956F00A43F4A /* SBViewController.h */,
-				93E8C6BD169E956F00A43F4A /* SBViewController.m */,
 				93E8C6A8169E956F00A43F4A /* Supporting Files */,
 				9338379316CB3DF00010EC17 /* NDPhotoDetailModalPanel.h */,
 				9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */,
@@ -344,7 +339,6 @@
 			files = (
 				93E8C6AE169E956F00A43F4A /* main.m in Sources */,
 				93E8C6B2169E956F00A43F4A /* SBAppDelegate.m in Sources */,
-				93E8C6BE169E956F00A43F4A /* SBViewController.m in Sources */,
 				9330C4C016A4B96A00A0BF84 /* nickydigital.xcdatamodeld in Sources */,
 				9330C4D216A4C4F200A0BF84 /* Photo.m in Sources */,
 				9330C4D516A4C70400A0BF84 /* NDApiManager.m in Sources */,
