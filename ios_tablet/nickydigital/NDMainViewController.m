@@ -18,6 +18,18 @@ NDPhotoGridViewController *photoGridController;
 UIImage *bannerImage;
 UIImageView *bannerView;
 UIView *photoGridContainer;
+UIView *serviceLoginView;
+
+int serviceLoginViewHeight = 100;
+
++ (id)singleton {
+    static NDMainViewController *singletonController = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        singletonController = [[self alloc] init];
+    });
+    return singletonController;
+}
 
 - (void)viewDidLoad
 {
@@ -33,15 +45,13 @@ UIView *photoGridContainer;
 	[bannerView setFrame:CGRectMake(0, 0, windowWidth, bannerHeight)];
 	[self.view addSubview:bannerView];
 	
-	
+	// create the photo grid controller
 	photoGridController = [[NDPhotoGridViewController alloc] init];
-	
 	[self addChildViewController:photoGridController];
 	
+	// add the photo grid container
 	photoGridContainer = [[UIView alloc] init];
-	
 	[photoGridContainer setFrame:CGRectMake(0, bannerHeight, windowWidth, windowHeight - bannerHeight)];
-//	photoGridContainer.frame.size = self.view.frame.size; // CGRectMake(0, 0, self.window.frame.size, CGFloat height)
 	[self.view addSubview:photoGridContainer];
 	
 	//set the frame for the photogrid
@@ -51,11 +61,33 @@ UIView *photoGridContainer;
 
 	photoGridController.view.frame = CGRectMake(0, 0, width, height);
 
+	// move the controller into the container.
 	[photoGridContainer addSubview:photoGridController.view];
 	[photoGridController didMoveToParentViewController:self];
 	
 	
+	serviceLoginView = [[UIView alloc] init];
+	serviceLoginView.backgroundColor = [UIColor redColor];
+	[serviceLoginView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), serviceLoginViewHeight)];
+	[self.view addSubview:serviceLoginView];
+	
+	[self displayLoggedIn];
+
+	//[photoGridContainer setFrame:CGRectMake(0, bannerHeight, windowWidth, windowHeight - bannerHeight - serviceLoginViewHeight)];
+	 
 	//[self.view :photoGridController];
+}
+
+-(void)displayLoggedIn {
+
+	[UIView animateWithDuration:1
+                     animations:^{
+						 [serviceLoginView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - serviceLoginViewHeight, CGRectGetWidth(self.view.bounds), serviceLoginViewHeight)];
+                     } completion:^(BOOL finished) {
+					 }
+	 ];
+
+	
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation

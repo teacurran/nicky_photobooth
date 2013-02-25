@@ -51,10 +51,13 @@
 
 - (CGRect)roundedRectFrame {
 	
+	// was: self.frame.size.height - self.margin.top - self.margin.bottom - 300
+	int detailHeight = 565;
+	
 	return CGRectMake(self.margin.left + self.frame.origin.x,
 					  self.margin.top + self.frame.origin.y,
 					  self.frame.size.width - self.margin.left - self.margin.right,
-					  self.frame.size.height - self.margin.top - self.margin.bottom - 300);
+					  detailHeight);
 }
 
 

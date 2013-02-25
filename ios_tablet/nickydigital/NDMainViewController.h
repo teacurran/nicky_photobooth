@@ -10,4 +10,8 @@
 
 @interface NDMainViewController : UIViewController
 
++ (id)singleton;
+
+-(void)displayLoggedIn;
+
 @end

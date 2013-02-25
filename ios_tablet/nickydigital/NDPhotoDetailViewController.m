@@ -8,6 +8,9 @@
 
 #import "NDPhotoDetailViewController.h"
 #import "NDConstants.h"
+#import "NDMainViewController.h"
+#import "RIButtonItem.h"
+#import "UIAlertView+Blocks.h"
 
 @interface NDPhotoDetailViewController () {
 	IBOutlet UIView	*viewLoadedFromXib;
@@ -56,6 +59,33 @@ CGRect theFrame;
 //
 //	[v setFrame:self.contentView.bounds];
 //}
+
+-(void)showFacebookShareConfirm {
+	RIButtonItem *cancelItem = [RIButtonItem item];
+	cancelItem.label = @"No";
+	cancelItem.action = ^
+	{
+		// this is the code that will be executed when the user taps "No"
+		// this is optional... if you leave the action as nil, it won't do anything
+		// but here, I'm showing a block just to show that you can use one if you want to.
+	};
+	
+	RIButtonItem *deleteItem = [RIButtonItem item];
+	deleteItem.label = @"Yes";
+	deleteItem.action = ^
+	{
+		// this is the code that will be executed when the user taps "Yes"
+		// delete the object in question...
+		//[context deleteObject:theObject];
+	};
+	
+	UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Share on Facebook?"
+														message:@"Are you sure you want to share this photo on facebook?"
+											   cancelButtonItem:cancelItem
+											   otherButtonItems:deleteItem, nil];
+	[alertView show];
+	
+}
 
 - (IBAction)btnFacebookShareClick:(id)sender {
     
@@ -144,12 +174,19 @@ CGRect theFrame;
             }
         }
         
-        [[[UIAlertView alloc]
-          initWithTitle:@"OAuth Token"
-          message: oauthToken
-          delegate:self
-          cancelButtonTitle:@"Ok"
-          otherButtonTitles: nil] show];
+		
+		[self autoModalViewControllerDismiss:nil];
+		[self showFacebookShareConfirm];
+		
+		NDMainViewController *mainView = [NDMainViewController singleton];
+		[mainView displayLoggedIn];
+		
+//        [[[UIAlertView alloc]
+//          initWithTitle:@"OAuth Token"
+//          message: oauthToken
+//          delegate:self
+//          cancelButtonTitle:@"Ok"
+//          otherButtonTitles: nil] show];
         
         return false;
     }
@@ -157,15 +194,11 @@ CGRect theFrame;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    NSString *url = [[[webView request] URL] absoluteString];
+    // NSString *url = [[[webView request] URL] absoluteString];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 }
-
-
-
-
 
 
 
