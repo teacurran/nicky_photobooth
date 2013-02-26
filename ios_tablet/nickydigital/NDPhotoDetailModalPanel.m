@@ -39,6 +39,12 @@
 		
 		
 	}
+
+	//The setup code (in viewDidLoad in your view controller)
+	UITapGestureRecognizer *singleFingerTap =
+	[[UITapGestureRecognizer alloc] initWithTarget:self
+											action:@selector(closePressed:)];
+	[self addGestureRecognizer:singleFingerTap];
 	
 	return self;
 }
@@ -48,11 +54,10 @@
 	
 }
 
-
 - (CGRect)roundedRectFrame {
 	
 	// was: self.frame.size.height - self.margin.top - self.margin.bottom - 300
-	int detailHeight = 565;
+	int detailHeight = 575;
 	
 	return CGRectMake(self.margin.left + self.frame.origin.x,
 					  self.margin.top + self.frame.origin.y,

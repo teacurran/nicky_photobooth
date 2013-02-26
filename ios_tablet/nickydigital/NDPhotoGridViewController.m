@@ -79,10 +79,7 @@ NDPhotoDetailViewController *detailViewController;
 
 		// create the detail panel the first time we load.
 		if (detailViewController == nil) {
-			
-			
-			detailViewController = [[NDPhotoDetailViewController alloc] initWithFrame:CGRectMake(0, 0, blockSelf.view.bounds.size.width, blockSelf.view.bounds.size.height)];
-			
+			detailViewController = [[NDPhotoDetailViewController alloc] init];
 		}
 		
         NSLog(@"Single tap on %@, at %d", view, viewIndex);

@@ -6,6 +6,10 @@
 //  Copyright (c) 2013 Terrence Curran. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
+#import "UIView+LayerEffects.h"
+
 #import "NDMainViewController.h"
 
 #import "NDPhotoGridViewController.h"
@@ -13,12 +17,19 @@
 
 @implementation NDMainViewController
 
+@synthesize serviceLoginView;
+@synthesize buttonLogOut;
+@synthesize labelLoggedOut;
+
 NDPhotoGridViewController *photoGridController;
 
 UIImage *bannerImage;
 UIImageView *bannerView;
 UIView *photoGridContainer;
-UIView *serviceLoginView;
+
+NSString *userEmailAddress;
+NSString *userFacebookToken;
+NSString *userFacebookUser;
 
 int serviceLoginViewHeight = 100;
 
@@ -65,10 +76,27 @@ int serviceLoginViewHeight = 100;
 	[photoGridContainer addSubview:photoGridController.view];
 	[photoGridController didMoveToParentViewController:self];
 	
+
+	[[NSBundle mainBundle] loadNibNamed:@"LoggedInView" owner:self options:nil];
+
+	[serviceLoginView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - serviceLoginViewHeight, CGRectGetWidth(self.view.bounds), serviceLoginViewHeight)];
+
+	// Add a border above the serviceLoginView.
+	CALayer *serviceLoginBorder = [CALayer layer];
+	serviceLoginBorder.frame = CGRectMake(0, 0, serviceLoginView.frame.size.width, 3.0f);
+	serviceLoginBorder.backgroundColor = [UIColor redColor].CGColor;
+	[serviceLoginView.layer addSublayer:serviceLoginBorder];
 	
-	serviceLoginView = [[UIView alloc] init];
-	serviceLoginView.backgroundColor = [UIColor redColor];
-	[serviceLoginView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), serviceLoginViewHeight)];
+	buttonLogOut.borderColor = [UIColor redColor];
+
+	[buttonLogOut useWhiteLabel: YES];
+	buttonLogOut.tintColor = [UIColor redColor];
+	[buttonLogOut setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius: 4];
+    [buttonLogOut setGradientType:kUIGlossyButtonGradientTypeLinearSmoothExtreme];
+	
+	labelLoggedOut.hidden = true;
+	
+	
 	[self.view addSubview:serviceLoginView];
 	
 	[self displayLoggedIn];

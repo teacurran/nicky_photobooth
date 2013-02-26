@@ -1,28 +1,8 @@
 
 COCOAPODS: 0.16.0
 
-SPEC CHECKSUMS: 
-  RestKit/Core: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  SOCKit: 179515c1a621dd5652a60e9be02ea4adcd25bc9b
-  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
-  BDDynamicGridViewController: 0449b91f4ad5bcefdb72bb646692c1f38a92338c
-  RestKit/Support: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  RestKit/CoreData: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
-  UAModalPanel: e0f697b4d89ccf0f07c3dc2eb7d17d0e3cb7fe56
-  RestKit: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  RestKit/Network: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  RestKit/ObjectMapping: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-
-DEPENDENCIES: 
-- BDDynamicGridViewController
-- JSONKit (~> 1.5pre)
-- RestKit
-- UAModalPanel (~> 1.1.1)
-
 PODS: 
 - AFNetworking (1.1.0)
-- BDDynamicGridViewController (0.0.3)
 - JSONKit (1.5pre)
 - RestKit (0.20.0pre6): 
   - RestKit/Core (= 0.20.0pre6)
@@ -40,3 +20,29 @@ PODS:
 - RestKit/Support (0.20.0pre6)
 - SOCKit (1.1)
 - UAModalPanel (1.1.1)
+- UIGlossyButton (0.0.7): 
+  - UIGlossyButton/Core (= 0.0.7)
+  - UIGlossyButton/LayerEffects (= 0.0.7)
+- UIGlossyButton/Core (0.0.7)
+- UIGlossyButton/LayerEffects (0.0.7)
+
+SPEC CHECKSUMS: 
+  UIGlossyButton: ac45013a4cf79d80dd3a2c137f4d36baf7058b17
+  RestKit/Support: ccca19640fcc3031f82ad4250c44061e2e2ddce7
+  RestKit: ccca19640fcc3031f82ad4250c44061e2e2ddce7
+  UIGlossyButton/LayerEffects: ac45013a4cf79d80dd3a2c137f4d36baf7058b17
+  SOCKit: ed67aeeca4a697b63a933229e53f4670d5b9300f
+  UIGlossyButton/Core: ac45013a4cf79d80dd3a2c137f4d36baf7058b17
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  RestKit/CoreData: ccca19640fcc3031f82ad4250c44061e2e2ddce7
+  RestKit/Network: ccca19640fcc3031f82ad4250c44061e2e2ddce7
+  UAModalPanel: e0f697b4d89ccf0f07c3dc2eb7d17d0e3cb7fe56
+  RestKit/Core: ccca19640fcc3031f82ad4250c44061e2e2ddce7
+  RestKit/ObjectMapping: ccca19640fcc3031f82ad4250c44061e2e2ddce7
+  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
+
+DEPENDENCIES: 
+- JSONKit (~> 1.5pre)
+- RestKit
+- UAModalPanel (~> 1.1.1)
+- UIGlossyButton

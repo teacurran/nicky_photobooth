@@ -29,7 +29,6 @@
 		933837A816D290700010EC17 /* button_tumblr.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837A416D290700010EC17 /* button_tumblr.png */; };
 		933837A916D290700010EC17 /* button_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837A516D290700010EC17 /* button_twitter.png */; };
 		933837AE16D296A90010EC17 /* PhotoDetail.xib in Resources */ = {isa = PBXBuildFile; fileRef = 933837AD16D296A90010EC17 /* PhotoDetail.xib */; };
-		933837B016D2F0F40010EC17 /* 20121218_234744.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 933837AF16D2F0F40010EC17 /* 20121218_234744.jpg */; };
 		933837B316D4535F0010EC17 /* placeholder_landscape_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837B116D4535F0010EC17 /* placeholder_landscape_x.png */; };
 		933837B416D4535F0010EC17 /* placeholder_portrait_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837B216D4535F0010EC17 /* placeholder_portrait_x.png */; };
 		93665B4716D940D300D233B3 /* NDPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93665B4616D940D300D233B3 /* NDPhotoDetailViewController.m */; };
@@ -50,6 +49,8 @@
 		93E8C6B6169E956F00A43F4A /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93E8C6B5169E956F00A43F4A /* Default@2x.png */; };
 		93E8C6B8169E956F00A43F4A /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 93E8C6B7169E956F00A43F4A /* Default-568h@2x.png */; };
 		93E8C6BB169E956F00A43F4A /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93E8C6B9169E956F00A43F4A /* MainStoryboard.storyboard */; };
+		93FA9E4516DC54A3006B687D /* LoggedInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FA9E4416DC54A3006B687D /* LoggedInView.xib */; };
+		93FA9E4716DC6404006B687D /* EmailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FA9E4616DC6404006B687D /* EmailView.xib */; };
 		DDFD09DA8A1B426987973F0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 368A0FC0069D44048CF44C3F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -85,8 +86,7 @@
 		933837A316D290700010EC17 /* button_facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_facebook.png; sourceTree = "<group>"; };
 		933837A416D290700010EC17 /* button_tumblr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_tumblr.png; sourceTree = "<group>"; };
 		933837A516D290700010EC17 /* button_twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_twitter.png; sourceTree = "<group>"; };
-		933837AD16D296A90010EC17 /* PhotoDetail.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PhotoDetail.xib; sourceTree = "<group>"; };
-		933837AF16D2F0F40010EC17 /* 20121218_234744.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 20121218_234744.jpg; sourceTree = "<group>"; };
+		933837AD16D296A90010EC17 /* PhotoDetail.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PhotoDetail.xib; path = ../PhotoDetail.xib; sourceTree = "<group>"; };
 		933837B116D4535F0010EC17 /* placeholder_landscape_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_landscape_x.png; sourceTree = "<group>"; };
 		933837B216D4535F0010EC17 /* placeholder_portrait_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_portrait_x.png; sourceTree = "<group>"; };
 		93665B4516D940D300D233B3 /* NDPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDPhotoDetailViewController.h; sourceTree = "<group>"; };
@@ -118,6 +118,8 @@
 		93E8C6B5169E956F00A43F4A /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		93E8C6B7169E956F00A43F4A /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		93E8C6BA169E956F00A43F4A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		93FA9E4416DC54A3006B687D /* LoggedInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoggedInView.xib; sourceTree = "<group>"; };
+		93FA9E4616DC6404006B687D /* EmailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +137,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		930814A316DC516400572259 /* views */ = {
+			isa = PBXGroup;
+			children = (
+				933837AD16D296A90010EC17 /* PhotoDetail.xib */,
+				93FA9E4416DC54A3006B687D /* LoggedInView.xib */,
+				93FA9E4616DC6404006B687D /* EmailView.xib */,
+			);
+			name = views;
+			sourceTree = "<group>";
+		};
 		932EA9CB16DB21E700919412 /* UIAlertView-Blocks */ = {
 			isa = PBXGroup;
 			children = (
@@ -154,7 +166,6 @@
 			children = (
 				933837B116D4535F0010EC17 /* placeholder_landscape_x.png */,
 				933837B216D4535F0010EC17 /* placeholder_portrait_x.png */,
-				933837AF16D2F0F40010EC17 /* 20121218_234744.jpg */,
 				933837A216D290700010EC17 /* button_email.png */,
 				933837A316D290700010EC17 /* button_facebook.png */,
 				933837A416D290700010EC17 /* button_tumblr.png */,
@@ -185,7 +196,6 @@
 			isa = PBXGroup;
 			children = (
 				932EA9CB16DB21E700919412 /* UIAlertView-Blocks */,
-				933837AD16D296A90010EC17 /* PhotoDetail.xib */,
 				9368E14D16C8B3B2009407B1 /* BDDynamicGridViewController */,
 				9368E0E616C8B116009407B1 /* images */,
 				938B263A16ABEAE800F8176E /* Settings.bundle */,
@@ -225,6 +235,7 @@
 		93E8C6A7169E956F00A43F4A /* nickydigital */ = {
 			isa = PBXGroup;
 			children = (
+				930814A316DC516400572259 /* views */,
 				9338379F16D18ECE0010EC17 /* NDMainViewController.h */,
 				933837A016D18ECE0010EC17 /* NDMainViewController.m */,
 				9368E0E016C8AAFE009407B1 /* NDPhotoGridViewController.h */,
@@ -333,10 +344,11 @@
 				933837A816D290700010EC17 /* button_tumblr.png in Resources */,
 				933837A916D290700010EC17 /* button_twitter.png in Resources */,
 				933837AE16D296A90010EC17 /* PhotoDetail.xib in Resources */,
-				933837B016D2F0F40010EC17 /* 20121218_234744.jpg in Resources */,
 				933837B316D4535F0010EC17 /* placeholder_landscape_x.png in Resources */,
 				933837B416D4535F0010EC17 /* placeholder_portrait_x.png in Resources */,
 				932EA9D316DB21E700919412 /* README.md in Resources */,
+				93FA9E4516DC54A3006B687D /* LoggedInView.xib in Resources */,
+				93FA9E4716DC6404006B687D /* EmailView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

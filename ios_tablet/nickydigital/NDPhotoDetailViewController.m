@@ -14,6 +14,8 @@
 
 @interface NDPhotoDetailViewController () {
 	IBOutlet UIView	*viewLoadedFromXib;
+	IBOutlet UIView	*emailView;
+	IBOutlet UITextField *emailField;
 }
 @end
 
@@ -21,14 +23,9 @@
 
 @synthesize photoView;
 
-CGRect theFrame;
-
--(id)initWithFrame:(CGRect)frame {
-	
-	theFrame = frame;
-	
-	return [super init];
-}
+NSString *userEmailAddress;
+NSString *userFacebookToken;
+NSString *userFacebookUser;
 
 
 - (void)loadView
@@ -38,6 +35,8 @@ CGRect theFrame;
 	//}
 
 	[[NSBundle mainBundle] loadNibNamed:@"PhotoDetail" owner:self options:nil];
+	[[NSBundle mainBundle] loadNibNamed:@"EmailView" owner:self options:nil];
+
 	//viewLoadedFromXib.frame = view.contentView.frame;
 	
 	NDPhotoDetailModalPanel *view = [[NDPhotoDetailModalPanel alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] content:viewLoadedFromXib]; //theFrame];
@@ -88,7 +87,34 @@ CGRect theFrame;
 }
 
 - (IBAction)btnFacebookShareClick:(id)sender {
+
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+
+	[self presentAutoModalViewController:modalDialog animated:YES];
+
+	modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
     
+    [modalDialog.view addSubview:emailView];
+    
+    modalDialog.view.superview.center = centerOfView;
+	
+	
+	nextAction = ACTION_FACEBOOK;
+	
+	//	[self presentAutoModalView:emailView withDismissAction:nil withNextAction:ACTION_FACEBOOK animated:YES];
+
+	//[self facebookLogin];
+
+}
+    
+- (void)facebookLogin {
+	
+	nextAction = 0;
+	
     NSString *facebookOauthUrl = [NSString stringWithFormat:kFacebookOauth, kFacebookAppId, kFacebookRedirect, @"state123", kFacebookScope];
 	
     NSHTTPCookie *cookie;
@@ -154,6 +180,15 @@ CGRect theFrame;
     //[V1 release];
 }
 
+int nextAction;
+const int ACTION_FACEBOOK = 1;
+
+- (IBAction)btnEmailClick:(id)sender
+{
+	userEmailAddress = emailField.text;
+	[self autoModalViewControllerDismiss:sender];
+}
+
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     NSString *url = [[request URL] absoluteString];
@@ -198,9 +233,49 @@ CGRect theFrame;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+	
+	NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
+
+	NSLog(@"allHTML: %@", html);
+
+	[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.forms[0].email.value='%@';", userEmailAddress]];
+
+	//NSLog(@"result: %@", result);
+	//	[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('L$lbsc$txtUserName').value='ANdrew';"];
 }
 
+- (void) presentAutoModalView: (UIView *) modalView withDismissAction:(SEL)onDismiss withNextAction:(int)nextActionVal animated:(BOOL)animated
+{
+	nextAction = nextActionVal;
+    
+	UINavigationController* nc = [[UINavigationController alloc] init];
+	//[nc.view addSubview:modalView];
+	nc.view = modalView;
+		
+	[nc setToolbarHidden:YES animated: NO];
+	
+	//UIViewController* rootViewController = [nc.viewControllers objectAtIndex: 0];
+	nc.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
+																										target:self
+																										action:onDismiss];
 
+    
+	[nc setNavigationBarHidden: NO];
+    nc.navigationBar.barStyle = UIBarStyleBlack;
+    nc.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
+	
+	[self presentViewController:nc animated:animated completion:^{
+        // nothing
+    }];
+	
+	
+	nc.view.superview.frame = CGRectMake(0, 0, 600, 440); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+	nc.view.superview.center = centerOfView;
+
+}
 
 - (void) presentAutoModalViewController: (UIViewController *) modalViewController withDismissAction: (SEL) onDismiss animated:(BOOL)animated
 {
@@ -252,7 +327,16 @@ CGRect theFrame;
 - (void) autoModalViewControllerDismiss: (id)sender
 {
     [self dismissViewControllerAnimated:YES completion:^{
-		//do nothing;
+
+		switch (nextAction) {
+			case ACTION_FACEBOOK:
+				[self facebookLogin];
+				break;
+				
+			default:
+				break;
+		}
+	
 	}];
 }
 
@@ -260,8 +344,6 @@ CGRect theFrame;
 {
     return ( self.navigationController != nil && self.navigationController.parentViewController != nil && self.navigationController.parentViewController.modalViewController == self.navigationController );
 }
-
-
 
 
 @end

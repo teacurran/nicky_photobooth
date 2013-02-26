@@ -21,7 +21,9 @@
 
 - (IBAction)btnFacebookShareClick:(id)sender;
 
--(id)initWithFrame:(CGRect)frame;
+- (IBAction)btnEmailClick:(id)sender;
+
+- (void)facebookLogin;
 
 
 @end

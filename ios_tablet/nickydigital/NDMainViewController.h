@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#import "UIGlossyButton.h"
+
 @interface NDMainViewController : UIViewController
+
+@property (nonatomic, retain) IBOutlet UIView *serviceLoginView;
+@property (nonatomic, retain) IBOutlet UILabel *labelLoggedOut;
+@property (nonatomic, retain) IBOutlet UILabel *labelAccountMessage;
+@property (nonatomic, retain) IBOutlet UIGlossyButton *buttonLogOut;
+
 
 + (id)singleton;
 
