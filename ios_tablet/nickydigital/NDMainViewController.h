@@ -17,9 +17,12 @@
 @property (nonatomic, retain) IBOutlet UILabel *labelAccountMessage;
 @property (nonatomic, retain) IBOutlet UIGlossyButton *buttonLogOut;
 
+- (IBAction)btnLogoutClick:(id)sender;
 
 + (id)singleton;
 
--(void)displayLoggedIn;
+-(UIColor*)brandColor;
+-(bool)loggedIn;
+-(void)logInWithMessage:(NSString*)message;
 
 @end

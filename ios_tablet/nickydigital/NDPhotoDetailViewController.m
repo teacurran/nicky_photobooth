@@ -6,16 +6,29 @@
 //  Copyright (c) 2013 Terrence Curran. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
+
+#import "UIAlertView+Blocks.h"
+#import "UIGlossyButton.h"
+#import "UIView+LayerEffects.h"
+#import "RIButtonItem.h"
+
 #import "NDPhotoDetailViewController.h"
 #import "NDConstants.h"
 #import "NDMainViewController.h"
-#import "RIButtonItem.h"
-#import "UIAlertView+Blocks.h"
 
 @interface NDPhotoDetailViewController () {
-	IBOutlet UIView	*viewLoadedFromXib;
+	IBOutlet UIView	*photoDetailView;
+
 	IBOutlet UIView	*emailView;
 	IBOutlet UITextField *emailField;
+	IBOutlet UIGlossyButton *emailButton;
+
+	IBOutlet UIView *shareView;
+	IBOutlet UIImageView *shareImageView;
+	IBOutlet UIGlossyButton *shareButton;
+	IBOutlet UITextView *shareTextView;
 }
 @end
 
@@ -23,9 +36,21 @@
 
 @synthesize photoView;
 
+const int ACTION_NONE = 0;
+const int ACTION_FACEBOOK_EMAIL = 1;
+const int ACTION_FACEBOOK_LOGIN = 2;
+const int ACTION_FACEBOOK_SHARE = 3;
+
+int currentAction = ACTION_NONE;
+int nextAction = ACTION_NONE;
+
+bool loggedIn = false;
+
 NSString *userEmailAddress;
 NSString *userFacebookToken;
 NSString *userFacebookUser;
+
+NDMainViewController *_mainViewController = nil;
 
 
 - (void)loadView
@@ -34,12 +59,33 @@ NSString *userFacebookUser;
 	//	theFrame = [[UIScreen mainScreen] applicationFrame];
 	//}
 
-	[[NSBundle mainBundle] loadNibNamed:@"PhotoDetail" owner:self options:nil];
+	[[NSBundle mainBundle] loadNibNamed:@"PhotoDetailView" owner:self options:nil];
+
+	
+	// Email View
 	[[NSBundle mainBundle] loadNibNamed:@"EmailView" owner:self options:nil];
+	emailButton.borderColor = [[self mainViewController] brandColor];
+	emailButton.tintColor = [[self mainViewController] brandColor];
+	[emailButton useWhiteLabel: YES];
+	[emailButton setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius: 4];
+	[emailButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothExtreme];
+
+	// Share View
+	[[NSBundle mainBundle] loadNibNamed:@"ShareView" owner:self options:nil];
+	shareButton.borderColor = [[self mainViewController] brandColor];
+	shareButton.tintColor = [[self mainViewController] brandColor];
+	[shareButton useWhiteLabel: YES];
+	[shareButton setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius: 4];
+	[shareButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothExtreme];
+	
+	shareTextView.layer.cornerRadius=8.0f;
+    shareTextView.layer.masksToBounds=YES;
+    shareTextView.layer.borderColor=[[UIColor grayColor]CGColor];
+    shareTextView.layer.borderWidth= 1.0f;
 
 	//viewLoadedFromXib.frame = view.contentView.frame;
 	
-	NDPhotoDetailModalPanel *view = [[NDPhotoDetailModalPanel alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] content:viewLoadedFromXib]; //theFrame];
+	NDPhotoDetailModalPanel *view = [[NDPhotoDetailModalPanel alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] content:photoDetailView]; //theFrame];
 	view.contentColor = [UIColor whiteColor];
 	view.shouldBounce = NO;
 	
@@ -88,6 +134,14 @@ NSString *userFacebookUser;
 
 - (IBAction)btnFacebookShareClick:(id)sender {
 
+	if ([[self mainViewController] loggedIn]) {
+		[self facebookShare];
+		return;
+	}
+
+	currentAction = ACTION_FACEBOOK_EMAIL;
+	nextAction = ACTION_FACEBOOK_LOGIN;
+
     UIViewController *modalDialog = [[UIViewController alloc] init];
     modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
     modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
@@ -102,17 +156,34 @@ NSString *userFacebookUser;
     
     modalDialog.view.superview.center = centerOfView;
 	
-	
-	nextAction = ACTION_FACEBOOK;
-	
-	//	[self presentAutoModalView:emailView withDismissAction:nil withNextAction:ACTION_FACEBOOK animated:YES];
+}
 
-	//[self facebookLogin];
-
+- (void)facebookShare {
+	currentAction = ACTION_FACEBOOK_SHARE;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+	[self presentAutoModalViewController:modalDialog animated:YES];
+	
+	modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+    
+	shareImageView.image = photoView.image;
+	
+    [modalDialog.view addSubview:shareView];
+    
+    modalDialog.view.superview.center = centerOfView;
+	
 }
     
 - (void)facebookLogin {
 	
+	currentAction = ACTION_FACEBOOK_LOGIN;
+	nextAction = ACTION_FACEBOOK_SHARE;
+
 	nextAction = 0;
 	
     NSString *facebookOauthUrl = [NSString stringWithFormat:kFacebookOauth, kFacebookAppId, kFacebookRedirect, @"state123", kFacebookScope];
@@ -180,13 +251,10 @@ NSString *userFacebookUser;
     //[V1 release];
 }
 
-int nextAction;
-const int ACTION_FACEBOOK = 1;
-
 - (IBAction)btnEmailClick:(id)sender
 {
 	userEmailAddress = emailField.text;
-	[self autoModalViewControllerDismiss:sender];
+	[self autoModalViewControllerDismissWithNext:sender];
 }
 
 
@@ -208,21 +276,13 @@ const int ACTION_FACEBOOK = 1;
                 oauthToken = [authUrlComponent substringFromIndex:@"access_token=".length];
             }
         }
+		
+		nextAction = ACTION_FACEBOOK_SHARE;
         
+		[self autoModalViewControllerDismissWithNext:nil];
 		
-		[self autoModalViewControllerDismiss:nil];
-		[self showFacebookShareConfirm];
+		[[self mainViewController] logInWithMessage:@"You are logged in with your Facebook account"];
 		
-		NDMainViewController *mainView = [NDMainViewController singleton];
-		[mainView displayLoggedIn];
-		
-//        [[[UIAlertView alloc]
-//          initWithTitle:@"OAuth Token"
-//          message: oauthToken
-//          delegate:self
-//          cancelButtonTitle:@"Ok"
-//          otherButtonTitles: nil] show];
-        
         return false;
     }
     return true;
@@ -234,14 +294,16 @@ const int ACTION_FACEBOOK = 1;
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	
-	NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
+	if (currentAction == ACTION_FACEBOOK_LOGIN) {
+		NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
 
-	NSLog(@"allHTML: %@", html);
+		NSLog(@"allHTML: %@", html);
 
-	[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.forms[0].email.value='%@';", userEmailAddress]];
+		[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.forms[0].email.value='%@';", userEmailAddress]];
 
-	//NSLog(@"result: %@", result);
-	//	[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('L$lbsc$txtUserName').value='ANdrew';"];
+		//NSLog(@"result: %@", result);
+		//	[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('L$lbsc$txtUserName').value='ANdrew';"];
+	}
 }
 
 - (void) presentAutoModalView: (UIView *) modalView withDismissAction:(SEL)onDismiss withNextAction:(int)nextActionVal animated:(BOOL)animated
@@ -258,8 +320,6 @@ const int ACTION_FACEBOOK = 1;
 	nc.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemStop
 																										target:self
 																										action:onDismiss];
-
-    
 	[nc setNavigationBarHidden: NO];
     nc.navigationBar.barStyle = UIBarStyleBlack;
     nc.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
@@ -324,19 +384,30 @@ const int ACTION_FACEBOOK = 1;
     [self presentAutoModalViewController:modalViewController withDismissAction: @selector(autoModalViewControllerDismiss:) animated: animated];
 }
 
-- (void) autoModalViewControllerDismiss: (id)sender
+- (void) autoModalViewControllerDismissWithNext: (id)sender
 {
     [self dismissViewControllerAnimated:YES completion:^{
-
+		
 		switch (nextAction) {
-			case ACTION_FACEBOOK:
+			case ACTION_FACEBOOK_LOGIN:
 				[self facebookLogin];
+				break;
+				
+			case ACTION_FACEBOOK_SHARE:
+				[self facebookShare];
 				break;
 				
 			default:
 				break;
 		}
-	
+		
+	}];
+}
+
+- (void) autoModalViewControllerDismiss: (id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+
 	}];
 }
 
@@ -345,5 +416,12 @@ const int ACTION_FACEBOOK = 1;
     return ( self.navigationController != nil && self.navigationController.parentViewController != nil && self.navigationController.parentViewController.modalViewController == self.navigationController );
 }
 
-
+- (NDMainViewController*) mainViewController
+{
+	if (!_mainViewController) {
+		_mainViewController = [NDMainViewController singleton];
+	}
+	return _mainViewController;
+}
+	 
 @end

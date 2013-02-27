@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+LayerEffects.h"
 
+#import "NDConstants.h"
 #import "NDMainViewController.h"
 
 #import "NDPhotoGridViewController.h"
@@ -20,6 +21,7 @@
 @synthesize serviceLoginView;
 @synthesize buttonLogOut;
 @synthesize labelLoggedOut;
+@synthesize labelAccountMessage;
 
 NDPhotoGridViewController *photoGridController;
 
@@ -30,6 +32,9 @@ UIView *photoGridContainer;
 NSString *userEmailAddress;
 NSString *userFacebookToken;
 NSString *userFacebookUser;
+
+UIColor *brandColor = nil;
+bool _loggedIn = false;
 
 int serviceLoginViewHeight = 100;
 
@@ -79,7 +84,7 @@ int serviceLoginViewHeight = 100;
 
 	[[NSBundle mainBundle] loadNibNamed:@"LoggedInView" owner:self options:nil];
 
-	[serviceLoginView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - serviceLoginViewHeight, CGRectGetWidth(self.view.bounds), serviceLoginViewHeight)];
+	[serviceLoginView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), serviceLoginViewHeight)];
 
 	// Add a border above the serviceLoginView.
 	CALayer *serviceLoginBorder = [CALayer layer];
@@ -99,7 +104,6 @@ int serviceLoginViewHeight = 100;
 	
 	[self.view addSubview:serviceLoginView];
 	
-	[self displayLoggedIn];
 
 	//[photoGridContainer setFrame:CGRectMake(0, bannerHeight, windowWidth, windowHeight - bannerHeight - serviceLoginViewHeight)];
 	 
@@ -114,9 +118,33 @@ int serviceLoginViewHeight = 100;
                      } completion:^(BOOL finished) {
 					 }
 	 ];
-
 	
 }
+
+-(void)hideLoggedIn {
+	
+	[UIView animateWithDuration:1
+                     animations:^{
+						 [serviceLoginView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds), CGRectGetWidth(self.view.bounds), serviceLoginViewHeight)];
+                     } completion:^(BOOL finished) {
+					 }
+	 ];
+	
+}
+
+-(void)logInWithMessage:(NSString*)message {
+	
+	labelAccountMessage.text = message;
+	_loggedIn = true;
+	
+	[self displayLoggedIn];
+}
+
+- (IBAction)btnLogoutClick:(id)sender {
+	_loggedIn = false;
+	[self hideLoggedIn];
+}
+
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
@@ -141,5 +169,17 @@ int serviceLoginViewHeight = 100;
 	
 }
 
+- (UIColor*)brandColor
+{
+	if (!brandColor) {
+		brandColor = UIColorFromRGB(0xFB0986);
+	}
+	return brandColor;
+}
+
+- (bool)loggedIn
+{
+	return _loggedIn;
+}
 
 @end

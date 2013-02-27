@@ -28,7 +28,7 @@
 		933837A716D290700010EC17 /* button_facebook.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837A316D290700010EC17 /* button_facebook.png */; };
 		933837A816D290700010EC17 /* button_tumblr.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837A416D290700010EC17 /* button_tumblr.png */; };
 		933837A916D290700010EC17 /* button_twitter.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837A516D290700010EC17 /* button_twitter.png */; };
-		933837AE16D296A90010EC17 /* PhotoDetail.xib in Resources */ = {isa = PBXBuildFile; fileRef = 933837AD16D296A90010EC17 /* PhotoDetail.xib */; };
+		933837AE16D296A90010EC17 /* PhotoDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 933837AD16D296A90010EC17 /* PhotoDetailView.xib */; };
 		933837B316D4535F0010EC17 /* placeholder_landscape_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837B116D4535F0010EC17 /* placeholder_landscape_x.png */; };
 		933837B416D4535F0010EC17 /* placeholder_portrait_x.png in Resources */ = {isa = PBXBuildFile; fileRef = 933837B216D4535F0010EC17 /* placeholder_portrait_x.png */; };
 		93665B4716D940D300D233B3 /* NDPhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93665B4616D940D300D233B3 /* NDPhotoDetailViewController.m */; };
@@ -51,6 +51,7 @@
 		93E8C6BB169E956F00A43F4A /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93E8C6B9169E956F00A43F4A /* MainStoryboard.storyboard */; };
 		93FA9E4516DC54A3006B687D /* LoggedInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FA9E4416DC54A3006B687D /* LoggedInView.xib */; };
 		93FA9E4716DC6404006B687D /* EmailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FA9E4616DC6404006B687D /* EmailView.xib */; };
+		93FA9E4916DE97D2006B687D /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FA9E4816DE97D2006B687D /* ShareView.xib */; };
 		DDFD09DA8A1B426987973F0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 368A0FC0069D44048CF44C3F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -86,7 +87,7 @@
 		933837A316D290700010EC17 /* button_facebook.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_facebook.png; sourceTree = "<group>"; };
 		933837A416D290700010EC17 /* button_tumblr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_tumblr.png; sourceTree = "<group>"; };
 		933837A516D290700010EC17 /* button_twitter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_twitter.png; sourceTree = "<group>"; };
-		933837AD16D296A90010EC17 /* PhotoDetail.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PhotoDetail.xib; path = ../PhotoDetail.xib; sourceTree = "<group>"; };
+		933837AD16D296A90010EC17 /* PhotoDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PhotoDetailView.xib; path = ../PhotoDetailView.xib; sourceTree = "<group>"; };
 		933837B116D4535F0010EC17 /* placeholder_landscape_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_landscape_x.png; sourceTree = "<group>"; };
 		933837B216D4535F0010EC17 /* placeholder_portrait_x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_portrait_x.png; sourceTree = "<group>"; };
 		93665B4516D940D300D233B3 /* NDPhotoDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDPhotoDetailViewController.h; sourceTree = "<group>"; };
@@ -120,6 +121,7 @@
 		93E8C6BA169E956F00A43F4A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		93FA9E4416DC54A3006B687D /* LoggedInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoggedInView.xib; sourceTree = "<group>"; };
 		93FA9E4616DC6404006B687D /* EmailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailView.xib; sourceTree = "<group>"; };
+		93FA9E4816DE97D2006B687D /* ShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,7 +142,8 @@
 		930814A316DC516400572259 /* views */ = {
 			isa = PBXGroup;
 			children = (
-				933837AD16D296A90010EC17 /* PhotoDetail.xib */,
+				93FA9E4816DE97D2006B687D /* ShareView.xib */,
+				933837AD16D296A90010EC17 /* PhotoDetailView.xib */,
 				93FA9E4416DC54A3006B687D /* LoggedInView.xib */,
 				93FA9E4616DC6404006B687D /* EmailView.xib */,
 			);
@@ -343,12 +346,13 @@
 				933837A716D290700010EC17 /* button_facebook.png in Resources */,
 				933837A816D290700010EC17 /* button_tumblr.png in Resources */,
 				933837A916D290700010EC17 /* button_twitter.png in Resources */,
-				933837AE16D296A90010EC17 /* PhotoDetail.xib in Resources */,
+				933837AE16D296A90010EC17 /* PhotoDetailView.xib in Resources */,
 				933837B316D4535F0010EC17 /* placeholder_landscape_x.png in Resources */,
 				933837B416D4535F0010EC17 /* placeholder_portrait_x.png in Resources */,
 				932EA9D316DB21E700919412 /* README.md in Resources */,
 				93FA9E4516DC54A3006B687D /* LoggedInView.xib in Resources */,
 				93FA9E4716DC6404006B687D /* EmailView.xib in Resources */,
+				93FA9E4916DE97D2006B687D /* ShareView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
