@@ -3,4 +3,4 @@ pod 'JSONKit',       '~> 1.5pre'
 pod 'UAModalPanel',	'~> 1.1.1'
 dependency 'RestKit'
 dependency 'UIGlossyButton'
-
+dependency 'HockeySDK'

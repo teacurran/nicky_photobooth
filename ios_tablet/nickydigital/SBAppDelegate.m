@@ -5,10 +5,14 @@
 //  Created by Terrence Curran on 1/10/13.
 //  Copyright (c) 2013 Terrence Curran. All rights reserved.
 //
+#import <HockeySDK/HockeySDK.h>
 
 #import "NDMainViewController.h"
 #import "SBAppDelegate.h"
 #import "NDConstants.h"
+
+@interface SBAppDelegate(HockeyProtocols) <BITHockeyManagerDelegate, BITUpdateManagerDelegate, BITCrashManagerDelegate> {}
+@end
 
 @implementation SBAppDelegate
 
@@ -18,6 +22,13 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 
+	// Hockey App
+	[[BITHockeyManager sharedHockeyManager] configureWithBetaIdentifier:@"98a0e8300010c8a9c7e4fcfcd0a3b16a"
+														 liveIdentifier:@"98a0e8300010c8a9c7e4fcfcd0a3b16a"
+															   delegate:self];
+	[[BITHockeyManager sharedHockeyManager] startManager];
+	
+	
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.viewController = [NDMainViewController singleton];
