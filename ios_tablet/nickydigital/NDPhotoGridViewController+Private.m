@@ -61,7 +61,10 @@ NSLock *itemLock;
 				
 				[imageView setImageWithURL:[
 								NSURL URLWithString:[
-										NSString stringWithFormat:@"%@/%@/%@",  [defaults stringForKey:kPrefServerUrlKey], @"api/photo/300", filename]
+										NSString stringWithFormat:@"%@/%@/%@",
+													 [defaults stringForKey:kPrefServerUrlKey],
+													 @"api/photo/300",
+													 filename]
 								]
 						placeholderImage:[UIImage imageNamed:@"placeholder_landscape.png"]
 				 ];

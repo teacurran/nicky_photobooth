@@ -50,9 +50,22 @@ class ApiController extends FOSRestController
 			);
 			
 		}
+		
+		$bannerImage = "";
+		$rootDir = $this->container->get('kernel')->getRootdir(); 
+		$bannerFile = $rootDir . "/../web/event/" . $event->getEventCode() . ".png";
+		if (file_exists($bannerFile)) {
+			$bannerImage  = "/event/" . $event->getEventCode() . ".png";
+		}
+		$bannerFile = $rootDir . "/../web/event/" . $event->getEventCode() . ".jpg";
+		if (file_exists($bannerFile)) {
+			$bannerImage  = "/event/" . $event->getEventCode() . ".jpg";
+		}
+		
 		return array(
 			"id" => $event->getId(),
 			"code" => $event->getEventCode(),
+			"banner" => $bannerImage,
 			"name" => $event->getEventName(),
 			"album_name" => $event->getAlbumName(),
 			"short_share" => $event->getShortShareText(),
@@ -88,7 +101,7 @@ class ApiController extends FOSRestController
 			if (true || strpos($filename, '.gif', 1) || strpos($filename, '.jpg', 1)) {
 				$i++;
 				$photo = array();
-				$photo['filename'] = $filename;
+				$photo['filename'] = $event->getEventCode() . "/" . $filename;
 				$photo['id'] = $i;
 
 				array_push($photoListArray, $photo);
@@ -133,7 +146,7 @@ class ApiController extends FOSRestController
 		$sizedFilename = $sizedFileDir . "/" . $filename;
 
 		if (!file_exists($originalFilename)) {
-			throw $this->createNotFoundException('The product does not exist');
+			throw $this->createNotFoundException('The photo does not exist');
 		}
 
 		if ($width == "original") {
@@ -183,7 +196,18 @@ class ApiController extends FOSRestController
 	 * @param  $path Path name
 	 * @return bool
 	 */
-	function rmkdir($path, $mode = 0755)
+	function rmkdir($path, $mode = 0777)
+	{
+		$oldUmask = umask(0); 
+
+		$returnValue = $this->rmkdirNoUmask($path, $mode);
+		
+		umask($oldUmask);
+		
+		return $returnValue;
+	}
+
+	function rmkdirNoUmask($path, $mode = 0777)
 	{
 		$path = rtrim(preg_replace(array("/\\\\/", "/\/{2,}/"), "/", $path), "/");
 		$e = explode("/", ltrim($path, "/"));

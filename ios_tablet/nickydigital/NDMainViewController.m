@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+LayerEffects.h"
+#import "UIImageView+AFNetworking.h"
+#import "AFJSONRequestOperation.h"
 
 #import "NDConstants.h"
 #import "NDMainViewController.h"
@@ -35,6 +37,8 @@ NSString *userFacebookUser;
 
 UIColor *brandColor = nil;
 bool _loggedIn = false;
+
+Event *_event = nil;
 
 int serviceLoginViewHeight = 100;
 
@@ -108,8 +112,52 @@ int serviceLoginViewHeight = 100;
 	//[photoGridContainer setFrame:CGRectMake(0, bannerHeight, windowWidth, windowHeight - bannerHeight - serviceLoginViewHeight)];
 	 
 	//[self.view :photoGridController];
+	
+	[NSTimer scheduledTimerWithTimeInterval:10.0
+									 target:self
+								   selector:@selector(loadEvent)
+								   userInfo:nil
+									repeats:YES];
 }
 
+-(void) loadEvent
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	NSURL *photoListUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",  [defaults stringForKey:kPrefServerUrlKey], @"/api/event"]];
+	NSURLRequest *request = [NSURLRequest requestWithURL:photoListUrl];
+	
+
+	// {
+	// id: 1,
+	// code: "citi",
+	// banner: "/event/citi.jpg",
+	// name: "NickyDigital Citi",
+	// album_name: "NickyDigital Citi Album",
+	// short_share: "Short Share #text",
+	// long_share: "This is long share text."
+	// }
+	
+	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+
+		NSString *eventId = [JSON objectForKey:@"id"];
+		int eventIdInt = [eventId intValue];
+		
+		Event *event = [self event];
+		if (eventIdInt != event.eventId) {
+			event.code = [JSON objectForKey:@"code"];
+			event.banner = [JSON objectForKey:@"banner"];
+			event.name = [JSON objectForKey:@"name"];
+			event.album = [JSON objectForKey:@"album_name"];
+			event.shortShare = [JSON objectForKey:@"short_share"];
+			event.longShare = [JSON objectForKey:@"long_share"];
+		}
+	} failure:nil];
+
+	[operation start];
+
+}
+										 
 -(void)displayLoggedIn {
 
 	[UIView animateWithDuration:1
@@ -181,5 +229,15 @@ int serviceLoginViewHeight = 100;
 {
 	return _loggedIn;
 }
+
+- (Event*)event
+{
+	if (!_event) {
+		_event = [[Event alloc] init];
+		_event.code = @"default";
+	}
+	return _event;
+}
+										 
 
 @end

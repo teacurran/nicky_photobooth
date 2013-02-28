@@ -38,6 +38,7 @@
 		9368E15516C8B3B2009407B1 /* BDDynamicGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E14F16C8B3B2009407B1 /* BDDynamicGridCell.m */; };
 		9368E15616C8B3B2009407B1 /* BDDynamicGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E15116C8B3B2009407B1 /* BDDynamicGridViewController.m */; };
 		9368E15716C8B3B2009407B1 /* BDRowInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E15416C8B3B2009407B1 /* BDRowInfo.m */; };
+		93692E9F16DF34D2003BFEA2 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 93692E9E16DF34D2003BFEA2 /* Event.m */; };
 		938B263B16ABEAE800F8176E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 938B263A16ABEAE800F8176E /* Settings.bundle */; };
 		93E8C6A2169E956F00A43F4A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E8C6A1169E956F00A43F4A /* UIKit.framework */; };
 		93E8C6A4169E956F00A43F4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E8C6A3169E956F00A43F4A /* Foundation.framework */; };
@@ -104,6 +105,8 @@
 		9368E15216C8B3B2009407B1 /* BDDynamicGridViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDDynamicGridViewDelegate.h; sourceTree = "<group>"; };
 		9368E15316C8B3B2009407B1 /* BDRowInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BDRowInfo.h; sourceTree = "<group>"; };
 		9368E15416C8B3B2009407B1 /* BDRowInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BDRowInfo.m; sourceTree = "<group>"; };
+		93692E9D16DF34D2003BFEA2 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
+		93692E9E16DF34D2003BFEA2 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		938B263A16ABEAE800F8176E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		93E8C69D169E956F00A43F4A /* Nicky Digital.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nicky Digital.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93E8C6A1169E956F00A43F4A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -253,6 +256,8 @@
 				9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */,
 				93665B4516D940D300D233B3 /* NDPhotoDetailViewController.h */,
 				93665B4616D940D300D233B3 /* NDPhotoDetailViewController.m */,
+				93692E9D16DF34D2003BFEA2 /* Event.h */,
+				93692E9E16DF34D2003BFEA2 /* Event.m */,
 			);
 			path = nickydigital;
 			sourceTree = "<group>";
@@ -397,6 +402,7 @@
 				932EA9D416DB21E700919412 /* RIButtonItem.m in Sources */,
 				932EA9D516DB21E700919412 /* UIActionSheet+Blocks.m in Sources */,
 				932EA9D616DB21E700919412 /* UIAlertView+Blocks.m in Sources */,
+				93692E9F16DF34D2003BFEA2 /* Event.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

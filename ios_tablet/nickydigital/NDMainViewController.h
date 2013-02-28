@@ -10,6 +10,8 @@
 
 #import "UIGlossyButton.h"
 
+#import "Event.h"
+
 @interface NDMainViewController : UIViewController
 
 @property (nonatomic, retain) IBOutlet UIView *serviceLoginView;
@@ -24,5 +26,6 @@
 -(UIColor*)brandColor;
 -(bool)loggedIn;
 -(void)logInWithMessage:(NSString*)message;
+-(Event*)event;
 
 @end

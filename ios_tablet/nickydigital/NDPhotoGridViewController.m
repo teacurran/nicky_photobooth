@@ -16,6 +16,7 @@
 #import "Photo.h"
 #import "UIImageView+AFNetworking.h"
 #import "AFJSONRequestOperation.h"
+#import "NDMainViewController.h"
 
 @interface NDPhotoGridViewController ()
 
@@ -25,6 +26,7 @@
 
 NDPhotoDetailViewController *detailViewController;
 
+NDMainViewController *_mainViewController;
 
 - (void)viewDidLoad
 {
@@ -100,7 +102,10 @@ NDPhotoDetailViewController *detailViewController;
 				[detailViewController setPhoto:photo.thumbView];
 
 				NSURL *url = [NSURL URLWithString:[
-											NSString stringWithFormat:@"%@/%@/%@",  [defaults stringForKey:kPrefServerUrlKey], @"api/photo/640", photo.filename]
+											NSString stringWithFormat:@"%@/%@/%@",
+												   [defaults stringForKey:kPrefServerUrlKey],
+												   @"api/photo/640",
+												   photo.filename]
 				];
 
 				NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -239,6 +244,14 @@ NDPhotoDetailViewController *detailViewController;
 	int row_height = 2 * photo_width / 3;
 	
 	return row_height;
+}
+
+- (NDMainViewController*) mainViewController
+{
+	if (!_mainViewController) {
+		_mainViewController = [NDMainViewController singleton];
+	}
+	return _mainViewController;
 }
 
 @end
