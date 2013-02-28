@@ -25,6 +25,11 @@ class PhotoEvent
 	/**
 	 * @ORM\Column(type="string", length=100)
 	 */
+	protected $eventCode;
+
+	/**
+	 * @ORM\Column(type="string", length=100)
+	 */
 	protected $eventName;
 
 	/**
@@ -33,7 +38,7 @@ class PhotoEvent
 	protected $albumName;
 
 	/**
-	 * @ORM\Column(type="string", length=200)
+	 * @ORM\Column(type="string", length=200, nullable=true)
 	 */
 	protected $banner;
 
@@ -221,6 +226,16 @@ class PhotoEvent
 	public function getUpdated()
 	{
 		return $this->updated;
+	}
+
+	public function setEventCode($eventCode)
+	{
+		$this->eventCode = $eventCode;
+	}
+
+	public function getEventCode()
+	{
+		return $this->eventCode;
 	}
 
 

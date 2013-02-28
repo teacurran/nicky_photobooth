@@ -1,11 +1,20 @@
 parameters:
-    database_driver:   pdo_sqlite
-    database_host:     ""
+    #database_driver:   pdo_sqlite
+    #database_host:     ""
+    #database_port:     ""
+    #database_name:     photobooth
+    #database_user:     photobooth
+    #database_password: photobooth
+    #database_path:     data.sqlite
+
+
+    database_driver:   pdo_mysql
+    database_host:     "127.0.0.1"
     database_port:     ""
     database_name:     photobooth
-    database_user:     photobooth
-    database_password: photobooth
-    database_path:     data.sqlite
+    database_user:     root
+    database_password: 
+    database_path:     
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1

@@ -3,6 +3,7 @@
 namespace NickyDigital\PhotoboothBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use NickyDigital\PhotoboothBundle\Entity\PhotoEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -12,6 +13,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use Symfony\Component\Finder\Finder;
+use Doctrine\ORM\EntityManager;
 use NickyDigital\PhotoboothBundle\Util\ResizedImage;
 
 /**
@@ -25,15 +27,36 @@ class ApiController extends FOSRestController
 {
 
 	/**
+	 *
+	 * @var EntityManager
+	 */
+	protected $em;
+
+	/**
 	 * @Route("/event", name="api_event")
 	 * @Method({"GET"})
 	 * @Rest\View
 	 */
 	public function eventAction()
 	{
+
+		$event = $this->getCurrentEvent();
+
+		if ($event->getEventCode() == "default") {
+			return array(
+				"id" => 0,
+				"code" => $event->getEventCode(),
+				"name" => $event->getEventName(),
+			);
+			
+		}
 		return array(
-			"event" => "Event Title",
-			"banner" => "/event/default.png"
+			"id" => $event->getId(),
+			"code" => $event->getEventCode(),
+			"name" => $event->getEventName(),
+			"album_name" => $event->getAlbumName(),
+			"short_share" => $event->getShortShareText(),
+			"long_share" => $event->getLongShareText()
 		);
 	}
 
@@ -45,10 +68,18 @@ class ApiController extends FOSRestController
 	public function photosAction()
 	{
 
+		$event = $this->getCurrentEvent();
+
 		$photoListArray = Array();
 
 		$finder = new Finder();
-		$finder->files()->in($this->getPhotoDir());
+
+		$filesDir = $this->getPhotoDir() . "/" . $event->getEventCode();
+		if (!$this->rmkdir($filesDir)) {
+			die("Failed to create folders:" . $filesDir);
+		}
+
+		$finder->files()->in($filesDir);
 
 		$i = 0;
 		foreach ($finder as $file) {
@@ -85,20 +116,20 @@ class ApiController extends FOSRestController
 	}
 
 	/**
-	 * @Route("/photo/{width}/{filename}", name="api_photo")
+	 * @Route("/photo/{width}/{code}/{filename}", name="api_photo")
 	 * @Method({"GET"})
 	 */
-	public function photoAction($width, $filename)
+	public function photoAction($width, $code, $filename)
 	{
 		if ($width != "original") {
 			if (!is_numeric($width)) {
 				throw $this->createNotFoundException('Width must be a number');
 			}
-			
+
 		}
 
-		$originalFilename = $this->getPhotoDir() . "/" . $filename;
-		$sizedFileDir = $this->getCacheDir() . "/" . $width; 
+		$originalFilename = $this->getPhotoDir() . "/" . $code . "/" . $filename;
+		$sizedFileDir = $this->getCacheDir() . "/" . $code . "/" . $width;
 		$sizedFilename = $sizedFileDir . "/" . $filename;
 
 		if (!file_exists($originalFilename)) {
@@ -137,7 +168,8 @@ class ApiController extends FOSRestController
 
 	private function getPhotoDir()
 	{
-		return $this->container->get('kernel')->getRootdir() . "/../web/photos";
+		$rootDir = $this->container->get('kernel')->getRootdir(); 
+		return substr($rootDir, 0, strlen($rootDir) - 4) . "/photos";
 	}
 
 	private function getCacheDir()
@@ -166,10 +198,25 @@ class ApiController extends FOSRestController
 			}
 			$cp .= "/" . $e[$i];
 		}
-		if(is_dir($path)) {
+		if (is_dir($path)) {
 			return true;
 		}
 		return @mkdir($path, $mode);
 	}
 
+	function getCurrentEvent() {
+		$this->em = $this->get('doctrine.orm.entity_manager');
+		
+		$query = $this->em->createQuery('SELECT e FROM NickyDigital\PhotoboothBundle\Entity\PhotoEvent e WHERE e.current=true');
+		$events = $query->getResult();
+
+		if (count($events) > 0) {
+			return $events[0];
+		}
+		
+		$event = new PhotoEvent;
+		$event->setEventCode('default');
+		$event->setEventName('Default');
+		return $event;
+	}
 }

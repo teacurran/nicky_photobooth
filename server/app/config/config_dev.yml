@@ -6,7 +6,7 @@ framework:
     profiler: { only_exceptions: false }
 
 web_profiler:
-    toolbar: true
+    toolbar: false
     intercept_redirects: false
 
 monolog:
@@ -31,5 +31,5 @@ doctrine:
         host:     127.0.0.1
         dbname:   nickydigital
         user:     root
-        password: root
+        password: ""
         charset:  UTF8
