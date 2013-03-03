@@ -40,6 +40,7 @@
 		9368E15716C8B3B2009407B1 /* BDRowInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 9368E15416C8B3B2009407B1 /* BDRowInfo.m */; };
 		93692E9F16DF34D2003BFEA2 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = 93692E9E16DF34D2003BFEA2 /* Event.m */; };
 		938B263B16ABEAE800F8176E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 938B263A16ABEAE800F8176E /* Settings.bundle */; };
+		93DCF7CA16E2FCE700A4C3CD /* NDApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DCF7C916E2FCE700A4C3CD /* NDApiClient.m */; };
 		93E8C6A2169E956F00A43F4A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E8C6A1169E956F00A43F4A /* UIKit.framework */; };
 		93E8C6A4169E956F00A43F4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E8C6A3169E956F00A43F4A /* Foundation.framework */; };
 		93E8C6A6169E956F00A43F4A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E8C6A5169E956F00A43F4A /* CoreGraphics.framework */; };
@@ -108,6 +109,8 @@
 		93692E9D16DF34D2003BFEA2 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		93692E9E16DF34D2003BFEA2 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		938B263A16ABEAE800F8176E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		93DCF7C816E2FCE700A4C3CD /* NDApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDApiClient.h; sourceTree = "<group>"; };
+		93DCF7C916E2FCE700A4C3CD /* NDApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDApiClient.m; sourceTree = "<group>"; };
 		93E8C69D169E956F00A43F4A /* Nicky Digital.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nicky Digital.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93E8C6A1169E956F00A43F4A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		93E8C6A3169E956F00A43F4A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -258,6 +261,8 @@
 				93665B4616D940D300D233B3 /* NDPhotoDetailViewController.m */,
 				93692E9D16DF34D2003BFEA2 /* Event.h */,
 				93692E9E16DF34D2003BFEA2 /* Event.m */,
+				93DCF7C816E2FCE700A4C3CD /* NDApiClient.h */,
+				93DCF7C916E2FCE700A4C3CD /* NDApiClient.m */,
 			);
 			path = nickydigital;
 			sourceTree = "<group>";
@@ -403,6 +408,7 @@
 				932EA9D516DB21E700919412 /* UIActionSheet+Blocks.m in Sources */,
 				932EA9D616DB21E700919412 /* UIAlertView+Blocks.m in Sources */,
 				93692E9F16DF34D2003BFEA2 /* Event.m in Sources */,
+				93DCF7CA16E2FCE700A4C3CD /* NDApiClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -3,12 +3,14 @@
 namespace NickyDigital\PhotoboothBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
+use NickyDigital\PhotoboothBundle\Entity\Email;
 use NickyDigital\PhotoboothBundle\Entity\PhotoEvent;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
@@ -179,6 +181,29 @@ class ApiController extends FOSRestController
 		return $response;
 	}
 
+	/**
+	 * @Route("/emailcapture", name="api_emailcapture")
+	 * @Method({"POST"})
+	 */
+	public function emailcaptureAction(Request $request)
+	{
+		$email = new Email();
+		
+		$email->setEvent($this->getCurrentEvent());
+		$email->setEmail($request->request->get("email"));
+
+		$this->em = $this->get('doctrine.orm.entity_manager');
+
+		$this->em->persist($email);
+		$this->em->flush();
+
+		return array("status" => "success");
+	}
+
+
+
+
+	
 	private function getPhotoDir()
 	{
 		$rootDir = $this->container->get('kernel')->getRootdir(); 

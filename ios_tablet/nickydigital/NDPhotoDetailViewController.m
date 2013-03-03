@@ -9,11 +9,14 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
+#import "AFNetworkActivityIndicatorManager.h"
+#import "AFJSONRequestOperation.h"
 #import "UIAlertView+Blocks.h"
 #import "UIGlossyButton.h"
 #import "UIView+LayerEffects.h"
 #import "RIButtonItem.h"
 
+#import "NDApiClient.h"
 #import "NDPhotoDetailViewController.h"
 #import "NDConstants.h"
 #import "NDMainViewController.h"
@@ -173,6 +176,8 @@ NDMainViewController *_mainViewController = nil;
     
 	shareImageView.image = photoView.image;
 	
+	shareTextView.text = [[NDMainViewController singleton] event].longShare;
+	
     [modalDialog.view addSubview:shareView];
     
     modalDialog.view.superview.center = centerOfView;
@@ -254,6 +259,26 @@ NDMainViewController *_mainViewController = nil;
 - (IBAction)btnEmailClick:(id)sender
 {
 	userEmailAddress = emailField.text;
+	
+	NDApiClient *client = [NDApiClient sharedClient];
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    [[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
+	
+    NSURLRequest *request = [client requestWithMethod:@"POST"
+												path:@"/api/emailcapture"
+												parameters:[NSDictionary dictionaryWithObjectsAndKeys:
+																			emailField.text, @"email", nil
+															]
+							 ];
+	
+	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+		
+		
+	} failure:nil];
+	
+	[operation start];
+	
+	
 	[self autoModalViewControllerDismissWithNext:sender];
 }
 
@@ -295,9 +320,8 @@ NDMainViewController *_mainViewController = nil;
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
 	
 	if (currentAction == ACTION_FACEBOOK_LOGIN) {
-		NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
-
-		NSLog(@"allHTML: %@", html);
+		//NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
+		//NSLog(@"allHTML: %@", html);
 
 		[webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.forms[0].email.value='%@';", userEmailAddress]];
 

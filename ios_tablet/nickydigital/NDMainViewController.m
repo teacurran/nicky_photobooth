@@ -124,8 +124,8 @@ int serviceLoginViewHeight = 100;
 {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	
-	NSURL *photoListUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",  [defaults stringForKey:kPrefServerUrlKey], @"/api/event"]];
-	NSURLRequest *request = [NSURLRequest requestWithURL:photoListUrl];
+	NSURL *eventUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",  [defaults stringForKey:kPrefServerUrlKey], @"/api/event"]];
+	NSURLRequest *request = [NSURLRequest requestWithURL:eventUrl];
 	
 
 	// {
@@ -144,14 +144,13 @@ int serviceLoginViewHeight = 100;
 		int eventIdInt = [eventId intValue];
 		
 		Event *event = [self event];
-		if (eventIdInt != event.eventId) {
-			event.code = [JSON objectForKey:@"code"];
-			event.banner = [JSON objectForKey:@"banner"];
-			event.name = [JSON objectForKey:@"name"];
-			event.album = [JSON objectForKey:@"album_name"];
-			event.shortShare = [JSON objectForKey:@"short_share"];
-			event.longShare = [JSON objectForKey:@"long_share"];
-		}
+		event.eventId = eventIdInt;
+		event.code = [JSON objectForKey:@"code"];
+		event.banner = [JSON objectForKey:@"banner"];
+		event.name = [JSON objectForKey:@"name"];
+		event.album = [JSON objectForKey:@"album_name"];
+		event.shortShare = [JSON objectForKey:@"short_share"];
+		event.longShare = [JSON objectForKey:@"long_share"];
 	} failure:nil];
 
 	[operation start];
