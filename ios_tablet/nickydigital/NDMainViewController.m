@@ -37,6 +37,9 @@ NSString *userFacebookUser;
 
 UIColor *brandColor = nil;
 bool _loggedIn = false;
+bool _facebookLoggedIn = false;
+bool _tumblrLoggedIn = false;
+bool _twitterLoggedIn = false;
 
 Event *_event = nil;
 
@@ -158,7 +161,43 @@ int serviceLoginViewHeight = 100;
 }
 										 
 -(void)displayLoggedIn {
+	
+	NSMutableString *message = [[NSMutableString alloc] initWithString:@"You are logged in with: "];
+	
+	bool withAnd = false;
+	if (_facebookLoggedIn && _twitterLoggedIn && _tumblrLoggedIn) {
+		withAnd = true;
+	}
+	
+	int loginCount = 0;
 
+	if (_facebookLoggedIn) {
+		loginCount++;
+		[message appendString:@"Facebook"];
+	}
+
+	if (_twitterLoggedIn) {
+		loginCount++;
+		if (loginCount > 1) {
+			[message appendString:@", "];
+		}
+		[message appendString:@"Twitter"];
+	}
+	
+	if (_tumblrLoggedIn) {
+		loginCount++;
+		if (loginCount > 1) {
+			[message appendString:@", "];
+		}
+		if (loginCount > 2) {
+			[message appendString:@" and "];
+		}
+		[message appendString:@"Tumblr"];
+	}
+	[message appendString:@"."];
+	
+	labelAccountMessage.text = message;
+	
 	[UIView animateWithDuration:1
                      animations:^{
 						 [serviceLoginView setFrame:CGRectMake(0, CGRectGetHeight(self.view.bounds) - serviceLoginViewHeight, CGRectGetWidth(self.view.bounds), serviceLoginViewHeight)];
@@ -179,6 +218,27 @@ int serviceLoginViewHeight = 100;
 	
 }
 
+-(void)logInFacebook {
+	_facebookLoggedIn = true;
+	_loggedIn = true;
+
+	[self displayLoggedIn];
+}
+
+-(void)logInTumblr {
+	_tumblrLoggedIn = true;
+	_loggedIn = true;
+
+	[self displayLoggedIn];
+}
+
+-(void)logInTwitter {
+	_twitterLoggedIn = true;
+	_loggedIn = true;
+
+	[self displayLoggedIn];
+}
+
 -(void)logInWithMessage:(NSString*)message {
 	
 	labelAccountMessage.text = message;
@@ -189,6 +249,10 @@ int serviceLoginViewHeight = 100;
 
 - (IBAction)btnLogoutClick:(id)sender {
 	_loggedIn = false;
+	_twitterLoggedIn = false;
+	_tumblrLoggedIn = false;
+	_facebookLoggedIn = false;
+	
 	[self hideLoggedIn];
 }
 

@@ -47,7 +47,12 @@ const int ACTION_FACEBOOK_SHARE = 3;
 int currentAction = ACTION_NONE;
 int nextAction = ACTION_NONE;
 
+Photo *_photo = nil;
+
 bool loggedIn = false;
+bool facebookLoggedIn = false;
+bool twitterLoggedIn = false;
+bool tumblrLoggedIn = false;
 
 NSString *userEmailAddress;
 NSString *userFacebookToken;
@@ -97,9 +102,9 @@ NDMainViewController *_mainViewController = nil;
 	self.view = view;
 }
 
--(void)setPhoto:(UIImageView*)imageView {
+-(void)setPhoto:(Photo*)photo withView:(UIImageView*)imageView {
+	_photo = photo;
 	self.photoView.image = imageView.image;
-	
 }
 
 //- (void)layoutSubviews {
@@ -137,7 +142,7 @@ NDMainViewController *_mainViewController = nil;
 
 - (IBAction)btnFacebookShareClick:(id)sender {
 
-	if ([[self mainViewController] loggedIn]) {
+	if ([[self mainViewController] loggedIn] && facebookLoggedIn) {
 		[self facebookShare];
 		return;
 	}
@@ -160,6 +165,37 @@ NDMainViewController *_mainViewController = nil;
     modalDialog.view.superview.center = centerOfView;
 	
 }
+
+- (IBAction)btnShareClick:(id)sender {
+	
+	if (currentAction == ACTION_FACEBOOK_SHARE) {
+		NDApiClient *client = [NDApiClient sharedClient];
+		[[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+		[[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
+		
+		NSURLRequest *request = [client requestWithMethod:@"POST"
+													 path:@"/api/facebookshare"
+											   parameters:[NSDictionary dictionaryWithObjectsAndKeys:
+														   emailField.text, @"email",
+														   userFacebookToken, @"token",
+														   _photo.filename, @"filename",
+														   shareTextView.text, @"body",
+														   nil
+														   ]
+								 ];
+		
+		AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+			
+			
+		} failure:nil];
+		
+		[operation start];
+		
+		
+	}
+	
+}
+
 
 - (void)facebookShare {
 	currentAction = ACTION_FACEBOOK_SHARE;
@@ -292,21 +328,20 @@ NDMainViewController *_mainViewController = nil;
 		
         NSArray *authUrlComponents = [url componentsSeparatedByString:@"&"];
 		
-        NSString *oauthToken;
         for (NSString *authUrlComponent in authUrlComponents) {
             NSLog(@"url %@", authUrlComponent);
             NSInteger authTokenParameterPosition = [authUrlComponent rangeOfString:@"access_token="].location;
             NSLog(@"position %d", authTokenParameterPosition);
             if (authTokenParameterPosition != NSNotFound && authTokenParameterPosition == 0) {
-                oauthToken = [authUrlComponent substringFromIndex:@"access_token=".length];
+                userFacebookToken = [authUrlComponent substringFromIndex:@"access_token=".length];
+
+				nextAction = ACTION_FACEBOOK_SHARE;
+				
+				[[self mainViewController] logInFacebook];
             }
         }
 		
-		nextAction = ACTION_FACEBOOK_SHARE;
-        
 		[self autoModalViewControllerDismissWithNext:nil];
-		
-		[[self mainViewController] logInWithMessage:@"You are logged in with your Facebook account"];
 		
         return false;
     }

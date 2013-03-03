@@ -99,7 +99,7 @@ NDMainViewController *_mainViewController;
 				UIImageView *imageView = [[UIImageView alloc] init];
 				imageView.clipsToBounds = YES;
 				
-				[detailViewController setPhoto:photo.thumbView];
+				[detailViewController setPhoto:photo withView:photo.thumbView];
 
 				NSURL *url = [NSURL URLWithString:[
 											NSString stringWithFormat:@"%@/%@/%@",
@@ -115,7 +115,7 @@ NDMainViewController *_mainViewController;
 				[imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 					
 					photo.detailView.image = image;
-					[detailViewController setPhoto:photo.detailView];
+					[detailViewController setPhoto:photo withView:photo.detailView];
 					
 				} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
 					
@@ -125,12 +125,12 @@ NDMainViewController *_mainViewController;
 				//	];
 
 				photo.detailView = imageView;
-				[detailViewController setPhoto:photo.detailView];
+				[detailViewController setPhoto:photo withView:photo.detailView];
 
 				//imageView.frame = CGRectMake(0, 0, 300, 200);
 				
 			} else {
-				[detailViewController setPhoto:photo.detailView];
+				[detailViewController setPhoto:photo withView:photo.detailView];
 			}
 			
 			//UIImageView * imageView = photo.thumbView;

@@ -28,4 +28,8 @@
 -(void)logInWithMessage:(NSString*)message;
 -(Event*)event;
 
+-(void)logInFacebook;
+-(void)logInTumblr;
+-(void)logInTwitter;
+
 @end

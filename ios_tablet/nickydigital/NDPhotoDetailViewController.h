@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "NDPhotoDetailModalPanel.h"
+#import "Photo.h"
 
 @interface NDPhotoDetailViewController : UIViewController<UIWebViewDelegate> {
 }
@@ -17,13 +18,13 @@
 
 @property (nonatomic, retain) NDPhotoDetailModalPanel *detailPanel;
 
-- (void)setPhoto:(UIImageView*)imageView;
+- (void)setPhoto:(Photo*)photo withView:(UIImageView*)imageView;
 
 - (IBAction)btnFacebookShareClick:(id)sender;
 
 - (IBAction)btnEmailClick:(id)sender;
 
-- (void)facebookLogin;
+- (IBAction)btnShareClick:(id)sender;
 
 
 @end
