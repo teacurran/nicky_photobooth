@@ -35,7 +35,7 @@ NDMainViewController *_mainViewController;
 
 	_placeholders = [NSMutableArray array];
 	for(int i=0; i<[self maximumViewsPerCell]; i++) {
-		UIImageView *placeholderView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape_x.png"]];
+		UIImageView *placeholderView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder_landscape.png"]];
 		placeholderView.frame = CGRectMake(0, 0, 300, 200);
 		placeholderView.clipsToBounds = YES;
 		[_placeholders addObject:placeholderView];

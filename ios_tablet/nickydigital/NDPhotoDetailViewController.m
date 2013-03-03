@@ -80,15 +80,17 @@ NDMainViewController *_mainViewController = nil;
 	emailButton.tintColor = [[self mainViewController] brandColor];
 	[emailButton useWhiteLabel: YES];
 	[emailButton setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius: 4];
-	[emailButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothExtreme];
-
+	[emailButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothStandard];
+	//[emailButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothExtreme];
+	//[emailButton setExtraShadingType:kUIGlossyButtonExtraShadingTypeAngleRight];
+	
 	// Share View
 	[[NSBundle mainBundle] loadNibNamed:@"ShareView" owner:self options:nil];
 	shareButton.borderColor = [[self mainViewController] brandColor];
 	shareButton.tintColor = [[self mainViewController] brandColor];
 	[shareButton useWhiteLabel: YES];
 	[shareButton setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius: 4];
-	[shareButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothExtreme];
+	[shareButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothStandard];
 	
 	shareTextView.layer.cornerRadius=8.0f;
     shareTextView.layer.masksToBounds=YES;

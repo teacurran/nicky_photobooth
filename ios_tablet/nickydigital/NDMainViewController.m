@@ -104,7 +104,7 @@ int serviceLoginViewHeight = 100;
 	[buttonLogOut useWhiteLabel: YES];
 	buttonLogOut.tintColor = [UIColor redColor];
 	[buttonLogOut setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius: 4];
-    [buttonLogOut setGradientType:kUIGlossyButtonGradientTypeLinearSmoothExtreme];
+    [buttonLogOut setGradientType:kUIGlossyButtonGradientTypeLinearSmoothStandard];
 	
 	labelLoggedOut.hidden = true;
 	
@@ -116,6 +116,7 @@ int serviceLoginViewHeight = 100;
 	 
 	//[self.view :photoGridController];
 	
+	[self loadEvent];
 	[NSTimer scheduledTimerWithTimeInterval:10.0
 									 target:self
 								   selector:@selector(loadEvent)
@@ -147,9 +148,37 @@ int serviceLoginViewHeight = 100;
 		int eventIdInt = [eventId intValue];
 		
 		Event *event = [self event];
+		
+		// if the event id has changed, update the banner image, if there is one
+		event.banner = [JSON objectForKey:@"banner"];
+		if (event.eventId != eventIdInt) {
+			if (event.banner != nil) {
+
+				NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",
+												   [defaults stringForKey:kPrefServerUrlKey],
+												   event.banner]];
+				
+				NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+				[request setHTTPShouldHandleCookies:NO];
+				[request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
+				
+				int windowWidth = CGRectGetWidth(self.view.bounds);
+
+				[bannerView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+
+					bannerImage = image;
+					int bannerHeight = (windowWidth / bannerImage.size.width) * bannerImage.size.height;
+					[bannerView setFrame:CGRectMake(0, 0, windowWidth, bannerHeight)];
+					[bannerView setImage:image];
+
+				} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+					
+				}];
+			}
+		}
+		
 		event.eventId = eventIdInt;
 		event.code = [JSON objectForKey:@"code"];
-		event.banner = [JSON objectForKey:@"banner"];
 		event.name = [JSON objectForKey:@"name"];
 		event.album = [JSON objectForKey:@"album_name"];
 		event.shortShare = [JSON objectForKey:@"short_share"];
@@ -159,6 +188,7 @@ int serviceLoginViewHeight = 100;
 		event.showTwitter = [[JSON valueForKey:@"show_twitter"] boolValue];
 		event.showTumblr = [[JSON valueForKey:@"show_tumblr"] boolValue];
 		event.showEmail = [[JSON valueForKey:@"show_email"] boolValue];
+		
 
 	} failure:nil];
 
