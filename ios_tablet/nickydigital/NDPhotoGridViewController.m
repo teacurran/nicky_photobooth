@@ -140,6 +140,7 @@ NDMainViewController *_mainViewController;
 			//[self.view addSubview:detailPanel];
 			//[detailPanel.detailPanel showFromPoint:CGPointMake([view center].x, [view center].y - 300)];
 			[detailViewController.detailPanel show];
+			[detailViewController updateShareButtons];
 			
 		}
 		

@@ -23,6 +23,10 @@
 
 @interface NDPhotoDetailViewController () {
 	IBOutlet UIView	*photoDetailView;
+	IBOutlet UIButton *photoDetailFacebookButton;
+	IBOutlet UIButton *photoDetailTwitterButton;
+	IBOutlet UIButton *photoDetailTumblrButton;
+	IBOutlet UIButton *photoDetailEmailButton;
 
 	IBOutlet UIView	*emailView;
 	IBOutlet UITextField *emailField;
@@ -100,11 +104,105 @@ NDMainViewController *_mainViewController = nil;
 	// add subviews
 	self.detailPanel = view;
 	self.view = view;
+
+	if ([[self mainViewController] event].showFacebook) {
+		photoDetailFacebookButton.hidden = false;
+	} else {
+		[photoDetailFacebookButton setHidden:YES];
+	}
+	
+	if ([[self mainViewController] event].showTwitter) {
+		photoDetailTwitterButton.hidden = false;
+	} else {
+		[photoDetailTwitterButton setHidden:YES];
+	}
+	
+	if ([[self mainViewController] event].showTumblr) {
+		photoDetailTumblrButton.hidden = false;
+	} else {
+		[photoDetailTumblrButton setHidden:YES];
+	}
+	
+	if ([[self mainViewController] event].showEmail) {
+		photoDetailEmailButton.hidden = false;
+	} else {
+		[photoDetailEmailButton setHidden:YES];
+	}
+
 }
 
 -(void)setPhoto:(Photo*)photo withView:(UIImageView*)imageView {
 	_photo = photo;
 	self.photoView.image = imageView.image;
+	
+}
+
+- (void)updateShareButtons {
+	
+	Event *event = [[self mainViewController] event];
+	
+	int x_first = 0; // x value of first button
+	int x_space = 140; // distance between button x values
+	
+	int buttons_visible = 0;
+	
+	if (event.showFacebook) {
+		[photoDetailFacebookButton setFrame:CGRectMake(
+											x_first + (buttons_visible * x_space),
+											photoDetailFacebookButton.frame.origin.y,
+											photoDetailFacebookButton.frame.size.width,
+											photoDetailFacebookButton.frame.size.height
+													   )];
+		
+		[photoDetailFacebookButton setHidden:NO];
+
+		buttons_visible++;
+	} else {
+		[photoDetailFacebookButton setHidden:YES];
+	}
+	
+	if (event.showTwitter) {
+		[photoDetailTwitterButton setFrame:CGRectMake(
+													   x_first + (buttons_visible * x_space),
+													   photoDetailTwitterButton.frame.origin.y,
+													   photoDetailTwitterButton.frame.size.width,
+													   photoDetailTwitterButton.frame.size.height
+													   )];
+
+		
+		[photoDetailTwitterButton setHidden:NO];
+		buttons_visible++;
+	} else {
+		[photoDetailTwitterButton setHidden:YES];
+	}
+	
+	if (event.showTumblr) {
+		[photoDetailTumblrButton setFrame:CGRectMake(
+													  x_first + (buttons_visible * x_space),
+													  photoDetailTumblrButton.frame.origin.y,
+													  photoDetailTumblrButton.frame.size.width,
+													  photoDetailTumblrButton.frame.size.height
+													  )];
+
+		[photoDetailTumblrButton setHidden:NO];
+		buttons_visible++;
+	} else {
+		[photoDetailTumblrButton setHidden:YES];
+	}
+	
+	if (event.showEmail) {
+		[photoDetailEmailButton setFrame:CGRectMake(
+													 x_first + (buttons_visible * x_space),
+													 photoDetailEmailButton.frame.origin.y,
+													 photoDetailEmailButton.frame.size.width,
+													 photoDetailEmailButton.frame.size.height
+													 )];
+
+		[photoDetailEmailButton setHidden:NO];
+		buttons_visible++;
+	} else {
+		[photoDetailEmailButton setHidden:YES];
+	}
 }
 
 //- (void)layoutSubviews {

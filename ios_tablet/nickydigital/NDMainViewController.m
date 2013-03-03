@@ -154,6 +154,12 @@ int serviceLoginViewHeight = 100;
 		event.album = [JSON objectForKey:@"album_name"];
 		event.shortShare = [JSON objectForKey:@"short_share"];
 		event.longShare = [JSON objectForKey:@"long_share"];
+		
+		event.showFacebook = [[JSON valueForKey:@"show_facebook"] boolValue];
+		event.showTwitter = [[JSON valueForKey:@"show_twitter"] boolValue];
+		event.showTumblr = [[JSON valueForKey:@"show_tumblr"] boolValue];
+		event.showEmail = [[JSON valueForKey:@"show_email"] boolValue];
+
 	} failure:nil];
 
 	[operation start];

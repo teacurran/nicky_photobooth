@@ -26,5 +26,6 @@
 
 - (IBAction)btnShareClick:(id)sender;
 
+- (void)updateShareButtons;
 
 @end

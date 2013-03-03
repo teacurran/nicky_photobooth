@@ -239,6 +239,38 @@
 					<int key="connectionID">68</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">photoDetailEmailButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="11077899"/>
+					</object>
+					<int key="connectionID">69</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">photoDetailFacebookButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="614361687"/>
+					</object>
+					<int key="connectionID">70</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">photoDetailTumblrButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="631875619"/>
+					</object>
+					<int key="connectionID">71</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">photoDetailTwitterButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="531543758"/>
+					</object>
+					<int key="connectionID">72</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">btnFacebookShareClick:</string>
 						<reference key="source" ref="614361687"/>
@@ -349,7 +381,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">68</int>
+			<int key="maxID">72</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -359,6 +391,7 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="btnEmailClick:">id</string>
 						<string key="btnFacebookShareClick:">id</string>
+						<string key="btnShareClick:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="btnEmailClick:">
@@ -369,13 +402,24 @@
 							<string key="name">btnFacebookShareClick:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="btnShareClick:">
+							<string key="name">btnShareClick:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="emailButton">UIGlossyButton</string>
 						<string key="emailField">UITextField</string>
 						<string key="emailView">UIView</string>
+						<string key="photoDetailEmailButton">UIButton</string>
+						<string key="photoDetailFacebookButton">UIButton</string>
+						<string key="photoDetailTumblrButton">UIButton</string>
+						<string key="photoDetailTwitterButton">UIButton</string>
 						<string key="photoDetailView">UIView</string>
 						<string key="photoView">UIImageView</string>
+						<string key="shareButton">UIGlossyButton</string>
+						<string key="shareImageView">UIImageView</string>
+						<string key="shareTextView">UITextView</string>
 						<string key="shareView">UIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -391,6 +435,22 @@
 							<string key="name">emailView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="photoDetailEmailButton">
+							<string key="name">photoDetailEmailButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="photoDetailFacebookButton">
+							<string key="name">photoDetailFacebookButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="photoDetailTumblrButton">
+							<string key="name">photoDetailTumblrButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="photoDetailTwitterButton">
+							<string key="name">photoDetailTwitterButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="photoDetailView">
 							<string key="name">photoDetailView</string>
 							<string key="candidateClassName">UIView</string>
@@ -398,6 +458,18 @@
 						<object class="IBToOneOutletInfo" key="photoView">
 							<string key="name">photoView</string>
 							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="shareButton">
+							<string key="name">shareButton</string>
+							<string key="candidateClassName">UIGlossyButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="shareImageView">
+							<string key="name">shareImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="shareTextView">
+							<string key="name">shareTextView</string>
+							<string key="candidateClassName">UITextView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="shareView">
 							<string key="name">shareView</string>

@@ -26,5 +26,9 @@
 @property NSString * album;
 @property NSString * shortShare;
 @property NSString * longShare;
+@property bool showFacebook;
+@property bool showTwitter;
+@property bool showTumblr;
+@property bool showEmail;
 
 @end
