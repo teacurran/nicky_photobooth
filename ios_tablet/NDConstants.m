@@ -16,7 +16,7 @@ int const kGridBorderWidth = 2;
 NSString* const kFacebookAppId = @"596065173744275";
 NSString* const kFacebookSecret = @"272dec3fa799dc5751205642ad90318a";
 NSString* const kFacebookRedirect = @"http://www.nickydigital.com/facebook/auth";
-NSString* const kFacebookScope = @"publish_actions";
+NSString* const kFacebookScope = @"publish_actions,user_photos,photo_upload,user_photo_video_tags"; //  read_stream, publish_stream, photo_upload";
 
 NSString* const kFacebookOauth = @"https://www.facebook.com/dialog/oauth/?display=touch&response_type=token&client_id=%@&redirect_uri=%@&state=%@&scope=%@";
 

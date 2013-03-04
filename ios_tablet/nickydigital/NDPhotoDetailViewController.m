@@ -245,8 +245,14 @@ NDMainViewController *_mainViewController = nil;
 	if ([[self mainViewController] loggedIn] && facebookLoggedIn) {
 		[self facebookShare];
 		return;
+	} else if (![[self mainViewController] loggedIn]) {
+		loggedIn = NO;
+		facebookLoggedIn = NO;
+		twitterLoggedIn = NO;
+		tumblrLoggedIn = NO;
 	}
 
+	
 	currentAction = ACTION_FACEBOOK_EMAIL;
 	nextAction = ACTION_FACEBOOK_LOGIN;
 
@@ -267,7 +273,9 @@ NDMainViewController *_mainViewController = nil;
 }
 
 - (IBAction)btnShareClick:(id)sender {
-	
+
+	nextAction = nil;
+
 	if (currentAction == ACTION_FACEBOOK_SHARE) {
 		NDApiClient *client = [NDApiClient sharedClient];
 		[[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -286,11 +294,11 @@ NDMainViewController *_mainViewController = nil;
 		
 		AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 			
-			
 		} failure:nil];
 		
 		[operation start];
-		
+
+		[self autoModalViewControllerDismissWithNext:nil];
 		
 	}
 	
@@ -437,6 +445,8 @@ NDMainViewController *_mainViewController = nil;
 
 				nextAction = ACTION_FACEBOOK_SHARE;
 				
+				loggedIn = YES;
+				facebookLoggedIn = YES;
 				[[self mainViewController] logInFacebook];
             }
         }

@@ -45,6 +45,8 @@ Event *_event = nil;
 
 int serviceLoginViewHeight = 100;
 
+NSUserDefaults *defaults = nil;
+
 + (id)singleton {
     static NDMainViewController *singletonController = nil;
     static dispatch_once_t onceToken;
@@ -57,6 +59,8 @@ int serviceLoginViewHeight = 100;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+	defaults = [NSUserDefaults standardUserDefaults];
 
 	int windowWidth = CGRectGetWidth(self.view.bounds);
 	int windowHeight = CGRectGetHeight(self.view.bounds);
@@ -122,12 +126,33 @@ int serviceLoginViewHeight = 100;
 								   selector:@selector(loadEvent)
 								   userInfo:nil
 									repeats:YES];
+
+	[NSTimer scheduledTimerWithTimeInterval:30
+									 target:self
+								   selector:@selector(uploadPhotos)
+								   userInfo:nil
+									repeats:YES];
+
 }
+
+-(void) uploadPhotos
+{
+	NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",  [defaults stringForKey:kPrefServerUrlKey], @"/api/processuploads"]];
+	NSURLRequest *request = [NSURLRequest requestWithURL:url];
+
+	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+
+	} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+		NSLog(@"error calling /api/processuploads: %@", error);
+	}];
+
+	[operation start];
+
+}
+
 
 -(void) loadEvent
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	
 	NSURL *eventUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",  [defaults stringForKey:kPrefServerUrlKey], @"/api/event"]];
 	NSURLRequest *request = [NSURLRequest requestWithURL:eventUrl];
 	
