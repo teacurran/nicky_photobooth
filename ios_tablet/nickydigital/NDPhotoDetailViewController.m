@@ -417,6 +417,10 @@ NDMainViewController *mainViewController = nil;
     currentAction = ACTION_TWITTER_LOGIN;
     nextAction = ACTION_TWITTER_SHARE;
 
+	twitterOAuth = [[OAuth alloc] initWithConsumerKey:kTwitterConsumerKey andConsumerSecret:kTwitterConsumerSecret];
+	[twitterOAuth synchronousRequestTwitterTokenWithCallbackUrl:@"http://www.nickydigital.com"];
+
+	
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (cookie in [storage cookies]) {
@@ -436,14 +440,6 @@ NDMainViewController *mainViewController = nil;
 
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 400)];
 
-	[webView.layer setBorderColor: [[UIColor redColor] CGColor]];
-	[webView.layer setBorderWidth: 3.0];
-
-	
-	twitterOAuth = [[OAuth alloc] initWithConsumerKey:kTwitterConsumerKey andConsumerSecret:kTwitterConsumerSecret];
-
-	[twitterOAuth synchronousRequestTwitterTokenWithCallbackUrl:@"http://www.nickydigital.com"];
-	
 	NSDictionary * params = [NSDictionary dictionaryWithObject:twitterOAuth.oauth_token forKey:@"oauth_token"];
 
     NSURL *url = [self generateURL:@"http://api.twitter.com/oauth/authorize" params:params];
@@ -515,44 +511,75 @@ NDMainViewController *mainViewController = nil;
 * Web View Methods
 */
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    NSString *url = [[request URL] absoluteString];
+	NSURL *url = request.URL;
+	NSString *host = [url host];
+    NSString *urlString = [[request URL] absoluteString];
 
-	CGRect frame = webView.frame;
-	NSLog(@"frame:%f", frame.origin.y);
-	//[webView setFrame:CGRectMake(0, 0, 600, 400)];
+	if (currentAction == ACTION_FACEBOOK_LOGIN) {
+		NSInteger nickyDigitalInUrl = [urlString rangeOfString:kFacebookRedirect].location;
+		if (nickyDigitalInUrl != NSNotFound && nickyDigitalInUrl == 0) {
+
+			NSArray *authUrlComponents = [urlString componentsSeparatedByString:@"&"];
+
+			for (NSString *authUrlComponent in authUrlComponents) {
+				NSLog(@"url %@", authUrlComponent);
+				NSInteger authTokenParameterPosition = [authUrlComponent rangeOfString:@"access_token="].location;
+				NSLog(@"position %d", authTokenParameterPosition);
+				if (authTokenParameterPosition != NSNotFound && authTokenParameterPosition == 0) {
+					userFacebookToken = [authUrlComponent substringFromIndex:@"access_token=".length];
+
+					nextAction = ACTION_FACEBOOK_SHARE;
+
+					loggedIn = YES;
+					facebookLoggedIn = YES;
+					[mainViewController logInFacebook];
+				}
+			}
+
+			[self autoModalViewControllerDismissWithNext:nil];
+
+			return false;
+		}
+	}
 	
-    NSInteger nickyDigitalInUrl = [url rangeOfString:kFacebookRedirect].location;
-    if (nickyDigitalInUrl != NSNotFound && nickyDigitalInUrl == 0) {
+	if (currentAction == ACTION_TWITTER_LOGIN) {
+		NSLog(@"%@", host);
+		NSLog(@"%@", [url absoluteString]);
+		if ([host isEqualToString:@"www.nickydigital.com"]) {
+			NSLog(@"At Yatterbox");
+			if ([[url.resourceSpecifier substringToIndex:8] isEqualToString:@"//cancel"] ||
+				[url.resourceSpecifier rangeOfString:@"?denied="].location != NSNotFound) {
+				[self autoModalViewControllerDismiss:nil];
+			} else {
+				NSLog(@"Suceeded Now Getting Access Token");
 
-        NSArray *authUrlComponents = [url componentsSeparatedByString:@"&"];
+				[twitterOAuth synchronousAuthorizeTwitterTokenWithVerifier:[self getStringFromUrl:[url absoluteString] needle:@"oauth_verifier="]];
 
-        for (NSString *authUrlComponent in authUrlComponents) {
-            NSLog(@"url %@", authUrlComponent);
-            NSInteger authTokenParameterPosition = [authUrlComponent rangeOfString:@"access_token="].location;
-            NSLog(@"position %d", authTokenParameterPosition);
-            if (authTokenParameterPosition != NSNotFound && authTokenParameterPosition == 0) {
-                userFacebookToken = [authUrlComponent substringFromIndex:@"access_token=".length];
+				nextAction = ACTION_TWITTER_SHARE;
+				
+				loggedIn = YES;
+				twitterLoggedIn = YES;
+				[mainViewController logInTwitter];
 
-                nextAction = ACTION_FACEBOOK_SHARE;
-
-                loggedIn = YES;
-                facebookLoggedIn = YES;
-                [mainViewController logInFacebook];
-            }
-        }
-
-        [self autoModalViewControllerDismissWithNext:nil];
-
-        return false;
-    }
-    return true;
+				[self autoModalViewControllerDismissWithNext:nil];
+			}
+			return NO;
+		}
+	}
+	
+    return YES;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
+	CGRect frame = webView.frame;
+	NSLog(@"frame:%f", frame.origin.y);
+
     // NSString *url = [[[webView request] URL] absoluteString];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
+	CGRect frame = webView.frame;
+	NSLog(@"frame:%f", frame.origin.y);
 
     if (currentAction == ACTION_FACEBOOK_LOGIN) {
         //NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
@@ -685,6 +712,24 @@ NDMainViewController *mainViewController = nil;
     float topOffset = (imageView.frame.size.height - newHeight) / 2;
 	
     return CGRectMake(leftOffset, topOffset, newWidth, newHeight);
+}
+
+/**
+ * Find a specific parameter from the url
+ */
+- (NSString *) getStringFromUrl: (NSString*) url needle:(NSString *) needle {
+    NSString * str = nil;
+    NSRange start = [url rangeOfString:needle];
+    if (start.location != NSNotFound) {
+        NSRange end = [[url substringFromIndex:start.location+start.length] rangeOfString:@"&"];
+        NSUInteger offset = start.location+start.length;
+        str = end.location == NSNotFound
+        ? [url substringFromIndex:offset]
+        : [url substringWithRange:NSMakeRange(offset, end.location)];
+        str = [str stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    }
+    
+    return str;
 }
 
 @end
