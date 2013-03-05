@@ -21,6 +21,9 @@
 - (void)setPhoto:(Photo*)photo withView:(UIImageView*)imageView;
 
 - (IBAction)btnFacebookShareClick:(id)sender;
+- (IBAction)btnTwitterShareClick:(id)sender;
+- (IBAction)btnTumblrShareClick:(id)sender;
+- (IBAction)btnEmailShareClick:(id)sender;
 
 - (IBAction)btnEmailClick:(id)sender;
 

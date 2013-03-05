@@ -99,8 +99,6 @@ NDMainViewController *_mainViewController;
 				UIImageView *imageView = [[UIImageView alloc] init];
 				imageView.clipsToBounds = YES;
 				
-				[detailViewController setPhoto:photo withView:photo.thumbView];
-
 				NSURL *url = [NSURL URLWithString:[
 											NSString stringWithFormat:@"%@/%@/%@",
 												   [defaults stringForKey:kPrefServerUrlKey],

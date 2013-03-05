@@ -72,12 +72,12 @@
 		9330C4A916A3D0FE00A0BF84 /* icon72x72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon72x72.png; path = ../icon72x72.png; sourceTree = "<group>"; };
 		9330C4AD16A3D14100A0BF84 /* icon144x144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon144x144.png; path = ../icon144x144.png; sourceTree = "<group>"; };
 		9330C4BF16A4B96A00A0BF84 /* nickydigital.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = nickydigital.xcdatamodel; sourceTree = "<group>"; };
-		9330C4D016A4C4F200A0BF84 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
-		9330C4D116A4C4F200A0BF84 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
-		9330C4D316A4C70400A0BF84 /* NDApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDApiManager.h; sourceTree = "<group>"; };
-		9330C4D416A4C70400A0BF84 /* NDApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDApiManager.m; sourceTree = "<group>"; };
-		9330C4D616A4C7D200A0BF84 /* NDConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDConstants.h; sourceTree = "<group>"; };
-		9330C4D716A4C7D200A0BF84 /* NDConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDConstants.m; sourceTree = "<group>"; };
+		9330C4D016A4C4F200A0BF84 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Photo.h; path = ../Photo.h; sourceTree = "<group>"; };
+		9330C4D116A4C4F200A0BF84 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Photo.m; path = ../Photo.m; sourceTree = "<group>"; };
+		9330C4D316A4C70400A0BF84 /* NDApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NDApiManager.h; path = ../NDApiManager.h; sourceTree = "<group>"; };
+		9330C4D416A4C70400A0BF84 /* NDApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NDApiManager.m; path = ../NDApiManager.m; sourceTree = "<group>"; };
+		9330C4D616A4C7D200A0BF84 /* NDConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NDConstants.h; path = ../NDConstants.h; sourceTree = "<group>"; };
+		9330C4D716A4C7D200A0BF84 /* NDConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NDConstants.m; path = ../NDConstants.m; sourceTree = "<group>"; };
 		9338379316CB3DF00010EC17 /* NDPhotoDetailModalPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDPhotoDetailModalPanel.h; sourceTree = "<group>"; };
 		9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDPhotoDetailModalPanel.m; sourceTree = "<group>"; };
 		9338379616D177C90010EC17 /* placeholder_landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder_landscape.png; sourceTree = "<group>"; };
@@ -208,12 +208,6 @@
 				9368E14D16C8B3B2009407B1 /* BDDynamicGridViewController */,
 				9368E0E616C8B116009407B1 /* images */,
 				938B263A16ABEAE800F8176E /* Settings.bundle */,
-				9330C4D616A4C7D200A0BF84 /* NDConstants.h */,
-				9330C4D716A4C7D200A0BF84 /* NDConstants.m */,
-				9330C4D316A4C70400A0BF84 /* NDApiManager.h */,
-				9330C4D416A4C70400A0BF84 /* NDApiManager.m */,
-				9330C4D016A4C4F200A0BF84 /* Photo.h */,
-				9330C4D116A4C4F200A0BF84 /* Photo.m */,
 				9330C4BE16A4B96A00A0BF84 /* nickydigital.xcdatamodeld */,
 				93E8C6A7169E956F00A43F4A /* nickydigital */,
 				93E8C6A0169E956F00A43F4A /* Frameworks */,
@@ -244,25 +238,31 @@
 		93E8C6A7169E956F00A43F4A /* nickydigital */ = {
 			isa = PBXGroup;
 			children = (
-				930814A316DC516400572259 /* views */,
+				93692E9D16DF34D2003BFEA2 /* Event.h */,
+				93692E9E16DF34D2003BFEA2 /* Event.m */,
+				93E8C6B9169E956F00A43F4A /* MainStoryboard.storyboard */,
+				93DCF7C816E2FCE700A4C3CD /* NDApiClient.h */,
+				93DCF7C916E2FCE700A4C3CD /* NDApiClient.m */,
+				9330C4D316A4C70400A0BF84 /* NDApiManager.h */,
+				9330C4D416A4C70400A0BF84 /* NDApiManager.m */,
+				9330C4D616A4C7D200A0BF84 /* NDConstants.h */,
+				9330C4D716A4C7D200A0BF84 /* NDConstants.m */,
 				9338379F16D18ECE0010EC17 /* NDMainViewController.h */,
 				933837A016D18ECE0010EC17 /* NDMainViewController.m */,
-				9368E0E016C8AAFE009407B1 /* NDPhotoGridViewController.h */,
-				9368E0E116C8AAFE009407B1 /* NDPhotoGridViewController.m */,
-				9368E0E216C8AAFE009407B1 /* NDPhotoGridViewController+Private.h */,
-				9368E0E316C8AAFE009407B1 /* NDPhotoGridViewController+Private.m */,
-				93E8C6B0169E956F00A43F4A /* SBAppDelegate.h */,
-				93E8C6B1169E956F00A43F4A /* SBAppDelegate.m */,
-				93E8C6B9169E956F00A43F4A /* MainStoryboard.storyboard */,
-				93E8C6A8169E956F00A43F4A /* Supporting Files */,
 				9338379316CB3DF00010EC17 /* NDPhotoDetailModalPanel.h */,
 				9338379416CB3DF00010EC17 /* NDPhotoDetailModalPanel.m */,
 				93665B4516D940D300D233B3 /* NDPhotoDetailViewController.h */,
 				93665B4616D940D300D233B3 /* NDPhotoDetailViewController.m */,
-				93692E9D16DF34D2003BFEA2 /* Event.h */,
-				93692E9E16DF34D2003BFEA2 /* Event.m */,
-				93DCF7C816E2FCE700A4C3CD /* NDApiClient.h */,
-				93DCF7C916E2FCE700A4C3CD /* NDApiClient.m */,
+				9368E0E216C8AAFE009407B1 /* NDPhotoGridViewController+Private.h */,
+				9368E0E316C8AAFE009407B1 /* NDPhotoGridViewController+Private.m */,
+				9368E0E016C8AAFE009407B1 /* NDPhotoGridViewController.h */,
+				9368E0E116C8AAFE009407B1 /* NDPhotoGridViewController.m */,
+				9330C4D016A4C4F200A0BF84 /* Photo.h */,
+				9330C4D116A4C4F200A0BF84 /* Photo.m */,
+				93E8C6B0169E956F00A43F4A /* SBAppDelegate.h */,
+				93E8C6B1169E956F00A43F4A /* SBAppDelegate.m */,
+				93E8C6A8169E956F00A43F4A /* Supporting Files */,
+				930814A316DC516400572259 /* views */,
 			);
 			path = nickydigital;
 			sourceTree = "<group>";

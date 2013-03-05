@@ -26,16 +26,19 @@ blue:((float)(rgbValue & 0xFF))/255.0 alpha:a]
 
 extern NSString* const kSMileBoothAuthUrl;
 
-extern NSString* const kFacebookAppId;
-extern NSString* const kFacebookSecret;
-extern NSString* const kFacebookRedirect;
-extern NSString* const kFacebookScope;
-extern NSString* const kFacebookOauth;
+extern NSString *const kFacebookAppId;
+extern NSString *const kFacebookSecret;
+extern NSString *const kFacebookRedirect;
+extern NSString *const kFacebookScope;
+extern NSString *const kFacebookOauth;
+
+extern NSString *const kTwitterConsumerKey;
+extern NSString *const kTwitterConsumerSecret;
 
 extern int const kGridBorderWidth;
 
-extern NSString* const kPrefServerUrlKey;
-extern NSString* const kPrefServerUrlDefault;
+extern NSString *const kPrefServerUrlKey;
+extern NSString *const kPrefServerUrlDefault;
 
 
 @end

@@ -177,7 +177,7 @@ NSUserDefaults *defaults = nil;
 		// if the event id has changed, update the banner image, if there is one
 		event.banner = [JSON objectForKey:@"banner"];
 		if (event.eventId != eventIdInt) {
-			if (event.banner != nil) {
+			if (event.banner != nil && ![event.banner isEqualToString:@""]) {
 
 				NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@",
 												   [defaults stringForKey:kPrefServerUrlKey],
