@@ -16,7 +16,6 @@
 #import "NDMainViewController.h"
 
 #import "NDPhotoGridViewController.h"
-#import "NDPhotoGridViewController+Private.h"
 
 @implementation NDMainViewController
 

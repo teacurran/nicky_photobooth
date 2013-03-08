@@ -10,7 +10,7 @@
 #import "NDPhotoDetailModalPanel.h"
 #import "Photo.h"
 
-@interface NDPhotoDetailViewController : UIViewController<UIWebViewDelegate> {
+@interface NDPhotoDetailViewController : UIViewController<UIWebViewDelegate, UITextViewDelegate> {
 }
 
 

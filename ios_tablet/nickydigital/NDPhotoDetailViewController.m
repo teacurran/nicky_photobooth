@@ -95,6 +95,7 @@ NDMainViewController *mainViewController = nil;
     [emailButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothStandard];
     //[emailButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothExtreme];
     //[emailButton setExtraShadingType:kUIGlossyButtonExtraShadingTypeAngleRight];
+	[emailField setKeyboardType:UIKeyboardTypeEmailAddress];
 
     // Share View
     [[NSBundle mainBundle] loadNibNamed:@"ShareView" owner:self options:nil];
@@ -265,10 +266,7 @@ NDMainViewController *mainViewController = nil;
         [self facebookShare];
         return;
     } else if (!mainViewController.loggedIn) {
-        loggedIn = NO;
-        facebookLoggedIn = NO;
-        twitterLoggedIn = NO;
-        tumblrLoggedIn = NO;
+		[self logout];
     }
 
 
@@ -297,10 +295,7 @@ NDMainViewController *mainViewController = nil;
         [self twitterShare];
         return;
     } else if (!mainViewController.loggedIn) {
-        loggedIn = NO;
-        facebookLoggedIn = NO;
-        twitterLoggedIn = NO;
-        tumblrLoggedIn = NO;
+		[self logout];
     }
 
     currentAction = ACTION_TWITTER_EMAIL;
@@ -348,6 +343,7 @@ NDMainViewController *mainViewController = nil;
     shareImageView.image = photoView.image;
 
     shareTextView.text = [[NDMainViewController singleton] event].longShare;
+	[shareTextView setDelegate:nil];
 
     [modalDialog.view addSubview:shareView];
 
@@ -405,7 +401,8 @@ NDMainViewController *mainViewController = nil;
 
     shareImageView.image = photoView.image;
 
-    shareTextView.text = [[NDMainViewController singleton] event].longShare;
+    shareTextView.text = [[NDMainViewController singleton] event].shortShare;
+	[shareTextView setDelegate:self];
 
     [modalDialog.view addSubview:shareView];
 
@@ -481,10 +478,38 @@ NDMainViewController *mainViewController = nil;
 
     }
 
+    if (currentAction == ACTION_TWITTER_SHARE) {
+        NDApiClient *client = [NDApiClient sharedClient];
+        [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+        [[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
+		
+        NSURLRequest *request = [client requestWithMethod:@"POST"
+                                                     path:@"/api/twittershare"
+                                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:
+														   emailField.text, @"email",
+														   twitterOAuth.oauth_token, @"token",
+														   twitterOAuth.oauth_token_secret, @"tokensecret",
+														   _photo.filename, @"filename",
+														   shareTextView.text, @"body",
+														   nil]
+								 ];
+		
+        AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+			
+        }                                                                                   failure:nil];
+		
+        [operation start];
+		
+        [self autoModalViewControllerDismissWithNext:nil];
+		
+    }
+
+
 }
 
 - (IBAction)btnEmailClick:(id)sender {
     userEmailAddress = emailField.text;
+	emailField.text = @"";
 
     NDApiClient *client = [NDApiClient sharedClient];
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -590,6 +615,15 @@ NDMainViewController *mainViewController = nil;
         //NSLog(@"result: %@", result);
         //	[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('L$lbsc$txtUserName').value='ANdrew';"];
     }
+}
+
+- (void)logout {
+	userEmailAddress = nil;
+	twitterOAuth = nil;
+	loggedIn = NO;
+	facebookLoggedIn = NO;
+	twitterLoggedIn = NO;
+	tumblrLoggedIn = NO;
 }
 
 
@@ -730,6 +764,15 @@ NDMainViewController *mainViewController = nil;
     }
     
     return str;
+}
+
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    if (textView.text.length >= 120)
+    {
+    	textView.text = [textView.text substringToIndex:120];
+    }
 }
 
 @end

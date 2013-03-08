@@ -10,11 +10,12 @@
 #import "BDDynamicGridViewController.h"
 
 @interface NDPhotoGridViewController : BDDynamicGridViewController<BDDynamicGridViewDelegate>{
-    NSMutableArray * _items;
 	int _placeholderCount;
 	NSMutableArray * _placeholders;
 
 }
+
+- (void) loadPhotos;
 
 
 @end

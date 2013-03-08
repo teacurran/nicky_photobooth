@@ -7,16 +7,15 @@
 //
 
 #import "NDPhotoGridViewController.h"
-#import "NDPhotoGridViewController+Private.h"
 #import "NDConstants.h"
 #import "NDPhotoDetailViewController.h"
 
 #import "BDRowInfo.h"
 #import "UAModalPanel.h"
 #import "Photo.h"
-#import "UIImageView+AFNetworking.h"
 #import "AFJSONRequestOperation.h"
 #import "NDMainViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface NDPhotoGridViewController ()
 
@@ -27,6 +26,11 @@
 NDPhotoDetailViewController *detailViewController;
 
 NDMainViewController *_mainViewController;
+
+UIRefreshControl *refreshControl;
+
+NSMutableArray * _items;
+NSMutableDictionary * _itemsLoading;
 
 - (void)viewDidLoad
 {
@@ -40,7 +44,18 @@ NDMainViewController *_mainViewController;
 		placeholderView.clipsToBounds = YES;
 		[_placeholders addObject:placeholderView];
 	}
+
     
+	refreshControl = [[UIRefreshControl alloc] init];
+	refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+	[refreshControl addTarget:self
+	action:@selector(refreshPhotos:)
+	forControlEvents:UIControlEventValueChanged];
+	
+	[self.tableView addSubview:refreshControl];
+	
+	
+	
 	//self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
 
 //	[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"banner_default.png"] forBarMetrics:UIBarMetricsDefault];
@@ -252,5 +267,213 @@ NDMainViewController *_mainViewController;
 	}
 	return _mainViewController;
 }
+
+NSLock *itemLock;
+
+-(NSLock*) getItemLock {
+	if (itemLock == Nil) {
+		itemLock = [[NSLock alloc] init];
+	}
+	return itemLock;
+}
+
+-(void) loadPhotos
+{
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	
+	NSURL *photoListUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",  [defaults stringForKey:kPrefServerUrlKey], @"/api/photos"]];
+	NSURLRequest *request = [NSURLRequest requestWithURL:photoListUrl];
+	
+	if (_items == nil) {
+		_items = [NSMutableArray array];
+	}
+	if (_itemsLoading == nil) {
+		_itemsLoading = [[NSMutableDictionary alloc] initWithCapacity:10];
+	}
+	AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+		Boolean itemsChanged = false;
+		
+		NSLock *arrayLock = [self getItemLock];
+		[arrayLock lock];
+		
+		for(id jsonImage in JSON)
+		{
+			NSString *filename = [jsonImage valueForKeyPath:@"filename"];
+			
+			Boolean found = false;
+			for (id photo in _items) {
+				if ([filename isEqualToString:[photo filename]]) {
+					found = true;
+					break;
+				}
+			}
+			for (id key in _itemsLoading) {
+				Photo *photo = [_itemsLoading objectForKey:key];
+				if ([filename isEqualToString:[photo filename]]) {
+					found = true;
+					break;
+				}
+			}
+			
+			if (!found) {
+				NSLog(@"adding photo: %@", filename);
+				
+				UIImageView *imageView = [[UIImageView alloc] init];
+				imageView.clipsToBounds = YES;
+				
+
+				NSURL *imageUrl = [NSURL URLWithString:[
+									 NSString stringWithFormat:@"%@/%@/%@",
+									 [defaults stringForKey:kPrefServerUrlKey],
+									 @"api/photo/300",
+									 filename]
+								   ];
+				NSMutableURLRequest *imageRequest = [NSMutableURLRequest requestWithURL:imageUrl];
+				//imageRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
+				imageRequest.timeoutInterval = 300.0;
+				
+				[imageView setImageWithURLRequest:imageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+					
+					Photo *photo = [_itemsLoading objectForKey:request];
+					if (photo != nil) {
+						
+						photo.thumbView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+						photo.thumbView.image = image;
+
+						[_items addObject:photo];
+						[_itemsLoading removeObjectForKey:request];
+						[self reloadPhotos];
+					}
+					
+				} failure:nil];
+				
+				
+				Photo *photo = [[Photo alloc] init];
+				[photo setFilename:filename];
+				[photo setThumbView:imageView];
+				
+				[_itemsLoading setObject:photo forKey:imageRequest];
+
+				//itemsChanged = true;
+
+				//_items = [_items arrayByAddingObject:photo];
+				//				        [self performSelector:@selector(animateUpdate:)
+				//				                   withObject:[NSArray arrayWithObjects:imageView, imageView.image, nil]
+				//				                   afterDelay:0.2 + (arc4random()%3) + (arc4random() %10 * 0.1)];
+				
+			}
+		}
+		
+		// look for items to delete
+		NSMutableArray *itemsToDelete = [NSMutableArray array];
+		for (id photo in _items) {
+			Boolean found = false;
+			for(id jsonImage in JSON)
+			{
+				NSString *filename = [jsonImage valueForKeyPath:@"filename"];
+				if ([filename isEqualToString:[photo filename]]) {
+					found = true;
+					break;
+				}
+			}
+			
+			if (!found) {
+				[itemsToDelete addObject:photo];
+				itemsChanged = true;
+			}
+		}
+		for (id photo in itemsToDelete) {
+			[_items removeObject:photo];
+		}
+		
+		if (itemsChanged) {
+			[self reloadPhotos];
+		}
+		[self reloadPhotos];
+		[arrayLock unlock];
+		
+	} failure:nil];
+	
+	[operation start];
+	
+}
+
+- (void) reloadPhotos {
+	// put in some placeholders if we don't have enough images to fill out a row.
+	int bufferPlaceholders = 0;
+	int photoCount = _items.count;
+	
+	if (photoCount < 3) {
+		
+		bufferPlaceholders = 3 - photoCount;
+		
+	} else if (photoCount > 3 && photoCount < 6) {
+		
+		bufferPlaceholders = 6 - photoCount;
+		
+	} else if (photoCount > 6 && photoCount < 12) {
+		
+		bufferPlaceholders = 12 - photoCount;
+		
+	} else if (photoCount > 12 && photoCount < 18) {
+		
+		bufferPlaceholders = 18 - photoCount;
+		
+	} else if (photoCount > 18 && photoCount < 24) {
+		
+		bufferPlaceholders = 24 - photoCount;
+		
+	} else if (photoCount > 24 && photoCount < 30) {
+		
+		bufferPlaceholders = 30 - photoCount;
+		
+	} else if (photoCount > 30) {
+		
+		bufferPlaceholders = 12 - ((photoCount - 30) % 12);
+		
+	}
+	
+	NSLog(@"inserting placeholders:%d", bufferPlaceholders);
+	_placeholderCount = bufferPlaceholders;
+
+	[self reloadData];
+}
+
+-(void)refreshPhotos:(UIRefreshControl *)refresh {
+	NSLock *arrayLock = [self getItemLock];
+	[arrayLock lock];
+	_items = nil;
+
+	//[UIImageView clearAFImageCache];
+	[arrayLock unlock];
+	
+	[self reloadData];
+	
+	[self loadPhotos];
+	
+	[refreshControl endRefreshing];
+}
+
+- (void) animateUpdate:(NSArray*)objects
+{
+    UIImageView *imageView = [objects objectAtIndex:0];
+    UIImage* image = [objects objectAtIndex:1];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         imageView.alpha = 0.f;
+                     } completion:^(BOOL finished) {
+                         imageView.image = image;
+                         [UIView animateWithDuration:0.2
+                                          animations:^{
+                                              imageView.alpha = 1;
+                                          } completion:^(BOOL finished) {
+                                              NSArray *visibleRowInfos =  [self visibleRowInfos];
+                                              for (BDRowInfo *rowInfo in visibleRowInfos) {
+                                                  [self updateLayoutWithRow:rowInfo animiated:YES];
+                                              }
+                                          }];
+                     }];
+}
+
 
 @end
