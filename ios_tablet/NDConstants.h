@@ -40,5 +40,6 @@ extern int const kGridBorderWidth;
 extern NSString *const kPrefServerUrlKey;
 extern NSString *const kPrefServerUrlDefault;
 
+extern NSString *const kEmailRegex;
 
 @end

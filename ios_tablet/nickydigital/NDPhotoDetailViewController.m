@@ -40,6 +40,14 @@
     IBOutlet UIImageView *shareImageView;
     IBOutlet UIGlossyButton *shareButton;
     IBOutlet UITextView *shareTextView;
+
+    IBOutlet UIView *emailShareView;
+    IBOutlet UIImageView *emailShareImageView;
+    IBOutlet UITextField *emailShareFromField;
+    IBOutlet UITextField *emailShareToField;
+    IBOutlet UITextView *emailShareBodyView;
+    IBOutlet UIGlossyButton *emailShareButton;
+
 }
 @end
 
@@ -54,6 +62,7 @@ const int ACTION_FACEBOOK_SHARE = 3;
 const int ACTION_TWITTER_EMAIL = 4;
 const int ACTION_TWITTER_LOGIN = 5;
 const int ACTION_TWITTER_SHARE = 6;
+const int ACTION_EMAIL_SHARE = 7;
 
 int currentAction = ACTION_NONE;
 int nextAction = ACTION_NONE;
@@ -110,7 +119,21 @@ NDMainViewController *mainViewController = nil;
     shareTextView.layer.borderColor = [[UIColor grayColor] CGColor];
     shareTextView.layer.borderWidth = 1.0f;
 
-    //viewLoadedFromXib.frame = view.contentView.frame;
+    // Email Share View
+    [[NSBundle mainBundle] loadNibNamed:@"EmailShareView" owner:self options:nil];
+    emailShareBodyView.layer.cornerRadius = 8.0f;
+    emailShareBodyView.layer.masksToBounds = YES;
+    emailShareBodyView.layer.borderColor = [[UIColor grayColor] CGColor];
+    emailShareBodyView.layer.borderWidth = 1.0f;
+
+	emailShareButton.borderColor = mainViewController.brandColor;
+    emailShareButton.tintColor = mainViewController.brandColor;
+    [emailShareButton useWhiteLabel:YES];
+    [emailShareButton setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius:4];
+    [emailShareButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothStandard];
+
+    
+	//viewLoadedFromXib.frame = view.contentView.frame;
 
     NDPhotoDetailModalPanel *view = [[NDPhotoDetailModalPanel alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] content:photoDetailView]; //theFrame];
     view.contentColor = [UIColor whiteColor];
@@ -267,8 +290,10 @@ NDMainViewController *mainViewController = nil;
         return;
     } else if (!mainViewController.loggedIn) {
 		[self logout];
-    }
-
+    } else {
+		[self facebookLogin];
+		return;
+	}
 
     currentAction = ACTION_FACEBOOK_EMAIL;
     nextAction = ACTION_FACEBOOK_LOGIN;
@@ -296,6 +321,9 @@ NDMainViewController *mainViewController = nil;
         return;
     } else if (!mainViewController.loggedIn) {
 		[self logout];
+	} else {
+		[self twitterLogin];
+		return;
     }
 
     currentAction = ACTION_TWITTER_EMAIL;
@@ -324,6 +352,28 @@ NDMainViewController *mainViewController = nil;
 
 - (IBAction)btnEmailShareClick:(id)sender {
 
+    currentAction = ACTION_EMAIL_SHARE;
+    nextAction = nil;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    emailShareImageView.image = photoView.image;
+	emailShareFromField.text = userEmailAddress;
+	emailShareToField.text = nil;
+	emailShareBodyView.text = [[NDMainViewController singleton] event].emailShare;
+    
+	[modalDialog.view addSubview:emailShareView];
+	
+    modalDialog.view.superview.center = centerOfView;
+	
 }
 
 
@@ -453,6 +503,8 @@ NDMainViewController *mainViewController = nil;
 
     nextAction = ACTION_NONE;
 
+	NSRegularExpression *emailRegex = [NSRegularExpression regularExpressionWithPattern:kEmailRegex options:NSRegularExpressionCaseInsensitive error:nil];
+	
     if (currentAction == ACTION_FACEBOOK_SHARE) {
         NDApiClient *client = [NDApiClient sharedClient];
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -503,6 +555,62 @@ NDMainViewController *mainViewController = nil;
         [self autoModalViewControllerDismissWithNext:nil];
 		
     }
+	
+	if (currentAction == ACTION_EMAIL_SHARE) {
+		NSString *emailFrom = (emailShareFromField.text == nil) ? @"" : emailShareFromField.text;
+		NSString *emailTo = (emailShareToField.text == nil) ? @"" : emailShareToField.text;
+
+		NSTextCheckingResult *validateFromAddress = [emailRegex firstMatchInString:emailFrom options:0 range:NSMakeRange(0, [emailFrom length])];
+		NSTextCheckingResult *validateToAddress = [emailRegex firstMatchInString:emailTo options:0 range:NSMakeRange(0, [emailTo length])];
+
+		if (!validateFromAddress && !validateToAddress) {
+			UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
+															  message:@"Please enter a valid from and to email address"
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+			[message show];
+			return;
+		} else if (!validateFromAddress) {
+			UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
+															  message:@"Please enter a valid from email address"
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+			[message show];
+			return;
+		} else if (!validateToAddress) {
+			UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
+															  message:@"Please enter a valid to email address"
+															 delegate:nil
+													cancelButtonTitle:@"OK"
+													otherButtonTitles:nil];
+			[message show];
+			return;
+		}
+
+		NDApiClient *client = [NDApiClient sharedClient];
+        [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+        [[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
+		
+        NSURLRequest *request = [client requestWithMethod:@"POST"
+                                                     path:@"/api/emailshare"
+                                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:
+														   emailFrom, @"email_from",
+														   emailTo, @"email_to",
+														   emailShareBodyView.text, @"email_body",
+														   _photo.filename, @"filename",
+														   nil]
+								 ];
+		
+        AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+			
+        }                                                                                   failure:nil];
+		
+        [operation start];
+		
+        [self autoModalViewControllerDismissWithNext:nil];
+	}
 
 
 }
@@ -606,6 +714,9 @@ NDMainViewController *mainViewController = nil;
 	CGRect frame = webView.frame;
 	NSLog(@"frame:%f", frame.origin.y);
 
+	//NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
+	//NSLog(@"allHTML: %@", html);
+
     if (currentAction == ACTION_FACEBOOK_LOGIN) {
         //NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
         //NSLog(@"allHTML: %@", html);
@@ -615,6 +726,13 @@ NDMainViewController *mainViewController = nil;
         //NSLog(@"result: %@", result);
         //	[webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('L$lbsc$txtUserName').value='ANdrew';"];
     }
+
+	if (currentAction == ACTION_TWITTER_LOGIN) {
+		
+        [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.forms[0].username_or_email.value='%@';", userEmailAddress]];
+		
+	}
+
 }
 
 - (void)logout {

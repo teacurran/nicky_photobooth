@@ -48,6 +48,7 @@
 		9371E8F416E99FAF00FBC0E3 /* AFXMLRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9371E8EA16E99FAF00FBC0E3 /* AFXMLRequestOperation.m */; };
 		9371E8F516E99FAF00FBC0E3 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 9371E8EC16E99FAF00FBC0E3 /* UIImageView+AFNetworking.m */; };
 		938B263B16ABEAE800F8176E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 938B263A16ABEAE800F8176E /* Settings.bundle */; };
+		93A1F5EF16ED96120004AAEB /* EmailShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93A1F5EE16ED96120004AAEB /* EmailShareView.xib */; };
 		93DCF7CA16E2FCE700A4C3CD /* NDApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DCF7C916E2FCE700A4C3CD /* NDApiClient.m */; };
 		93E8C6A2169E956F00A43F4A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E8C6A1169E956F00A43F4A /* UIKit.framework */; };
 		93E8C6A4169E956F00A43F4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E8C6A3169E956F00A43F4A /* Foundation.framework */; };
@@ -134,6 +135,7 @@
 		9371E8EB16E99FAF00FBC0E3 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
 		9371E8EC16E99FAF00FBC0E3 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		938B263A16ABEAE800F8176E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		93A1F5EE16ED96120004AAEB /* EmailShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailShareView.xib; sourceTree = "<group>"; };
 		93DCF7C816E2FCE700A4C3CD /* NDApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDApiClient.h; sourceTree = "<group>"; };
 		93DCF7C916E2FCE700A4C3CD /* NDApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDApiClient.m; sourceTree = "<group>"; };
 		93E8C69D169E956F00A43F4A /* Nicky Digital.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nicky Digital.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,7 @@
 		930814A316DC516400572259 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				93A1F5EE16ED96120004AAEB /* EmailShareView.xib */,
 				93FA9E4816DE97D2006B687D /* ShareView.xib */,
 				933837AD16D296A90010EC17 /* PhotoDetailView.xib */,
 				93FA9E4416DC54A3006B687D /* LoggedInView.xib */,
@@ -413,6 +416,7 @@
 				93FA9E4516DC54A3006B687D /* LoggedInView.xib in Resources */,
 				93FA9E4716DC6404006B687D /* EmailView.xib in Resources */,
 				93FA9E4916DE97D2006B687D /* ShareView.xib in Resources */,
+				93A1F5EF16ED96120004AAEB /* EmailShareView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -558,6 +562,7 @@
 				INFOPLIST_FILE = "nickydigital/nickydigital-Info.plist";
 				"INFOPLIST_PREPROCESSOR_DEFINITIONS[sdk=*]" = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -571,6 +576,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = "";
 				INFOPLIST_FILE = "nickydigital/nickydigital-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

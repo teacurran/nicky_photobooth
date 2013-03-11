@@ -24,4 +24,6 @@ NSString *const kTwitterConsumerSecret = @"P9quxz9SXZY3wtr3f258zQPl7XDmhh4zsh4Dl
 NSString *const kPrefServerUrlKey = @"server_preference";
 NSString *const kPrefServerUrlDefault = @"http://0xffffff.local";
 
+NSString *const kEmailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+
 @end

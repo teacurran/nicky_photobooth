@@ -120,13 +120,13 @@ NSUserDefaults *defaults = nil;
 	//[self.view :photoGridController];
 	
 	[self loadEvent];
-	[NSTimer scheduledTimerWithTimeInterval:10.0
+	[NSTimer scheduledTimerWithTimeInterval:30.0
 									 target:self
 								   selector:@selector(loadEvent)
 								   userInfo:nil
 									repeats:YES];
 
-	[NSTimer scheduledTimerWithTimeInterval:30
+	[NSTimer scheduledTimerWithTimeInterval:60
 									 target:self
 								   selector:@selector(uploadPhotos)
 								   userInfo:nil
@@ -207,6 +207,7 @@ NSUserDefaults *defaults = nil;
 		event.album = [JSON objectForKey:@"album_name"];
 		event.shortShare = [JSON objectForKey:@"short_share"];
 		event.longShare = [JSON objectForKey:@"long_share"];
+		event.emailShare = [JSON objectForKey:@"email_share"];
 		
 		event.showFacebook = [[JSON valueForKey:@"show_facebook"] boolValue];
 		event.showTwitter = [[JSON valueForKey:@"show_twitter"] boolValue];

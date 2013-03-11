@@ -168,7 +168,7 @@ NSMutableDictionary * _itemsLoading;
 	
     //[self _demoAsyncDataLoading];
 
-	[NSTimer scheduledTimerWithTimeInterval:2.0
+	[NSTimer scheduledTimerWithTimeInterval:3.0
 									 target:self
 								   selector:@selector(loadPhotos)
 								   userInfo:nil
@@ -332,6 +332,11 @@ NSLock *itemLock;
 				//imageRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
 				imageRequest.timeoutInterval = 300.0;
 				
+				Photo *photo = [[Photo alloc] init];
+				[photo setFilename:filename];
+				[photo setThumbView:imageView];
+				[_itemsLoading setObject:photo forKey:imageRequest];
+
 				[imageView setImageWithURLRequest:imageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 					
 					Photo *photo = [_itemsLoading objectForKey:request];
@@ -341,19 +346,14 @@ NSLock *itemLock;
 						photo.thumbView.image = image;
 
 						[_items addObject:photo];
-						[_itemsLoading removeObjectForKey:request];
 						[self reloadPhotos];
 					}
+					[_itemsLoading removeObjectForKey:request];
 					
-				} failure:nil];
+				} failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+					[_itemsLoading removeObjectForKey:request];
+				}];
 				
-				
-				Photo *photo = [[Photo alloc] init];
-				[photo setFilename:filename];
-				[photo setThumbView:imageView];
-				
-				[_itemsLoading setObject:photo forKey:imageRequest];
-
 				//itemsChanged = true;
 
 				//_items = [_items arrayByAddingObject:photo];
@@ -367,12 +367,11 @@ NSLock *itemLock;
 		// look for items to delete
 		NSMutableArray *itemsToDelete = [NSMutableArray array];
 		for (id photo in _items) {
-			Boolean found = false;
-			for(id jsonImage in JSON)
-			{
+			Boolean found = NO;
+			for(id jsonImage in JSON) {
 				NSString *filename = [jsonImage valueForKeyPath:@"filename"];
 				if ([filename isEqualToString:[photo filename]]) {
-					found = true;
+					found = YES;
 					break;
 				}
 			}
@@ -382,14 +381,37 @@ NSLock *itemLock;
 				itemsChanged = true;
 			}
 		}
+
 		for (id photo in itemsToDelete) {
 			[_items removeObject:photo];
 		}
+
+		NSMutableArray *loadingItemsToDelete = [NSMutableArray array];
+		for (id key in _itemsLoading) {
+			Photo *photo = [_itemsLoading objectForKey:key];
+			Boolean found = NO;
+			for(id jsonImage in JSON) {
+				NSString *filename = [jsonImage valueForKeyPath:@"filename"];
+				if ([filename isEqualToString:[photo filename]]) {
+					found = YES;
+					break;
+				}
+			}
+			
+			if (!found) {
+				[loadingItemsToDelete addObject:key];
+				itemsChanged = true;
+			}
+		}
 		
+		for (id key in loadingItemsToDelete) {
+			[_itemsLoading removeObjectForKey:key];
+		}
+
+
 		if (itemsChanged) {
 			[self reloadPhotos];
 		}
-		[self reloadPhotos];
 		[arrayLock unlock];
 		
 	} failure:nil];

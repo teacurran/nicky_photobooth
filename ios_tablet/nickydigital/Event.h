@@ -25,6 +25,7 @@
 @property NSString * name;
 @property NSString * album;
 @property NSString * shortShare;
+@property NSString * emailShare;
 @property NSString * longShare;
 @property bool showFacebook;
 @property bool showTwitter;
