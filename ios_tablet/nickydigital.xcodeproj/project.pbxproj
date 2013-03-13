@@ -49,6 +49,10 @@
 		9371E8F516E99FAF00FBC0E3 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 9371E8EC16E99FAF00FBC0E3 /* UIImageView+AFNetworking.m */; };
 		938B263B16ABEAE800F8176E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 938B263A16ABEAE800F8176E /* Settings.bundle */; };
 		93A1F5EF16ED96120004AAEB /* EmailShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93A1F5EE16ED96120004AAEB /* EmailShareView.xib */; };
+		93A1F5F216EE925E0004AAEB /* NDSyncHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A1F5F116EE925E0004AAEB /* NDSyncHTTPRequest.m */; };
+		93A1F5F516EFC7590004AAEB /* NDTumblrUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A1F5F416EFC7590004AAEB /* NDTumblrUser.m */; };
+		93A1F5F816EFC76F0004AAEB /* NDTumblrBlog.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A1F5F716EFC76F0004AAEB /* NDTumblrBlog.m */; };
+		93A1F5FA16EFD7A00004AAEB /* TumblrShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93A1F5F916EFD7A00004AAEB /* TumblrShareView.xib */; };
 		93DCF7CA16E2FCE700A4C3CD /* NDApiClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 93DCF7C916E2FCE700A4C3CD /* NDApiClient.m */; };
 		93E8C6A2169E956F00A43F4A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E8C6A1169E956F00A43F4A /* UIKit.framework */; };
 		93E8C6A4169E956F00A43F4A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93E8C6A3169E956F00A43F4A /* Foundation.framework */; };
@@ -136,6 +140,13 @@
 		9371E8EC16E99FAF00FBC0E3 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
 		938B263A16ABEAE800F8176E /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		93A1F5EE16ED96120004AAEB /* EmailShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailShareView.xib; sourceTree = "<group>"; };
+		93A1F5F016EE925E0004AAEB /* NDSyncHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDSyncHTTPRequest.h; sourceTree = "<group>"; };
+		93A1F5F116EE925E0004AAEB /* NDSyncHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDSyncHTTPRequest.m; sourceTree = "<group>"; };
+		93A1F5F316EFC7590004AAEB /* NDTumblrUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDTumblrUser.h; sourceTree = "<group>"; };
+		93A1F5F416EFC7590004AAEB /* NDTumblrUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDTumblrUser.m; sourceTree = "<group>"; };
+		93A1F5F616EFC76F0004AAEB /* NDTumblrBlog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NDTumblrBlog.h; path = ../NDTumblrBlog.h; sourceTree = "<group>"; };
+		93A1F5F716EFC76F0004AAEB /* NDTumblrBlog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NDTumblrBlog.m; path = ../NDTumblrBlog.m; sourceTree = "<group>"; };
+		93A1F5F916EFD7A00004AAEB /* TumblrShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TumblrShareView.xib; sourceTree = "<group>"; };
 		93DCF7C816E2FCE700A4C3CD /* NDApiClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NDApiClient.h; sourceTree = "<group>"; };
 		93DCF7C916E2FCE700A4C3CD /* NDApiClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NDApiClient.m; sourceTree = "<group>"; };
 		93E8C69D169E956F00A43F4A /* Nicky Digital.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nicky Digital.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,6 +186,7 @@
 		930814A316DC516400572259 /* views */ = {
 			isa = PBXGroup;
 			children = (
+				93A1F5F916EFD7A00004AAEB /* TumblrShareView.xib */,
 				93A1F5EE16ED96120004AAEB /* EmailShareView.xib */,
 				93FA9E4816DE97D2006B687D /* ShareView.xib */,
 				933837AD16D296A90010EC17 /* PhotoDetailView.xib */,
@@ -310,6 +322,12 @@
 				93665B4616D940D300D233B3 /* NDPhotoDetailViewController.m */,
 				9368E0E016C8AAFE009407B1 /* NDPhotoGridViewController.h */,
 				9368E0E116C8AAFE009407B1 /* NDPhotoGridViewController.m */,
+				93A1F5F016EE925E0004AAEB /* NDSyncHTTPRequest.h */,
+				93A1F5F116EE925E0004AAEB /* NDSyncHTTPRequest.m */,
+				93A1F5F616EFC76F0004AAEB /* NDTumblrBlog.h */,
+				93A1F5F716EFC76F0004AAEB /* NDTumblrBlog.m */,
+				93A1F5F316EFC7590004AAEB /* NDTumblrUser.h */,
+				93A1F5F416EFC7590004AAEB /* NDTumblrUser.m */,
 				9330C4D016A4C4F200A0BF84 /* Photo.h */,
 				9330C4D116A4C4F200A0BF84 /* Photo.m */,
 				93E8C6B0169E956F00A43F4A /* SBAppDelegate.h */,
@@ -417,6 +435,7 @@
 				93FA9E4716DC6404006B687D /* EmailView.xib in Resources */,
 				93FA9E4916DE97D2006B687D /* ShareView.xib in Resources */,
 				93A1F5EF16ED96120004AAEB /* EmailShareView.xib in Resources */,
+				93A1F5FA16EFD7A00004AAEB /* TumblrShareView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -471,6 +490,9 @@
 				9371E8F316E99FAF00FBC0E3 /* AFURLConnectionOperation.m in Sources */,
 				9371E8F416E99FAF00FBC0E3 /* AFXMLRequestOperation.m in Sources */,
 				9371E8F516E99FAF00FBC0E3 /* UIImageView+AFNetworking.m in Sources */,
+				93A1F5F216EE925E0004AAEB /* NDSyncHTTPRequest.m in Sources */,
+				93A1F5F516EFC7590004AAEB /* NDTumblrUser.m in Sources */,
+				93A1F5F816EFC76F0004AAEB /* NDTumblrBlog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

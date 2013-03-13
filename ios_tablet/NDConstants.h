@@ -42,4 +42,12 @@ extern NSString *const kPrefServerUrlDefault;
 
 extern NSString *const kEmailRegex;
 
+extern NSString *const kTumblrConsumerKey;
+extern NSString *const kTumblrConsumerSecret;
+extern NSString *const kTumblrRequestTokenUrl;
+extern NSString *const kTumblrAuthorizeUrl;
+extern NSString *const kTumblrAccessTokenUrl;
+extern NSString *const kTumblrCallBackUrl;
+extern NSString *const kTumblrUserInfo;
+
 @end

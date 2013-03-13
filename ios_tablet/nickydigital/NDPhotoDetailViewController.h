@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "NDPhotoDetailModalPanel.h"
+#import "PopoverView.h"
 #import "Photo.h"
 
-@interface NDPhotoDetailViewController : UIViewController<UIWebViewDelegate, UITextViewDelegate> {
+@interface NDPhotoDetailViewController : UIViewController<UIWebViewDelegate, UITextViewDelegate, PopoverViewDelegate> {
 }
 
 
@@ -24,6 +25,7 @@
 - (IBAction)btnTwitterShareClick:(id)sender;
 - (IBAction)btnTumblrShareClick:(id)sender;
 - (IBAction)btnEmailShareClick:(id)sender;
+- (IBAction)btnTumblrBlogChooseClick:(id)sender;
 
 - (IBAction)btnEmailClick:(id)sender;
 

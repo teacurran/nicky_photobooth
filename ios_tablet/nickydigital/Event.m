@@ -21,6 +21,7 @@
 @synthesize album;
 @synthesize shortShare;
 @synthesize longShare;
+@synthesize tumblrShare;
 @synthesize emailShare;
 @synthesize showFacebook;
 @synthesize showTwitter;

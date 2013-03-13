@@ -1,23 +1,51 @@
 
+SPEC CHECKSUMS: 
+  UIGlossyButton/LayerEffects: ac45013a4cf79d80dd3a2c137f4d36baf7058b17
+  UIGlossyButton: ac45013a4cf79d80dd3a2c137f4d36baf7058b17
+  PopoverView: 8eab9b39b1e3b188e11f8767019615e642b0111a
+  unoffical-twitter-sdk: c6476c7cff71f28886432ce371e7fe3789a24c28
+  UAModalPanel: e0f697b4d89ccf0f07c3dc2eb7d17d0e3cb7fe56
+  RestKit/Network: 0382132969d823a872b377c1ab2e383f3c74a339
+  SOCKit: ed67aeeca4a697b63a933229e53f4670d5b9300f
+  RestKit/ObjectMapping: 0382132969d823a872b377c1ab2e383f3c74a339
+  RestKit/CoreData: 0382132969d823a872b377c1ab2e383f3c74a339
+  SDWebImage/Main: 9e70e5dd0c69d1a043180cd2c5e1d0cd1e4ebcd7
+  RestKit: 0382132969d823a872b377c1ab2e383f3c74a339
+  HockeySDK: 35b80d5cc522b0f53beb5583c635e42ecce69743
+  SDWebImage: 9e70e5dd0c69d1a043180cd2c5e1d0cd1e4ebcd7
+  SBJson: 4971016670e7b3fa04a36d4e72ab0fb1ad3a9f69
+  UIGlossyButton/Core: ac45013a4cf79d80dd3a2c137f4d36baf7058b17
+  RestKit/Core: 0382132969d823a872b377c1ab2e383f3c74a339
+  KNMultiItemSelector: 982c613756a23fd92c9206d492377202ae2a1aee
+  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
+  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
+  RestKit/Support: 0382132969d823a872b377c1ab2e383f3c74a339
+
 PODS: 
 - AFNetworking (1.1.0)
 - HockeySDK (3.0.0)
 - JSONKit (1.5pre)
-- RestKit (0.20.0pre6): 
-  - RestKit/Core (= 0.20.0pre6)
-- RestKit/Core (0.20.0pre6): 
+- KNMultiItemSelector (1.0): 
+  - SDWebImage
+- PopoverView (0.0.1)
+- RestKit (0.20.0rc1): 
+  - RestKit/Core (= 0.20.0rc1)
+- RestKit/Core (0.20.0rc1): 
   - RestKit/CoreData
   - RestKit/Network
   - RestKit/ObjectMapping
-- RestKit/CoreData (0.20.0pre6)
-- RestKit/Network (0.20.0pre6): 
+- RestKit/CoreData (0.20.0rc1)
+- RestKit/Network (0.20.0rc1): 
   - AFNetworking (= 1.1.0)
   - RestKit/ObjectMapping
   - RestKit/Support
   - SOCKit
-- RestKit/ObjectMapping (0.20.0pre6)
-- RestKit/Support (0.20.0pre6)
+- RestKit/ObjectMapping (0.20.0rc1)
+- RestKit/Support (0.20.0rc1)
 - SBJson (3.2)
+- SDWebImage (3.1): 
+  - SDWebImage/Main (= 3.1)
+- SDWebImage/Main (3.1)
 - SOCKit (1.1)
 - UAModalPanel (1.1.1)
 - UIGlossyButton (0.0.7): 
@@ -28,30 +56,14 @@ PODS:
 - unoffical-twitter-sdk (0.0.1): 
   - SBJson
 
-COCOAPODS: 0.16.0
-
 DEPENDENCIES: 
 - HockeySDK
 - JSONKit (~> 1.5pre)
+- KNMultiItemSelector
+- PopoverView (~> 0.0.1)
 - RestKit
 - UAModalPanel (~> 1.1.1)
 - UIGlossyButton
 - unoffical-twitter-sdk
 
-SPEC CHECKSUMS: 
-  UAModalPanel: e0f697b4d89ccf0f07c3dc2eb7d17d0e3cb7fe56
-  RestKit/Network: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  RestKit: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  AFNetworking: 761a418233d280c1e0580bcb76ff9cb4c3073d17
-  SOCKit: ed67aeeca4a697b63a933229e53f4670d5b9300f
-  SBJson: 4971016670e7b3fa04a36d4e72ab0fb1ad3a9f69
-  RestKit/CoreData: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  RestKit/Core: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  UIGlossyButton/LayerEffects: ac45013a4cf79d80dd3a2c137f4d36baf7058b17
-  UIGlossyButton/Core: ac45013a4cf79d80dd3a2c137f4d36baf7058b17
-  UIGlossyButton: ac45013a4cf79d80dd3a2c137f4d36baf7058b17
-  RestKit/ObjectMapping: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  JSONKit: 3d4708953ea7ae399a49777372d8b060a43ddd27
-  unoffical-twitter-sdk: c6476c7cff71f28886432ce371e7fe3789a24c28
-  RestKit/Support: ccca19640fcc3031f82ad4250c44061e2e2ddce7
-  HockeySDK: 35b80d5cc522b0f53beb5583c635e42ecce69743
+COCOAPODS: 0.16.0

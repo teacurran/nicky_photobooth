@@ -26,4 +26,11 @@ NSString *const kPrefServerUrlDefault = @"http://0xffffff.local";
 
 NSString *const kEmailRegex = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
 
+NSString *const kTumblrConsumerKey = @"tSISWrYGOOcg0L9HlAJuHxnqxIRmSZjD66mGUvqiyP47UT60cQ";
+NSString *const kTumblrConsumerSecret = @"87ALrtQs5HqMGvxKRLIMQYcRbIoFWSGJHAnDJX7yPqKhJtHP9I";
+NSString *const kTumblrRequestTokenUrl = @"https://www.tumblr.com/oauth/request_token";
+NSString *const kTumblrAuthorizeUrl = @"https://www.tumblr.com/oauth/authorize";
+NSString *const kTumblrAccessTokenUrl = @"https://www.tumblr.com/oauth/access_token";
+NSString *const kTumblrCallBackUrl = @"http://www.nickydigital.com";
+NSString *const kTumblrUserInfo = @"https://api.tumblr.com/v2/user/info";
 @end

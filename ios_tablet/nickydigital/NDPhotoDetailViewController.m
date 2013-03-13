@@ -15,15 +15,19 @@
 #import "UIGlossyButton.h"
 #import "UIView+LayerEffects.h"
 #import "RIButtonItem.h"
+#import "PopoverView.h"
 
 #import "NDConstants.h"
 #import "NDApiClient.h"
 #import "NDPhotoDetailViewController.h"
 #import "NDConstants.h"
 #import "NDMainViewController.h"
+#import "NDTumblrUser.h"
+#import "NDTumblrBlog.h"
 
 #import "OAuth.h"
 #import "OAuthConsumerCredentials.h"
+#import "NDSyncHTTPRequest.h"
 
 @interface NDPhotoDetailViewController () {
     IBOutlet UIView *photoDetailView;
@@ -47,6 +51,12 @@
     IBOutlet UITextField *emailShareToField;
     IBOutlet UITextView *emailShareBodyView;
     IBOutlet UIGlossyButton *emailShareButton;
+	
+    IBOutlet UIView *tumblrShareView;
+    IBOutlet UIImageView *tumblrShareImageView;
+    IBOutlet UIButton *tumblrShareBlogName;
+    IBOutlet UITextView *tumblrShareBodyView;
+    IBOutlet UIGlossyButton *tumblrShareButton;
 
 }
 @end
@@ -63,6 +73,9 @@ const int ACTION_TWITTER_EMAIL = 4;
 const int ACTION_TWITTER_LOGIN = 5;
 const int ACTION_TWITTER_SHARE = 6;
 const int ACTION_EMAIL_SHARE = 7;
+const int ACTION_TUMBLR_EMAIL = 8;
+const int ACTION_TUMBLR_LOGIN = 9;
+const int ACTION_TUMBLR_SHARE = 10;
 
 int currentAction = ACTION_NONE;
 int nextAction = ACTION_NONE;
@@ -79,6 +92,10 @@ NSString *userFacebookToken;
 NSString *userFacebookUser;
 
 OAuth *twitterOAuth;
+OAuth *tumblrOAuth;
+NDTumblrUser *tumblrUser;
+
+PopoverView *tumblrChoosePopover;
 
 CGRect originalPhotoViewFrame;
 
@@ -132,6 +149,18 @@ NDMainViewController *mainViewController = nil;
     [emailShareButton setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius:4];
     [emailShareButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothStandard];
 
+    // Tumblr Share View
+    [[NSBundle mainBundle] loadNibNamed:@"TumblrShareView" owner:self options:nil];
+    tumblrShareBodyView.layer.cornerRadius = 8.0f;
+    tumblrShareBodyView.layer.masksToBounds = YES;
+    tumblrShareBodyView.layer.borderColor = [[UIColor grayColor] CGColor];
+    tumblrShareBodyView.layer.borderWidth = 1.0f;
+	
+	tumblrShareButton.borderColor = mainViewController.brandColor;
+    tumblrShareButton.tintColor = mainViewController.brandColor;
+    [tumblrShareButton useWhiteLabel:YES];
+    [tumblrShareButton setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius:4];
+    [tumblrShareButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothStandard];
     
 	//viewLoadedFromXib.frame = view.contentView.frame;
 
@@ -291,6 +320,7 @@ NDMainViewController *mainViewController = nil;
     } else if (!mainViewController.loggedIn) {
 		[self logout];
     } else {
+		// we are logged in with something, so skip the email signup
 		[self facebookLogin];
 		return;
 	}
@@ -322,6 +352,7 @@ NDMainViewController *mainViewController = nil;
     } else if (!mainViewController.loggedIn) {
 		[self logout];
 	} else {
+		// we are logged in with something, so skip the email signup
 		[self twitterLogin];
 		return;
     }
@@ -346,6 +377,33 @@ NDMainViewController *mainViewController = nil;
 }
 
 - (IBAction)btnTumblrShareClick:(id)sender {
+    if (mainViewController.loggedIn && tumblrLoggedIn) {
+        [self tumblrShare];
+        return;
+    } else if (!mainViewController.loggedIn) {
+		[self logout];
+	} else {
+		// we are logged in with something, so skip the email signup
+		[self tumblrLogin];
+		return;
+    }
+	
+    currentAction = ACTION_TUMBLR_EMAIL;
+    nextAction = ACTION_TUMBLR_LOGIN;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    [modalDialog.view addSubview:emailView];
+	
+    modalDialog.view.superview.center = centerOfView;
 
 
 }
@@ -499,6 +557,123 @@ NDMainViewController *mainViewController = nil;
     modalDialog.view.superview.center = centerOfView;
 }
 
+- (void)tumblrShare {
+    currentAction = ACTION_TUMBLR_SHARE;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    tumblrShareImageView.image = photoView.image;
+	
+    tumblrShareBodyView.text = [[NDMainViewController singleton] event].tumblrShare;
+	
+    [modalDialog.view addSubview:tumblrShareView];
+	
+    modalDialog.view.superview.center = centerOfView;
+	
+}
+
+- (IBAction)btnTumblrBlogChooseClick:(id)sender {
+
+	UIButton *button = (UIButton*)sender;
+	CGPoint buttonCenter = button.center;
+	CGRect buttonFrame = button.frame;
+	
+	CGRect frameInWindow = [button convertRect:button.bounds toView:self.view];
+	
+	
+	CGPoint point = CGPointMake(
+				frameInWindow.origin.x + (button.frame.size.width / 2),
+				frameInWindow.origin.y);
+	
+	NSMutableArray *blogTitles = [[NSMutableArray alloc] init];
+	
+	for (NDTumblrBlog *blog in tumblrUser.blogs) {
+		[blogTitles addObject:blog.title];
+	}
+	
+	tumblrChoosePopover = [PopoverView showPopoverAtPoint:point
+                                  inView:self.view
+                               withTitle:@"Choose a blog to post to"
+                         withStringArray:blogTitles
+                                delegate:self];
+	
+}
+
+
+
+- (void)tumblrLogin {
+    currentAction = ACTION_TUMBLR_LOGIN;
+    nextAction = ACTION_TUMBLR_SHARE;
+	
+	tumblrOAuth = [[OAuth alloc] initWithConsumerKey:kTumblrConsumerKey andConsumerSecret:kTumblrConsumerSecret];
+
+	// Invalidate the previous request token, whether it was authorized or not.
+	[tumblrOAuth setOauth_token_authorized:NO]; // We are invalidating whatever token we had before.
+	[tumblrOAuth setOauth_token:@""];
+	[tumblrOAuth setOauth_token_secret:@""];
+	
+	// Calculate the header.
+    
+    // Guard against someone forgetting to set the callback. Pretend that we have out-of-band request
+    // in that case.
+    NSDictionary *requestTokenParams = [NSDictionary dictionaryWithObject:kTumblrCallBackUrl forKey:@"oauth_callback"];
+	NSString *oauth_header = [tumblrOAuth oAuthHeaderForMethod:@"POST" andUrl:kTumblrRequestTokenUrl andParams:requestTokenParams];
+	
+	// Synchronously perform the HTTP request.
+	NDSyncHTTPRequest *request = [NDSyncHTTPRequest requestWithURL:[NSURL URLWithString:kTumblrRequestTokenUrl]];
+	request.requestMethod = @"POST";
+	[request addRequestHeader:@"Authorization" value:oauth_header];
+	[request startSynchronous];
+	
+	NSArray *responseBodyComponents = [[request responseString] componentsSeparatedByString:@"&"];
+	// For a successful response, break the response down into pieces and set the properties
+	// with KVC. If there's a response for which there is no local property or ivar, this
+	// may end up with setValue:forUndefinedKey:.
+	for (NSString *component in responseBodyComponents) {
+		NSArray *subComponents = [component componentsSeparatedByString:@"="];
+		[tumblrOAuth setValue:[subComponents objectAtIndex:1] forKey:[subComponents objectAtIndex:0]];
+	}
+	
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]) {
+        [storage deleteCookie:cookie];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 400)];
+	
+	NSDictionary * params = [NSDictionary dictionaryWithObject:tumblrOAuth.oauth_token forKey:@"oauth_token"];
+	
+    NSURL *url = [self generateURL:kTumblrAuthorizeUrl params:params];
+	
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    [webView setDelegate:self];
+    [webView loadRequest:requestObj];
+    [modalDialog.view addSubview:webView];
+	
+    modalDialog.view.superview.center = centerOfView;
+}
+
+
 - (IBAction)btnShareClick:(id)sender {
 
     nextAction = ACTION_NONE;
@@ -647,6 +822,7 @@ NDMainViewController *mainViewController = nil;
 	NSURL *url = request.URL;
 	NSString *host = [url host];
     NSString *urlString = [[request URL] absoluteString];
+	NSLog(@"Webview loaded url:%@", urlString);
 
 	if (currentAction == ACTION_FACEBOOK_LOGIN) {
 		NSInteger nickyDigitalInUrl = [urlString rangeOfString:kFacebookRedirect].location;
@@ -700,6 +876,125 @@ NDMainViewController *mainViewController = nil;
 		}
 	}
 	
+	if (currentAction == ACTION_TUMBLR_LOGIN) {
+		NSLog(@"%@", host);
+		NSLog(@"%@", [url absoluteString]);
+		if ([host isEqualToString:@"www.nickydigital.com"]) {
+
+			// denied: http://www.nickydigital.com/oauth/tumblr#_=_
+			// auth: http://www.nickydigital.com/oauth/tumblr?oauth_token=SjrDdj7HMbvzSnE0yVpElq98uxQqyNZ8wS2MGoxuDEiCLhUFYh&oauth_verifier=O3TGwMUyFZeLkftdfeBFFerN9MpKHo5outOxkkf32mhAFiQIJN#_=_
+			
+			if ([urlString isEqualToString:@"http://www.nickydigital.com/oauth/tumblr#_=_"]) {
+				[self autoModalViewControllerDismiss:nil];
+			} else {
+				
+				NSLog(@"Suceeded Now Getting Access Token");
+				
+				NSString *tokenVerifier = [self getStringFromUrl:urlString needle:@"oauth_verifier="];
+				
+				// We manually specify the token as a param, because it has not yet been authorized
+				// and the automatic state checking wouldn't include it in signature construction or header,
+				// since oauth_token_authorized is still NO by this point.
+				NSDictionary *params = [NSDictionary dictionaryWithObjectsAndKeys:
+										[tumblrOAuth oauth_token], @"oauth_token",
+										tokenVerifier, @"oauth_verifier",
+										nil];
+				
+				NSString *oauth_header = [tumblrOAuth oAuthHeaderForMethod:@"POST" andUrl:kTumblrAccessTokenUrl andParams:params andTokenSecret:[tumblrOAuth oauth_token_secret]];
+
+				NDSyncHTTPRequest *syncTumblrAccessTokenRequest = [NDSyncHTTPRequest requestWithURL:[NSURL URLWithString:kTumblrAccessTokenUrl]];
+				syncTumblrAccessTokenRequest.requestMethod = @"POST";
+				[syncTumblrAccessTokenRequest addRequestHeader:@"Authorization" value:oauth_header];
+				[syncTumblrAccessTokenRequest startSynchronous];
+				
+				if ([syncTumblrAccessTokenRequest error]) {
+					
+					NSLog(@"HTTP return code for token authorization error: %d, message: %@, string: %@", syncTumblrAccessTokenRequest.responseStatusCode, syncTumblrAccessTokenRequest.responseStatusMessage, syncTumblrAccessTokenRequest.responseString);
+					NSLog(@"OAuth header was: %@", oauth_header);
+					
+				} else {
+					NSArray *responseBodyComponents = [[syncTumblrAccessTokenRequest responseString] componentsSeparatedByString:@"&"];
+					for (NSString *component in responseBodyComponents) {
+						// Tumblr returns oauth_token, oauth_token_secret.
+						NSArray *subComponents = [component componentsSeparatedByString:@"="];
+						[tumblrOAuth setValue:[subComponents objectAtIndex:1] forKey:[subComponents objectAtIndex:0]];
+					}
+					
+					[tumblrOAuth setOauth_token_authorized:YES];
+
+
+					NSDictionary *userInfoParams = [[NSDictionary alloc] init];
+					NSString *userInfoOauthHeader = [tumblrOAuth oAuthHeaderForMethod:@"GET" andUrl:kTumblrUserInfo andParams:userInfoParams];
+					NDSyncHTTPRequest *syncUserInfoRequest = [NDSyncHTTPRequest requestWithURL:[NSURL URLWithString:kTumblrUserInfo]];
+					syncUserInfoRequest.requestMethod = @"GET";
+					[syncUserInfoRequest addRequestHeader:@"Authorization" value:userInfoOauthHeader];
+					[syncUserInfoRequest startSynchronous];
+					
+					if ([syncUserInfoRequest error]) {
+						
+						NSLog(@"HTTP return code for token authorization error: %d, message: %@, string: %@", syncUserInfoRequest.responseStatusCode, syncUserInfoRequest.responseStatusMessage, syncUserInfoRequest.responseString);
+						NSLog(@"OAuth header was: %@", oauth_header);
+						
+					} else {
+						NSError *error = nil;
+
+						NSData *JSONData = [[syncUserInfoRequest responseString] dataUsingEncoding:NSUTF8StringEncoding];
+						NSDictionary *JSON = [NSJSONSerialization JSONObjectWithData:JSONData options:nil error:&error];
+
+						NSDictionary *responseDict = [JSON objectForKey:@"response"];
+						NSDictionary *responseUser = [responseDict objectForKey:@"user"];
+
+						tumblrUser = [[NDTumblrUser alloc] init];
+						tumblrUser.name = [responseUser objectForKey:@"name"];
+
+						id responseBlogs = [responseUser objectForKey:@"blogs"];
+						for (id jsonBlog in responseBlogs) {
+							NDTumblrBlog *blog = [[NDTumblrBlog alloc] init];
+							blog.name = [jsonBlog objectForKey:@"name"];
+							blog.url = [jsonBlog objectForKey:@"url"];
+							blog.title = [jsonBlog objectForKey:@"title"];
+							
+							[tumblrUser.blogs addObject:blog];
+						}
+
+						
+						if (tumblrUser.blogs.count == 0) {
+							NDTumblrBlog *blog = [[NDTumblrBlog alloc] init];
+							blog.title = @"default";
+							[tumblrUser.blogs addObject:blog];
+						}
+						
+						NSString *blogTitle = ((NDTumblrBlog*)[tumblrUser.blogs objectAtIndex:0]).title;
+						CGSize stringsize = [blogTitle sizeWithFont:[UIFont systemFontOfSize:17]];
+
+						[tumblrShareBlogName setFrame:CGRectMake(tumblrShareBlogName.frame.origin.x,
+																 tumblrShareBlogName.frame.origin.y,
+																 stringsize.width,
+																 tumblrShareBlogName.frame.size.height)];
+						
+						[tumblrShareBlogName setTitle:blogTitle forState:UIControlStateNormal];
+
+						
+						nextAction = ACTION_TUMBLR_SHARE;
+						
+						loggedIn = YES;
+						tumblrLoggedIn = YES;
+						[mainViewController logInTumblr];
+						
+					}
+
+					
+					
+					[self autoModalViewControllerDismissWithNext:nil];
+
+				
+				}
+				
+				return NO;
+			}
+		}
+	}
+	
     return YES;
 }
 
@@ -714,8 +1009,8 @@ NDMainViewController *mainViewController = nil;
 	CGRect frame = webView.frame;
 	NSLog(@"frame:%f", frame.origin.y);
 
-	//NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
-	//NSLog(@"allHTML: %@", html);
+	NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
+	NSLog(@"allHTML: %@", html);
 
     if (currentAction == ACTION_FACEBOOK_LOGIN) {
         //NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
@@ -733,11 +1028,19 @@ NDMainViewController *mainViewController = nil;
 		
 	}
 
+	if (currentAction == ACTION_TUMBLR_LOGIN) {
+		
+        [webView stringByEvaluatingJavaScriptFromString:@"document.getElementById('signup_button_cancel').style.visibility='hidden';"];
+        [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"document.forms[0]['user[email]'].value='%@';", userEmailAddress]];
+		
+	}
 }
 
 - (void)logout {
 	userEmailAddress = nil;
 	twitterOAuth = nil;
+	tumblrUser = nil;
+	tumblrOAuth = nil;
 	loggedIn = NO;
 	facebookLoggedIn = NO;
 	twitterLoggedIn = NO;
@@ -808,6 +1111,14 @@ NDMainViewController *mainViewController = nil;
                 [self twitterShare];
                 break;
 
+            case ACTION_TUMBLR_LOGIN:
+                [self tumblrLogin];
+                break;
+				
+            case ACTION_TUMBLR_SHARE:
+                [self tumblrShare];
+                break;
+
             default:
                 break;
         }
@@ -874,10 +1185,18 @@ NDMainViewController *mainViewController = nil;
     NSRange start = [url rangeOfString:needle];
     if (start.location != NSNotFound) {
         NSRange end = [[url substringFromIndex:start.location+start.length] rangeOfString:@"&"];
+
+        NSRange end2;
+		if (end.location == NSNotFound) {
+			end2 = [[url substringFromIndex:start.location+start.length] rangeOfString:@"#"];
+		} else {
+			end2 = [[url substringWithRange:end] rangeOfString:@"#"];
+		}
+
         NSUInteger offset = start.location+start.length;
-        str = end.location == NSNotFound
+        str = end2.location == NSNotFound
         ? [url substringFromIndex:offset]
-        : [url substringWithRange:NSMakeRange(offset, end.location)];
+        : [url substringWithRange:NSMakeRange(offset, end2.location)];
         str = [str stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     }
     
