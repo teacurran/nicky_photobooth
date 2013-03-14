@@ -13,5 +13,6 @@
 @property NSString *name;
 @property NSString *url;
 @property NSString *title;
+@property (nonatomic) NSString *hostname;
 
 @end

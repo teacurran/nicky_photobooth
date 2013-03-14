@@ -67,6 +67,7 @@
 		93FA9E4516DC54A3006B687D /* LoggedInView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FA9E4416DC54A3006B687D /* LoggedInView.xib */; };
 		93FA9E4716DC6404006B687D /* EmailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FA9E4616DC6404006B687D /* EmailView.xib */; };
 		93FA9E4916DE97D2006B687D /* ShareView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93FA9E4816DE97D2006B687D /* ShareView.xib */; };
+		93FCFDD016F257F400E3CDB8 /* M13Checkbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FCFDCF16F257F400E3CDB8 /* M13Checkbox.m */; };
 		DDFD09DA8A1B426987973F0A /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 368A0FC0069D44048CF44C3F /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -166,6 +167,8 @@
 		93FA9E4416DC54A3006B687D /* LoggedInView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoggedInView.xib; sourceTree = "<group>"; };
 		93FA9E4616DC6404006B687D /* EmailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailView.xib; sourceTree = "<group>"; };
 		93FA9E4816DE97D2006B687D /* ShareView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShareView.xib; sourceTree = "<group>"; };
+		93FCFDCE16F257F400E3CDB8 /* M13Checkbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = M13Checkbox.h; sourceTree = "<group>"; };
+		93FCFDCF16F257F400E3CDB8 /* M13Checkbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = M13Checkbox.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -270,6 +273,7 @@
 		93E8C692169E956F00A43F4A = {
 			isa = PBXGroup;
 			children = (
+				93FCFDCD16F257F400E3CDB8 /* M13Checkbox */,
 				9371E8D916E99FAF00FBC0E3 /* AFNetworking */,
 				932EA9CB16DB21E700919412 /* UIAlertView-Blocks */,
 				9368E14D16C8B3B2009407B1 /* BDDynamicGridViewController */,
@@ -354,6 +358,15 @@
 				93E8C6B7169E956F00A43F4A /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		93FCFDCD16F257F400E3CDB8 /* M13Checkbox */ = {
+			isa = PBXGroup;
+			children = (
+				93FCFDCE16F257F400E3CDB8 /* M13Checkbox.h */,
+				93FCFDCF16F257F400E3CDB8 /* M13Checkbox.m */,
+			);
+			path = M13Checkbox;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -493,6 +506,7 @@
 				93A1F5F216EE925E0004AAEB /* NDSyncHTTPRequest.m in Sources */,
 				93A1F5F516EFC7590004AAEB /* NDTumblrUser.m in Sources */,
 				93A1F5F816EFC76F0004AAEB /* NDTumblrBlog.m in Sources */,
+				93FCFDD016F257F400E3CDB8 /* M13Checkbox.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

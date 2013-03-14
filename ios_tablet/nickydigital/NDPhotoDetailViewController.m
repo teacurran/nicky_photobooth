@@ -16,6 +16,7 @@
 #import "UIView+LayerEffects.h"
 #import "RIButtonItem.h"
 #import "PopoverView.h"
+#import "M13Checkbox.h"
 
 #import "NDConstants.h"
 #import "NDApiClient.h"
@@ -72,10 +73,11 @@ const int ACTION_FACEBOOK_SHARE = 3;
 const int ACTION_TWITTER_EMAIL = 4;
 const int ACTION_TWITTER_LOGIN = 5;
 const int ACTION_TWITTER_SHARE = 6;
-const int ACTION_EMAIL_SHARE = 7;
-const int ACTION_TUMBLR_EMAIL = 8;
-const int ACTION_TUMBLR_LOGIN = 9;
-const int ACTION_TUMBLR_SHARE = 10;
+const int ACTION_EMAIL_EMAIL = 7;
+const int ACTION_EMAIL_SHARE = 8;
+const int ACTION_TUMBLR_EMAIL = 9;
+const int ACTION_TUMBLR_LOGIN = 10;
+const int ACTION_TUMBLR_SHARE = 11;
 
 int currentAction = ACTION_NONE;
 int nextAction = ACTION_NONE;
@@ -94,13 +96,15 @@ NSString *userFacebookUser;
 OAuth *twitterOAuth;
 OAuth *tumblrOAuth;
 NDTumblrUser *tumblrUser;
-
+int tumblrSelectedBlog = 0;
 PopoverView *tumblrChoosePopover;
 
 CGRect originalPhotoViewFrame;
 
 NDMainViewController *mainViewController = nil;
 
+M13Checkbox *facebookLikeCheckbox;
+int facebookLikeOffset = 0;	// an offset of how much we moved the share text box to fit the facebook like button
 
 - (void)loadView {
     //if (theFrame.size.width == NULL) {
@@ -136,6 +140,8 @@ NDMainViewController *mainViewController = nil;
     shareTextView.layer.borderColor = [[UIColor grayColor] CGColor];
     shareTextView.layer.borderWidth = 1.0f;
 
+	facebookLikeCheckbox = [[M13Checkbox alloc] initWithTitle:@"Like Nicky Digital on Facebook?" andHeight:20];
+	
     // Email Share View
     [[NSBundle mainBundle] loadNibNamed:@"EmailShareView" owner:self options:nil];
     emailShareBodyView.layer.cornerRadius = 8.0f;
@@ -287,28 +293,39 @@ NDMainViewController *mainViewController = nil;
     }
 }
 
-- (void)showFacebookShareConfirm {
-    RIButtonItem *cancelItem = [RIButtonItem item];
-    cancelItem.label = @"No";
-    cancelItem.action = ^{
-        // this is the code that will be executed when the user taps "No"
-        // this is optional... if you leave the action as nil, it won't do anything
-        // but here, I'm showing a block just to show that you can use one if you want to.
-    };
+- (void)showFacebookShareCheckbox {
+	[facebookLikeCheckbox setCheckState:M13CheckboxStateChecked];
 
-    RIButtonItem *deleteItem = [RIButtonItem item];
-    deleteItem.label = @"Yes";
-    deleteItem.action = ^{
-        // this is the code that will be executed when the user taps "Yes"
-        // delete the object in question...
-        //[context deleteObject:theObject];
-    };
+	if (facebookLikeOffset != 0) {
+		return;
+	}
+	
+    facebookLikeCheckbox.frame = CGRectMake(shareTextView.frame.origin.x,
+											shareTextView.frame.origin.y,
+											facebookLikeCheckbox.frame.size.width,
+											facebookLikeCheckbox.frame.size.height);
+	
+	facebookLikeOffset = facebookLikeCheckbox.frame.size.height + 5;
+	
+    [shareView addSubview:facebookLikeCheckbox];
 
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Share on Facebook?"
-                                                        message:@"Are you sure you want to share this photo on facebook?"
-                                               cancelButtonItem:cancelItem
-                                               otherButtonItems:deleteItem, nil];
-    [alertView show];
+	shareTextView.frame = CGRectMake(shareTextView.frame.origin.x,
+									 shareTextView.frame.origin.y + facebookLikeOffset,
+									 shareTextView.frame.size.width,
+									 shareTextView.frame.size.height - facebookLikeOffset);
+	
+}
+
+- (void)hideFacebookShareCheckbox {
+	if (facebookLikeOffset == 0) {
+		return;
+	}
+
+	[facebookLikeCheckbox removeFromSuperview];
+	shareTextView.frame = CGRectMake(shareTextView.frame.origin.x,
+								 shareTextView.frame.origin.y - facebookLikeOffset,
+								 shareTextView.frame.size.width,
+								 shareTextView.frame.size.height + facebookLikeOffset);
 
 }
 
@@ -410,6 +427,36 @@ NDMainViewController *mainViewController = nil;
 
 - (IBAction)btnEmailShareClick:(id)sender {
 
+	if (mainViewController.loggedIn) {
+        [self emailShare];
+        return;
+    } else {
+		[self logout];
+    }
+
+    currentAction = ACTION_EMAIL_EMAIL;
+    nextAction = ACTION_EMAIL_SHARE;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    [modalDialog.view addSubview:emailView];
+	
+    modalDialog.view.superview.center = centerOfView;
+	
+	
+}
+
+
+- (IBAction)emailShare {
+
     currentAction = ACTION_EMAIL_SHARE;
     nextAction = nil;
 	
@@ -425,9 +472,13 @@ NDMainViewController *mainViewController = nil;
 	
     emailShareImageView.image = photoView.image;
 	emailShareFromField.text = userEmailAddress;
-	emailShareToField.text = nil;
+	emailShareToField.text = userEmailAddress;
 	emailShareBodyView.text = [[NDMainViewController singleton] event].emailShare;
     
+    if (!mainViewController.loggedIn) {
+		userEmailAddress = nil;
+    }
+
 	[modalDialog.view addSubview:emailShareView];
 	
     modalDialog.view.superview.center = centerOfView;
@@ -452,6 +503,12 @@ NDMainViewController *mainViewController = nil;
 
     shareTextView.text = [[NDMainViewController singleton] event].longShare;
 	[shareTextView setDelegate:nil];
+	
+	if ([[NDMainViewController singleton] event].showFacebookLike) {
+		[self showFacebookShareCheckbox];
+	} else {
+		[self hideFacebookShareCheckbox];
+	}
 
     [modalDialog.view addSubview:shareView];
 
@@ -583,11 +640,8 @@ NDMainViewController *mainViewController = nil;
 - (IBAction)btnTumblrBlogChooseClick:(id)sender {
 
 	UIButton *button = (UIButton*)sender;
-	CGPoint buttonCenter = button.center;
-	CGRect buttonFrame = button.frame;
 	
 	CGRect frameInWindow = [button convertRect:button.bounds toView:self.view];
-	
 	
 	CGPoint point = CGPointMake(
 				frameInWindow.origin.x + (button.frame.size.width / 2),
@@ -787,6 +841,34 @@ NDMainViewController *mainViewController = nil;
         [self autoModalViewControllerDismissWithNext:nil];
 	}
 
+	if (currentAction == ACTION_TUMBLR_SHARE) {
+		NDTumblrBlog *selectedBlog = [tumblrUser.blogs objectAtIndex:tumblrSelectedBlog];
+
+		NDApiClient *client = [NDApiClient sharedClient];
+        [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+        [[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
+
+        NSURLRequest *request = [client requestWithMethod:@"POST"
+                                                     path:@"/api/tumblrshare"
+                                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:
+														   tumblrOAuth.oauth_token, @"token",
+														   tumblrOAuth.oauth_token_secret, @"tokensecret",
+														   _photo.filename, @"filename",
+														   selectedBlog.hostname, @"hostname",
+														   tumblrUser.name, @"username",
+														   tumblrShareBodyView.text, @"body",
+														   nil]
+								 ];
+		
+        AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+			
+        }                                                                                   failure:nil];
+		
+        [operation start];
+		
+        [self autoModalViewControllerDismissWithNext:nil];
+		
+	}
 
 }
 
@@ -815,9 +897,20 @@ NDMainViewController *mainViewController = nil;
     [self autoModalViewControllerDismissWithNext:sender];
 }
 
-/**
-* Web View Methods
-*/
+- (void)logout {
+	userEmailAddress = nil;
+	twitterOAuth = nil;
+	tumblrUser = nil;
+	tumblrOAuth = nil;
+	loggedIn = NO;
+	facebookLoggedIn = NO;
+	twitterLoggedIn = NO;
+	tumblrLoggedIn = NO;
+}
+
+
+# pragma mark - WebViewDelegate
+
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
 	NSURL *url = request.URL;
 	NSString *host = [url host];
@@ -964,16 +1057,7 @@ NDMainViewController *mainViewController = nil;
 							[tumblrUser.blogs addObject:blog];
 						}
 						
-						NSString *blogTitle = ((NDTumblrBlog*)[tumblrUser.blogs objectAtIndex:0]).title;
-						CGSize stringsize = [blogTitle sizeWithFont:[UIFont systemFontOfSize:17]];
-
-						[tumblrShareBlogName setFrame:CGRectMake(tumblrShareBlogName.frame.origin.x,
-																 tumblrShareBlogName.frame.origin.y,
-																 stringsize.width,
-																 tumblrShareBlogName.frame.size.height)];
-						
-						[tumblrShareBlogName setTitle:blogTitle forState:UIControlStateNormal];
-
+						[self selectTumblrBlog:0];
 						
 						nextAction = ACTION_TUMBLR_SHARE;
 						
@@ -1036,18 +1120,32 @@ NDMainViewController *mainViewController = nil;
 	}
 }
 
-- (void)logout {
-	userEmailAddress = nil;
-	twitterOAuth = nil;
-	tumblrUser = nil;
-	tumblrOAuth = nil;
-	loggedIn = NO;
-	facebookLoggedIn = NO;
-	twitterLoggedIn = NO;
-	tumblrLoggedIn = NO;
+
+# pragma mark - popoverViewDelegate
+- (void)popoverView:(PopoverView *)popoverView didSelectItemAtIndex:(NSInteger)index {
+    
+	[self selectTumblrBlog:index];
+	
+    // Dismiss the PopoverView after 0.5 seconds
+    [popoverView performSelector:@selector(dismiss) withObject:nil afterDelay:0.1f];
 }
 
+- (void)selectTumblrBlog:(int)index {
+	
+	tumblrSelectedBlog = index;
+	NSString *blogTitle = ((NDTumblrBlog*)[tumblrUser.blogs objectAtIndex:index]).title;
+	CGSize stringsize = [blogTitle sizeWithFont:[UIFont systemFontOfSize:17]];
+	
+	[tumblrShareBlogName setFrame:CGRectMake(tumblrShareBlogName.frame.origin.x,
+											 tumblrShareBlogName.frame.origin.y,
+											 stringsize.width + 10,
+											 tumblrShareBlogName.frame.size.height)];
+	
+	[tumblrShareBlogName setTitle:blogTitle forState:UIControlStateNormal];
 
+}
+
+# pragma mark - autoModalViewController
 - (void)autoModalViewControllerPresent:(UIViewController *)modalViewController withDismissAction:(SEL)onDismiss animated:(BOOL)animated {
     UINavigationController *nc = nil;
     if (NO == [modalViewController isKindOfClass:[UINavigationController class]]) {
@@ -1119,6 +1217,10 @@ NDMainViewController *mainViewController = nil;
                 [self tumblrShare];
                 break;
 
+            case ACTION_EMAIL_SHARE:
+                [self emailShare];
+                break;
+
             default:
                 break;
         }
@@ -1136,6 +1238,7 @@ NDMainViewController *mainViewController = nil;
     return (self.navigationController != nil && self.navigationController.parentViewController != nil && self.navigationController.parentViewController.modalViewController == self.navigationController);
 }
 
+# pragma mark - utilities
 - (NSURL*)generateURL:(NSString*)baseURL params:(NSDictionary*)params {
     if (params) {
         NSMutableArray* pairs = [NSMutableArray array];

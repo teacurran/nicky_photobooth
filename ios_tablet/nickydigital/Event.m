@@ -24,6 +24,7 @@
 @synthesize tumblrShare;
 @synthesize emailShare;
 @synthesize showFacebook;
+@synthesize showFacebookLike;
 @synthesize showTwitter;
 @synthesize showTumblr;
 @synthesize showEmail;

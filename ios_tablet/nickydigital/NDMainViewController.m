@@ -214,6 +214,7 @@ NSUserDefaults *defaults = nil;
 		event.showTumblr = [[JSON valueForKey:@"show_tumblr"] boolValue];
 		event.showEmail = [[JSON valueForKey:@"show_email"] boolValue];
 		
+		event.showFacebookLike = [[JSON valueForKey:@"show_facebook_like"] boolValue];
 
 	} failure:nil];
 

@@ -13,5 +13,17 @@
 @synthesize name;
 @synthesize title;
 @synthesize url;
+@synthesize hostname = _hostname;
+
+- (NSString*)hostname {
+	if (url == nil) {
+		return nil;
+	}
+	NSRange hostRange;
+	hostRange.location = [url rangeOfString:@"//"].location + 2;
+	hostRange.length = [url length] - hostRange.location - 1;
+	_hostname = [url substringWithRange:hostRange];
+	return _hostname;
+}
 
 @end

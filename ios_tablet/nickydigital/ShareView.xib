@@ -235,7 +235,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">15</int>
+			<int key="maxID">16</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -244,12 +244,20 @@
 					<string key="superclassName">UIViewController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="btnEmailClick:">id</string>
+						<string key="btnEmailShareClick:">id</string>
 						<string key="btnFacebookShareClick:">id</string>
 						<string key="btnShareClick:">id</string>
+						<string key="btnTumblrBlogChooseClick:">id</string>
+						<string key="btnTumblrShareClick:">id</string>
+						<string key="btnTwitterShareClick:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="btnEmailClick:">
 							<string key="name">btnEmailClick:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="btnEmailShareClick:">
+							<string key="name">btnEmailShareClick:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="btnFacebookShareClick:">
@@ -260,17 +268,44 @@
 							<string key="name">btnShareClick:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="btnTumblrBlogChooseClick:">
+							<string key="name">btnTumblrBlogChooseClick:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="btnTumblrShareClick:">
+							<string key="name">btnTumblrShareClick:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="btnTwitterShareClick:">
+							<string key="name">btnTwitterShareClick:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="emailButton">UIGlossyButton</string>
 						<string key="emailField">UITextField</string>
+						<string key="emailShareBodyView">UITextView</string>
+						<string key="emailShareButton">UIGlossyButton</string>
+						<string key="emailShareFromField">UITextField</string>
+						<string key="emailShareImageView">UIImageView</string>
+						<string key="emailShareToField">UITextField</string>
+						<string key="emailShareView">UIView</string>
 						<string key="emailView">UIView</string>
+						<string key="photoDetailEmailButton">UIButton</string>
+						<string key="photoDetailFacebookButton">UIButton</string>
+						<string key="photoDetailTumblrButton">UIButton</string>
+						<string key="photoDetailTwitterButton">UIButton</string>
 						<string key="photoDetailView">UIView</string>
 						<string key="photoView">UIImageView</string>
 						<string key="shareButton">UIGlossyButton</string>
 						<string key="shareImageView">UIImageView</string>
 						<string key="shareTextView">UITextView</string>
 						<string key="shareView">UIView</string>
+						<string key="tumblrShareBlogName">UIButton</string>
+						<string key="tumblrShareBodyView">UITextView</string>
+						<string key="tumblrShareButton">UIGlossyButton</string>
+						<string key="tumblrShareImageView">UIImageView</string>
+						<string key="tumblrShareView">UIView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<object class="IBToOneOutletInfo" key="emailButton">
@@ -281,9 +316,49 @@
 							<string key="name">emailField</string>
 							<string key="candidateClassName">UITextField</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="emailShareBodyView">
+							<string key="name">emailShareBodyView</string>
+							<string key="candidateClassName">UITextView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="emailShareButton">
+							<string key="name">emailShareButton</string>
+							<string key="candidateClassName">UIGlossyButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="emailShareFromField">
+							<string key="name">emailShareFromField</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="emailShareImageView">
+							<string key="name">emailShareImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="emailShareToField">
+							<string key="name">emailShareToField</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="emailShareView">
+							<string key="name">emailShareView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="emailView">
 							<string key="name">emailView</string>
 							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="photoDetailEmailButton">
+							<string key="name">photoDetailEmailButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="photoDetailFacebookButton">
+							<string key="name">photoDetailFacebookButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="photoDetailTumblrButton">
+							<string key="name">photoDetailTumblrButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="photoDetailTwitterButton">
+							<string key="name">photoDetailTwitterButton</string>
+							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="photoDetailView">
 							<string key="name">photoDetailView</string>
@@ -307,6 +382,26 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="shareView">
 							<string key="name">shareView</string>
+							<string key="candidateClassName">UIView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tumblrShareBlogName">
+							<string key="name">tumblrShareBlogName</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tumblrShareBodyView">
+							<string key="name">tumblrShareBodyView</string>
+							<string key="candidateClassName">UITextView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tumblrShareButton">
+							<string key="name">tumblrShareButton</string>
+							<string key="candidateClassName">UIGlossyButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tumblrShareImageView">
+							<string key="name">tumblrShareImageView</string>
+							<string key="candidateClassName">UIImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="tumblrShareView">
+							<string key="name">tumblrShareView</string>
 							<string key="candidateClassName">UIView</string>
 						</object>
 					</dictionary>

@@ -29,6 +29,7 @@
 @property NSString * longShare;
 @property NSString * tumblrShare;
 @property bool showFacebook;
+@property bool showFacebookLike;
 @property bool showTwitter;
 @property bool showTumblr;
 @property bool showEmail;
