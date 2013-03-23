@@ -11,6 +11,7 @@
 #import "UIView+LayerEffects.h"
 #import "UIImageView+AFNetworking.h"
 #import "AFJSONRequestOperation.h"
+#import "BDRowInfo.h"
 
 #import "NDConstants.h"
 #import "NDMainViewController.h"
@@ -67,9 +68,15 @@ NSUserDefaults *defaults = nil;
 	bannerImage = [UIImage imageNamed:@"banner_default.png"];
 	bannerView = [[UIImageView alloc] initWithImage:bannerImage];
 
+	UITapGestureRecognizer *doubleBannerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bannerDoubleTap:)];
+	doubleBannerTap.numberOfTapsRequired = 2;
+	[bannerView addGestureRecognizer:doubleBannerTap];
+	//[bannerImage addGestureRecognizer:doubleBannerTap];
+	
 	int bannerHeight = (windowWidth / bannerImage.size.width) * bannerImage.size.height;
 	[bannerView setFrame:CGRectMake(0, 0, windowWidth, bannerHeight)];
 	[self.view addSubview:bannerView];
+	[self.view addGestureRecognizer:doubleBannerTap];
 	
 	// create the photo grid controller
 	photoGridController = [[NDPhotoGridViewController alloc] init];
@@ -208,18 +215,39 @@ NSUserDefaults *defaults = nil;
 		event.shortShare = [JSON objectForKey:@"short_share"];
 		event.longShare = [JSON objectForKey:@"long_share"];
 		event.emailShare = [JSON objectForKey:@"email_share"];
+		event.tumblrShare = [JSON objectForKey:@"tumblr_share"];
+		event.facebookLikeText = [JSON objectForKey:@"facebook_like_text"];
 		
 		event.showFacebook = [[JSON valueForKey:@"show_facebook"] boolValue];
 		event.showTwitter = [[JSON valueForKey:@"show_twitter"] boolValue];
 		event.showTumblr = [[JSON valueForKey:@"show_tumblr"] boolValue];
 		event.showEmail = [[JSON valueForKey:@"show_email"] boolValue];
+		event.showWaterfall = [[JSON valueForKey:@"show_waterfall"] boolValue];
 		
 		event.showFacebookLike = [[JSON valueForKey:@"show_facebook_like"] boolValue];
+
+		event.tumblrConsumerKey = [JSON valueForKey:@"tumblr_consumer_key"];
+		event.tumblrConsumerSecret = [JSON valueForKey:@"tumblr_consumer_secret"];
+
+		event.twitterConsumerKey = [JSON valueForKey:@"twitter_consumer_key"];
+		event.twitterConsumerSecret = [JSON valueForKey:@"twiter_consumer_secret"];
+
+		event.facebookConsumerKey = [JSON valueForKey:@"facebook_consumer_key"];
+		event.facebookConsumerSecret = [JSON valueForKey:@"facebook_consumer_secret"];
 
 	} failure:nil];
 
 	[operation start];
 
+}
+
+- (void)bannerDoubleTap:(UITapGestureRecognizer *)recognizer {
+	
+	BDRowInfo *rowInfo = [BDRowInfo new];
+	rowInfo.order = 0;
+	
+	[photoGridController scrollToRow:rowInfo atScrollPosition:UITableViewScrollPositionNone animated:YES];
+	
 }
 										 
 -(void)displayLoggedIn {

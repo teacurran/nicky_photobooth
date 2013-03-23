@@ -20,18 +20,29 @@
 // long_share: "This is long share text."
 // }
 @property int eventId;
-@property NSString * code;
-@property NSString * banner;
-@property NSString * name;
-@property NSString * album;
-@property NSString * shortShare;
-@property NSString * emailShare;
-@property NSString * longShare;
-@property NSString * tumblrShare;
+@property NSString *code;
+@property NSString *banner;
+@property NSString *name;
+@property NSString *album;
+@property NSString *shortShare;
+@property NSString *emailShare;
+@property NSString *longShare;
+@property NSString *tumblrShare;
+@property NSString *facebookLikeText;
 @property bool showFacebook;
 @property bool showFacebookLike;
 @property bool showTwitter;
 @property bool showTumblr;
 @property bool showEmail;
+@property bool showWaterfall;
+
+@property (nonatomic) NSString *tumblrConsumerKey;
+@property (nonatomic) NSString *tumblrConsumerSecret;
+
+@property (nonatomic) NSString *twitterConsumerKey;
+@property (nonatomic) NSString *twitterConsumerSecret;
+
+@property (nonatomic) NSString *facebookConsumerKey;
+@property (nonatomic) NSString *facebookConsumerSecret;
 
 @end

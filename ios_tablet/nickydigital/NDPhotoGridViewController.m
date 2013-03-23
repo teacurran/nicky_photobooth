@@ -17,6 +17,8 @@
 #import "NDMainViewController.h"
 #import "UIImageView+AFNetworking.h"
 
+typedef void (^gridclick)(UIView* view, NSInteger viewIndex);
+
 @interface NDPhotoGridViewController ()
 
 @end
@@ -82,26 +84,18 @@ NSMutableDictionary * _itemsLoading;
 
     self.delegate = self;
     
-    self.onLongPress = ^(UIView* view, NSInteger viewIndex){
-        NSLog(@"Long press on %@, at %d", view, viewIndex);
-    };
-    
-    self.onDoubleTap = ^(UIView* view, NSInteger viewIndex){
-        NSLog(@"Double tap on %@, at %d", view, viewIndex);
-    };
-	
 	__weak NDPhotoGridViewController *blockSelf = self;
 	//__weak NSArray *blockItems = _items;
-	self.onSingleTap = ^(UIView* view, NSInteger viewIndex) {
+	gridclick gridClick = ^(UIView* view, NSInteger viewIndex) {
 
 		// create the detail panel the first time we load.
 		if (detailViewController == nil) {
 			detailViewController = [[NDPhotoDetailViewController alloc] init];
 		}
 		
-        NSLog(@"Single tap on %@, at %d", view, viewIndex);
+        //NSLog(@"Single tap on %@, at %d", view, viewIndex);
 
-		//		NDPhotoGridViewController *strongSelf = blockSelf;
+		//	NDPhotoGridViewController *strongSelf = blockSelf;
 		//detailPanel.detailPanel. = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - 50);
 
 
@@ -161,7 +155,15 @@ NSMutableDictionary * _itemsLoading;
 
 		//[modalPanel showFromPoint:[sender center]];
 	};
+
+	self.onSingleTap = ^(UIView* view, NSInteger viewIndex) {
+		gridClick(view, viewIndex);
+	};
 	
+	self.onDoubleTap = ^(UIView* view, NSInteger viewIndex) {
+		gridClick(view, viewIndex);
+	};
+
 	[self setBackgroundColor:[UIColor whiteColor]];
 	[self setBorderWidth:kGridBorderWidth];
 
@@ -207,12 +209,17 @@ NSMutableDictionary * _itemsLoading;
 	int row=0;
 	while (accumNumOfViews < self.delegate.numberOfViews) {
 		NSUInteger numOfViews = 0;
-		if (row < 2) {
-			numOfViews = 3;
-		} else if (row < 6) {
-			numOfViews = 6;
+		
+		if ([[NDMainViewController singleton] event].showWaterfall) {
+			if (row < 2) {
+				numOfViews = 3;
+			} else if (row < 6) {
+				numOfViews = 6;
+			} else {
+				numOfViews = 12;
+			}
 		} else {
-			numOfViews = 12;
+			numOfViews = 3;
 		}
 		
 		numOfViews = (accumNumOfViews+numOfViews <= self.delegate.numberOfViews)?numOfViews:(self.delegate.numberOfViews-accumNumOfViews);

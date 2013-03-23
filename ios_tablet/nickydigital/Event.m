@@ -7,6 +7,7 @@
 //
 
 #import "Event.h"
+#import "NDConstants.h"
 
 @implementation Event
 
@@ -22,11 +23,63 @@
 @synthesize shortShare;
 @synthesize longShare;
 @synthesize tumblrShare;
+@synthesize facebookLikeText;
 @synthesize emailShare;
 @synthesize showFacebook;
 @synthesize showFacebookLike;
 @synthesize showTwitter;
 @synthesize showTumblr;
 @synthesize showEmail;
+@synthesize showWaterfall;
+
+@synthesize tumblrConsumerKey = _tumblrConsumerKey;
+@synthesize tumblrConsumerSecret = _tumblrConsumerSecret;
+
+@synthesize twitterConsumerKey = _twitterConsumerKey;
+@synthesize twitterConsumerSecret = _twitterConsumerSecret;
+
+@synthesize facebookConsumerKey = _facebookConsumerKey;
+@synthesize facebookConsumerSecret = _facebookConsumerSecret;
+
+- (NSString*)tumblrConsumerKey {
+	if (_tumblrConsumerKey == nil) {
+		return kTumblrConsumerKey;
+	}
+	return _tumblrConsumerKey;
+}
+- (NSString*)tumblrConsumerSecret {
+	if (_tumblrConsumerSecret == nil) {
+		return kTumblrConsumerSecret;
+	}
+	return _tumblrConsumerSecret;
+}
+
+- (NSString*)twitterConsumerKey {
+	if (_twitterConsumerKey == nil) {
+		return kTwitterConsumerKey;
+	}
+	return _twitterConsumerKey;
+}
+- (NSString*)twitterConsumerSecret {
+	if (_twitterConsumerSecret == nil) {
+		return kTwitterConsumerSecret;
+	}
+	return _twitterConsumerSecret;
+}
+
+- (NSString*)facebookConsumerKey {
+	if (_facebookConsumerKey == nil) {
+		return kFacebookAppId;
+	}
+	return _facebookConsumerKey;
+}
+- (NSString*)facebookConsumerSecret {
+	if (_facebookConsumerSecret == nil) {
+		return kFacebookSecret;
+	}
+	return _facebookConsumerSecret;
+}
+
+
 
 @end

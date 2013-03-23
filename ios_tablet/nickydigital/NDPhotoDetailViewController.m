@@ -89,21 +89,31 @@ bool facebookLoggedIn = false;
 bool twitterLoggedIn = false;
 bool tumblrLoggedIn = false;
 
-NSString *userEmailAddress;
-NSString *userFacebookToken;
-NSString *userFacebookUser;
+// used to reset the photoview back to it's default size after changing to accomidate an image
+CGRect originalPhotoViewFrame;
 
+NDMainViewController *mainViewController = nil;
+
+NSString *userEmailAddress;
+
+// twitter related
 OAuth *twitterOAuth;
+UILabel *twitterRemainingLabel;
+UILabel *twitterRemainingDescLabel;
+int maxTextCharacters = 120;
+bool twitterCountVisible = NO;
+
+// tumblr related
 OAuth *tumblrOAuth;
 NDTumblrUser *tumblrUser;
 int tumblrSelectedBlog = 0;
 PopoverView *tumblrChoosePopover;
 
-CGRect originalPhotoViewFrame;
-
-NDMainViewController *mainViewController = nil;
-
+// facebook related
+NSString *userFacebookToken;
+NSString *userFacebookUser;
 M13Checkbox *facebookLikeCheckbox;
+bool facebookLikeVisible = NO;
 int facebookLikeOffset = 0;	// an offset of how much we moved the share text box to fit the facebook like button
 
 - (void)loadView {
@@ -140,6 +150,7 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     shareTextView.layer.borderColor = [[UIColor grayColor] CGColor];
     shareTextView.layer.borderWidth = 1.0f;
 
+	// Facebook
 	facebookLikeCheckbox = [[M13Checkbox alloc] initWithTitle:@"Like Nicky Digital on Facebook?" andHeight:20];
 	
     // Email Share View
@@ -167,7 +178,13 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     [tumblrShareButton useWhiteLabel:YES];
     [tumblrShareButton setShadow:[UIColor blackColor] opacity:0.8 offset:CGSizeMake(0, 1) blurRadius:4];
     [tumblrShareButton setGradientType:kUIGlossyButtonGradientTypeLinearSmoothStandard];
-    
+
+	// Twitter Controls
+	twitterRemainingLabel = [[UILabel alloc] init];
+	twitterRemainingLabel.text = [NSString stringWithFormat:@"%d", maxTextCharacters];
+	twitterRemainingDescLabel = [[UILabel alloc] init];
+	twitterRemainingDescLabel.text = @"remaining";
+	
 	//viewLoadedFromXib.frame = view.contentView.frame;
 
     NDPhotoDetailModalPanel *view = [[NDPhotoDetailModalPanel alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame] content:photoDetailView]; //theFrame];
@@ -293,105 +310,9 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     }
 }
 
-- (void)showFacebookShareCheckbox {
-	[facebookLikeCheckbox setCheckState:M13CheckboxStateChecked];
 
-	if (facebookLikeOffset != 0) {
-		return;
-	}
-	
-    facebookLikeCheckbox.frame = CGRectMake(shareTextView.frame.origin.x,
-											shareTextView.frame.origin.y,
-											facebookLikeCheckbox.frame.size.width,
-											facebookLikeCheckbox.frame.size.height);
-	
-	facebookLikeOffset = facebookLikeCheckbox.frame.size.height + 5;
-	
-    [shareView addSubview:facebookLikeCheckbox];
 
-	shareTextView.frame = CGRectMake(shareTextView.frame.origin.x,
-									 shareTextView.frame.origin.y + facebookLikeOffset,
-									 shareTextView.frame.size.width,
-									 shareTextView.frame.size.height - facebookLikeOffset);
-	
-}
 
-- (void)hideFacebookShareCheckbox {
-	if (facebookLikeOffset == 0) {
-		return;
-	}
-
-	[facebookLikeCheckbox removeFromSuperview];
-	shareTextView.frame = CGRectMake(shareTextView.frame.origin.x,
-								 shareTextView.frame.origin.y - facebookLikeOffset,
-								 shareTextView.frame.size.width,
-								 shareTextView.frame.size.height + facebookLikeOffset);
-
-}
-
-- (IBAction)btnFacebookShareClick:(id)sender {
-
-    if (mainViewController.loggedIn && facebookLoggedIn) {
-        [self facebookShare];
-        return;
-    } else if (!mainViewController.loggedIn) {
-		[self logout];
-    } else {
-		// we are logged in with something, so skip the email signup
-		[self facebookLogin];
-		return;
-	}
-
-    currentAction = ACTION_FACEBOOK_EMAIL;
-    nextAction = ACTION_FACEBOOK_LOGIN;
-
-    UIViewController *modalDialog = [[UIViewController alloc] init];
-    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
-    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-    [self autoModalViewControllerPresent:modalDialog animated:YES];
-
-    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
-    CGRect bounds = self.view.bounds;
-    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
-
-    [modalDialog.view addSubview:emailView];
-
-    modalDialog.view.superview.center = centerOfView;
-
-}
-
-- (IBAction)btnTwitterShareClick:(id)sender {
-
-    if (mainViewController.loggedIn && twitterLoggedIn) {
-        [self twitterShare];
-        return;
-    } else if (!mainViewController.loggedIn) {
-		[self logout];
-	} else {
-		// we are logged in with something, so skip the email signup
-		[self twitterLogin];
-		return;
-    }
-
-    currentAction = ACTION_TWITTER_EMAIL;
-    nextAction = ACTION_TWITTER_LOGIN;
-
-    UIViewController *modalDialog = [[UIViewController alloc] init];
-    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
-    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-    [self autoModalViewControllerPresent:modalDialog animated:YES];
-
-    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
-    CGRect bounds = self.view.bounds;
-    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
-
-    [modalDialog.view addSubview:emailView];
-
-    modalDialog.view.superview.center = centerOfView;
-
-}
 
 - (IBAction)btnTumblrShareClick:(id)sender {
     if (mainViewController.loggedIn && tumblrLoggedIn) {
@@ -419,6 +340,7 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
 	
     [modalDialog.view addSubview:emailView];
+	emailView.frame = modalDialog.view.frame;
 	
     modalDialog.view.superview.center = centerOfView;
 
@@ -448,6 +370,7 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
 	
     [modalDialog.view addSubview:emailView];
+	emailView.frame = modalDialog.view.frame;
 	
     modalDialog.view.superview.center = centerOfView;
 	
@@ -480,139 +403,15 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     }
 
 	[modalDialog.view addSubview:emailShareView];
+	emailShareView.frame = modalDialog.view.frame;
 	
     modalDialog.view.superview.center = centerOfView;
 	
 }
 
 
-- (void)facebookShare {
-    currentAction = ACTION_FACEBOOK_SHARE;
-
-    UIViewController *modalDialog = [[UIViewController alloc] init];
-    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
-    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-    [self autoModalViewControllerPresent:modalDialog animated:YES];
-
-    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
-    CGRect bounds = self.view.bounds;
-    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
-
-    shareImageView.image = photoView.image;
-
-    shareTextView.text = [[NDMainViewController singleton] event].longShare;
-	[shareTextView setDelegate:nil];
-	
-	if ([[NDMainViewController singleton] event].showFacebookLike) {
-		[self showFacebookShareCheckbox];
-	} else {
-		[self hideFacebookShareCheckbox];
-	}
-
-    [modalDialog.view addSubview:shareView];
-
-    modalDialog.view.superview.center = centerOfView;
-
-}
 
 
-- (void)facebookLogin {
-    currentAction = ACTION_FACEBOOK_LOGIN;
-    nextAction = ACTION_FACEBOOK_SHARE;
-
-    NSString *facebookOauthUrl = [NSString stringWithFormat:kFacebookOauth, kFacebookAppId, kFacebookRedirect, @"state123", kFacebookScope];
-
-    NSHTTPCookie *cookie;
-    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (cookie in [storage cookies]) {
-        [storage deleteCookie:cookie];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    UIViewController *modalDialog = [[UIViewController alloc] init];
-    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
-    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-    [self autoModalViewControllerPresent:modalDialog animated:YES];
-
-    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
-    CGRect bounds = self.view.bounds;
-    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
-
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 400)];
-
-    NSURL *url = [NSURL URLWithString:facebookOauthUrl];
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    [webView setDelegate:self];
-    [webView loadRequest:requestObj];
-    [modalDialog.view addSubview:webView];
-
-    modalDialog.view.superview.center = centerOfView;
-}
-
-- (void)twitterShare {
-    currentAction = ACTION_TWITTER_SHARE;
-
-    UIViewController *modalDialog = [[UIViewController alloc] init];
-    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
-    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-    [self autoModalViewControllerPresent:modalDialog animated:YES];
-
-    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
-    CGRect bounds = self.view.bounds;
-    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
-
-    shareImageView.image = photoView.image;
-
-    shareTextView.text = [[NDMainViewController singleton] event].shortShare;
-	[shareTextView setDelegate:self];
-
-    [modalDialog.view addSubview:shareView];
-
-    modalDialog.view.superview.center = centerOfView;
-
-}
-
-- (void)twitterLogin {
-    currentAction = ACTION_TWITTER_LOGIN;
-    nextAction = ACTION_TWITTER_SHARE;
-
-	twitterOAuth = [[OAuth alloc] initWithConsumerKey:kTwitterConsumerKey andConsumerSecret:kTwitterConsumerSecret];
-	[twitterOAuth synchronousRequestTwitterTokenWithCallbackUrl:@"http://www.nickydigital.com"];
-
-	
-    NSHTTPCookie *cookie;
-    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (cookie in [storage cookies]) {
-        [storage deleteCookie:cookie];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-
-    UIViewController *modalDialog = [[UIViewController alloc] init];
-    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
-    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-
-    [self autoModalViewControllerPresent:modalDialog animated:YES];
-
-    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
-    CGRect bounds = self.view.bounds;
-    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
-
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 400)];
-
-	NSDictionary * params = [NSDictionary dictionaryWithObject:twitterOAuth.oauth_token forKey:@"oauth_token"];
-
-    NSURL *url = [self generateURL:@"http://api.twitter.com/oauth/authorize" params:params];
-
-    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
-    [webView setDelegate:self];
-    [webView loadRequest:requestObj];
-    [modalDialog.view addSubview:webView];
-
-    modalDialog.view.superview.center = centerOfView;
-}
 
 - (void)tumblrShare {
     currentAction = ACTION_TUMBLR_SHARE;
@@ -632,6 +431,7 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     tumblrShareBodyView.text = [[NDMainViewController singleton] event].tumblrShare;
 	
     [modalDialog.view addSubview:tumblrShareView];
+	tumblrShareView.frame = modalDialog.view.frame;
 	
     modalDialog.view.superview.center = centerOfView;
 	
@@ -667,7 +467,8 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     currentAction = ACTION_TUMBLR_LOGIN;
     nextAction = ACTION_TUMBLR_SHARE;
 	
-	tumblrOAuth = [[OAuth alloc] initWithConsumerKey:kTumblrConsumerKey andConsumerSecret:kTumblrConsumerSecret];
+	Event *event = [[NDMainViewController singleton] event];
+	tumblrOAuth = [[OAuth alloc] initWithConsumerKey:event.tumblrConsumerKey andConsumerSecret:event.tumblrConsumerSecret];
 
 	// Invalidate the previous request token, whether it was authorized or not.
 	[tumblrOAuth setOauth_token_authorized:NO]; // We are invalidating whatever token we had before.
@@ -739,12 +540,18 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
         [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
         [[AFNetworkActivityIndicatorManager sharedManager] incrementActivityCount];
 
+		NSString *likeOnFacebook = @"false";
+		if (facebookLikeCheckbox.state == M13CheckboxStateChecked) {
+			likeOnFacebook = @"true";
+		}
+		
         NSURLRequest *request = [client requestWithMethod:@"POST"
                                                      path:@"/api/facebookshare"
                                                parameters:[NSDictionary dictionaryWithObjectsAndKeys:
                                                        emailField.text, @"email",
                                                        userFacebookToken, @"token",
                                                        _photo.filename, @"filename",
+													   likeOnFacebook, @"like",
                                                        shareTextView.text, @"body",
                                                        nil]
         ];
@@ -874,7 +681,6 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 
 - (IBAction)btnEmailClick:(id)sender {
     userEmailAddress = emailField.text;
-	emailField.text = @"";
 
     NDApiClient *client = [NDApiClient sharedClient];
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
@@ -893,7 +699,7 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 
     [operation start];
 
-
+	emailField.text = @"";
     [self autoModalViewControllerDismissWithNext:sender];
 }
 
@@ -906,6 +712,282 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 	facebookLoggedIn = NO;
 	twitterLoggedIn = NO;
 	tumblrLoggedIn = NO;
+}
+
+# pragma mark - Facebook
+
+- (void)facebookShare {
+    currentAction = ACTION_FACEBOOK_SHARE;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    shareImageView.image = photoView.image;
+	
+    shareTextView.text = [[NDMainViewController singleton] event].longShare;
+	[shareTextView setDelegate:nil];
+	[self hideTwitterCharCount];
+	
+	
+	if ([[NDMainViewController singleton] event].showFacebookLike) {
+		[self showFacebookShareCheckbox];
+	} else {
+		[self hideFacebookShareCheckbox];
+	}
+	
+    [modalDialog.view addSubview:shareView];
+	shareView.frame = modalDialog.view.frame;
+	
+    modalDialog.view.superview.center = centerOfView;
+	
+}
+
+
+- (void)facebookLogin {
+    currentAction = ACTION_FACEBOOK_LOGIN;
+    nextAction = ACTION_FACEBOOK_SHARE;
+	
+	Event *event = [[NDMainViewController singleton] event];
+    NSString *facebookOauthUrl = [NSString stringWithFormat:kFacebookOauth, event.facebookConsumerKey, kFacebookRedirect, @"state123", kFacebookScope];
+	
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]) {
+        [storage deleteCookie:cookie];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 400)];
+	
+    NSURL *url = [NSURL URLWithString:facebookOauthUrl];
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    [webView setDelegate:self];
+    [webView loadRequest:requestObj];
+    [modalDialog.view addSubview:webView];
+	
+    modalDialog.view.superview.center = centerOfView;
+}
+
+- (void)showFacebookShareCheckbox {
+	[facebookLikeCheckbox setState:M13CheckboxStateChecked];
+	
+	NSString *facebookLikeText = [[NDMainViewController singleton] event].facebookLikeText;
+	
+	if ([facebookLikeText length] == 0) {
+		facebookLikeText = @"Like Nicky Digital on Facebook?";
+	}
+	
+	[facebookLikeCheckbox setTitle:facebookLikeText];
+	
+	if (facebookLikeVisible) {
+		return;
+	}
+	
+    facebookLikeCheckbox.frame = CGRectMake(shareTextView.frame.origin.x,
+											shareTextView.frame.origin.y + shareTextView.frame.size.height + 10,
+											facebookLikeCheckbox.frame.size.width,
+											facebookLikeCheckbox.frame.size.height);
+	
+    [shareView addSubview:facebookLikeCheckbox];
+	
+	facebookLikeVisible = YES;
+	
+}
+
+- (void)hideFacebookShareCheckbox {
+	if (!facebookLikeVisible) {
+		return;
+	}
+	
+	[facebookLikeCheckbox removeFromSuperview];
+	
+	facebookLikeVisible = NO;
+}
+
+
+
+
+- (IBAction)btnFacebookShareClick:(id)sender {
+	
+    if (mainViewController.loggedIn && facebookLoggedIn) {
+        [self facebookShare];
+        return;
+    } else if (!mainViewController.loggedIn) {
+		[self logout];
+    } else {
+		// we are logged in with something, so skip the email signup
+		[self facebookLogin];
+		return;
+	}
+	
+    currentAction = ACTION_FACEBOOK_EMAIL;
+    nextAction = ACTION_FACEBOOK_LOGIN;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    [modalDialog.view addSubview:emailView];
+	emailView.frame = modalDialog.view.frame;
+	
+    modalDialog.view.superview.center = centerOfView;
+	
+}
+
+# pragma mark - Twitter
+
+- (IBAction)btnTwitterShareClick:(id)sender {
+	
+    if (mainViewController.loggedIn && twitterLoggedIn) {
+        [self twitterShare];
+        return;
+    } else if (!mainViewController.loggedIn) {
+		[self logout];
+	} else {
+		// we are logged in with something, so skip the email signup
+		[self twitterLogin];
+		return;
+    }
+	
+    currentAction = ACTION_TWITTER_EMAIL;
+    nextAction = ACTION_TWITTER_LOGIN;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    [modalDialog.view addSubview:emailView];
+	emailView.frame = modalDialog.view.frame;
+	
+    modalDialog.view.superview.center = centerOfView;
+	
+}
+
+- (void)twitterShare {
+    currentAction = ACTION_TWITTER_SHARE;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    shareImageView.image = photoView.image;
+	
+    shareTextView.text = [[NDMainViewController singleton] event].shortShare;
+	
+	// set the delegate to limit the text entry length
+	[shareTextView setDelegate:self];
+	[self showTwitterCharCount];
+	
+	
+    [modalDialog.view addSubview:shareView];
+	shareView.frame = modalDialog.view.frame;
+	
+    modalDialog.view.superview.center = centerOfView;
+	
+}
+
+- (void)twitterLogin {
+    currentAction = ACTION_TWITTER_LOGIN;
+    nextAction = ACTION_TWITTER_SHARE;
+
+	Event *event = [[NDMainViewController singleton] event];
+	twitterOAuth = [[OAuth alloc] initWithConsumerKey:event.twitterConsumerKey andConsumerSecret:event.twitterConsumerSecret];
+	[twitterOAuth synchronousRequestTwitterTokenWithCallbackUrl:@"http://www.nickydigital.com"];
+	
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]) {
+        [storage deleteCookie:cookie];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 400)];
+	
+	NSDictionary * params = [NSDictionary dictionaryWithObject:twitterOAuth.oauth_token forKey:@"oauth_token"];
+	
+    NSURL *url = [self generateURL:@"http://api.twitter.com/oauth/authorize" params:params];
+	
+    NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
+    [webView setDelegate:self];
+    [webView loadRequest:requestObj];
+    [modalDialog.view addSubview:webView];
+	
+    modalDialog.view.superview.center = centerOfView;
+}
+
+- (void)showTwitterCharCount {
+	if (twitterCountVisible) {
+		return;
+	}
+
+    twitterRemainingLabel.frame = CGRectMake(shareTextView.frame.origin.x,
+											shareTextView.frame.origin.y + shareTextView.frame.size.height + 10,
+											facebookLikeCheckbox.frame.size.width,
+											facebookLikeCheckbox.frame.size.height);
+	
+    [shareView addSubview:twitterRemainingLabel];
+	
+	// trigger the text view did change to update the count
+	[self textViewDidChange:shareTextView];
+	
+	twitterCountVisible = YES;
+	
+
+}
+
+- (void)hideTwitterCharCount {
+	if (!twitterCountVisible) {
+		return;
+	}
+	
+	[twitterRemainingLabel removeFromSuperview];
+	
+	twitterCountVisible = NO;
 }
 
 
@@ -1090,11 +1172,6 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-	CGRect frame = webView.frame;
-	NSLog(@"frame:%f", frame.origin.y);
-
-	NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
-	NSLog(@"allHTML: %@", html);
 
     if (currentAction == ACTION_FACEBOOK_LOGIN) {
         //NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
@@ -1306,13 +1383,20 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     return str;
 }
 
-
+/* Used for limiting the amount of characters allowed in the input text area */
 - (void)textViewDidChange:(UITextView *)textView
 {
-    if (textView.text.length >= 120)
-    {
-    	textView.text = [textView.text substringToIndex:120];
-    }
+	int remaining = maxTextCharacters - textView.text.length;
+	twitterRemainingLabel.text = [NSString stringWithFormat:@"%d", remaining];
+    if (remaining < 0) {
+		twitterRemainingLabel.textColor = [UIColor colorWithRed:(188/255.f) green:0.f blue:0.f alpha:1.0];
+		shareButton.enabled = NO;
+		shareButton.alpha = 0.9;
+    } else {
+		twitterRemainingLabel.textColor = [UIColor blackColor];
+		shareButton.enabled = YES;
+		shareButton.alpha = 1;
+	}
 }
 
 @end
