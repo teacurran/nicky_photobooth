@@ -19,6 +19,10 @@
 // short_share: "Short Share #text",
 // long_share: "This is long share text."
 // }
+extern int const kAspectPortrait;
+extern int const kAspectLandscape;
+extern int const kAspectSquare;
+
 @property int eventId;
 @property NSString *code;
 @property NSString *banner;
@@ -35,6 +39,7 @@
 @property bool showTumblr;
 @property bool showEmail;
 @property bool showWaterfall;
+@property int thumbAspect;
 
 @property (nonatomic) NSString *tumblrConsumerKey;
 @property (nonatomic) NSString *tumblrConsumerSecret;

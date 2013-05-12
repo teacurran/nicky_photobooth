@@ -108,12 +108,11 @@ NSMutableDictionary * _itemsLoading;
 				UIImageView *imageView = [[UIImageView alloc] init];
 				imageView.clipsToBounds = YES;
 				
-				NSURL *url = [NSURL URLWithString:[
-											NSString stringWithFormat:@"%@/%@/%@",
+				NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/%@",
 												   [defaults stringForKey:kPrefServerUrlKey],
 												   @"api/photo/640",
-												   photo.filename]
-				];
+												   [photo.filename stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]
+												   ]];
 
 				NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
 				[request setHTTPShouldHandleCookies:NO];
@@ -262,7 +261,14 @@ NSMutableDictionary * _itemsLoading;
 {
 	int photo_width = (self.view.frame.size.width - (rowInfo.viewsPerCell * kGridBorderWidth) - kGridBorderWidth) / rowInfo.viewsPerCell;
 	
-	int row_height = 2 * photo_width / 3;
+	int row_height = photo_width;
+	
+	Event *event = [[NDMainViewController singleton] event];
+	if (event.thumbAspect == kAspectLandscape) {
+		row_height =  2 * photo_width / 3;
+	} else if (event.thumbAspect == kAspectPortrait) {
+		row_height =  3 * photo_width / 2;
+	}
 	
 	return row_height;
 }
@@ -303,8 +309,7 @@ NSLock *itemLock;
 		NSLock *arrayLock = [self getItemLock];
 		[arrayLock lock];
 		
-		for(id jsonImage in JSON)
-		{
+		for(id jsonImage in JSON) {
 			NSString *filename = [jsonImage valueForKeyPath:@"filename"];
 			
 			Boolean found = false;
@@ -329,13 +334,13 @@ NSLock *itemLock;
 				imageView.clipsToBounds = YES;
 				
 
-				NSURL *imageUrl = [NSURL URLWithString:[
-									 NSString stringWithFormat:@"%@/%@/%@",
-									 [defaults stringForKey:kPrefServerUrlKey],
-									 @"api/photo/300",
-									 filename]
-								   ];
-				NSMutableURLRequest *imageRequest = [NSMutableURLRequest requestWithURL:imageUrl];
+				NSString *imageUrl = [NSString stringWithFormat:@"%@/%@/%@",
+					[defaults stringForKey:kPrefServerUrlKey],
+					@"api/photo/300",
+					[filename stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+
+				NSURL *imageNsUrl = [NSURL URLWithString:imageUrl];
+				NSMutableURLRequest *imageRequest = [NSMutableURLRequest requestWithURL:imageNsUrl];
 				//imageRequest.cachePolicy = NSURLRequestReloadIgnoringCacheData;
 				imageRequest.timeoutInterval = 300.0;
 				

@@ -11,6 +11,10 @@
 
 @implementation Event
 
+int const kAspectPortrait = 1;
+const int kAspectLandscape = 2;
+const int kAspectSquare = 3;
+
 + (void)initialize {
 	[super initialize];
 }

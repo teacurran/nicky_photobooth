@@ -235,6 +235,15 @@ NSUserDefaults *defaults = nil;
 		event.facebookConsumerKey = [JSON valueForKey:@"facebook_consumer_key"];
 		event.facebookConsumerSecret = [JSON valueForKey:@"facebook_consumer_secret"];
 
+		NSString *tumbAspect = [JSON valueForKey:@"thumb_aspect"];
+		if ([tumbAspect isEqualToString:@"portrait"]) {
+			event.thumbAspect = kAspectPortrait;
+		} else if ([tumbAspect isEqualToString:@"landscape"]) {
+			event.thumbAspect = kAspectLandscape;
+		} else {
+			event.thumbAspect = kAspectSquare;
+		}
+		
 	} failure:nil];
 
 	[operation start];
