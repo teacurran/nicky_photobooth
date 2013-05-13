@@ -545,16 +545,19 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 			likeOnFacebook = @"true";
 		}
 		
+		NSString *emailAddress = (emailField.text == nil) ? @"" : emailField.text;
+		NSDictionary *requestParams = [NSDictionary dictionaryWithObjectsAndKeys:
+								emailAddress, @"email",
+								userFacebookToken, @"token",
+								_photo.filename, @"filename",
+								likeOnFacebook, @"like",
+								shareTextView.text, @"body",
+								nil];
+		
         NSURLRequest *request = [client requestWithMethod:@"POST"
                                                      path:@"/api/facebookshare"
-                                               parameters:[NSDictionary dictionaryWithObjectsAndKeys:
-                                                       emailField.text, @"email",
-                                                       userFacebookToken, @"token",
-                                                       _photo.filename, @"filename",
-													   likeOnFacebook, @"like",
-                                                       shareTextView.text, @"body",
-                                                       nil]
-        ];
+                                               parameters: requestParams
+								];
 
         AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
 
@@ -1003,7 +1006,9 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 		NSInteger nickyDigitalInUrl = [urlString rangeOfString:kFacebookRedirect].location;
 		if (nickyDigitalInUrl != NSNotFound && nickyDigitalInUrl == 0) {
 
-			NSArray *authUrlComponents = [urlString componentsSeparatedByString:@"&"];
+			NSString *urlStringFixed = [urlString stringByReplacingOccurrencesOfString:@"#" withString:@"&"];
+
+			NSArray *authUrlComponents = [urlStringFixed componentsSeparatedByString:@"&"];
 
 			for (NSString *authUrlComponent in authUrlComponents) {
 				NSLog(@"url %@", authUrlComponent);
@@ -1012,6 +1017,7 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 				if (authTokenParameterPosition != NSNotFound && authTokenParameterPosition == 0) {
 					userFacebookToken = [authUrlComponent substringFromIndex:@"access_token=".length];
 
+					NSLog(@"facebook access token %@", userFacebookToken);
 					nextAction = ACTION_FACEBOOK_SHARE;
 
 					loggedIn = YES;
