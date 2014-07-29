@@ -375,15 +375,17 @@
 - (void)gesture:(UIGestureRecognizer*)gesture view:(UIView**)view viewIndex:(NSInteger*)viewIndex
 {
         
-    BDDynamicGridCell *cell = (BDDynamicGridCell*) [gesture.view.superview superview];
+    UIView *v = gesture.view;
+    while (v && ![v isKindOfClass:[BDDynamicGridCell class]]) v = v.superview;
+    BDDynamicGridCell *cell = (BDDynamicGridCell *) v;
     
-    CGPoint locationInGridContainer = [gesture locationInView:gesture.view];    
+    CGPoint locationInGridContainer = [gesture locationInView:gesture.view];
     for (int i=0; i < cell.gridContainerView.subviews.count; i++){
         UIView *subview = [cell.gridContainerView.subviews objectAtIndex:i];
-        CGRect vincinityRect = CGRectMake(subview.frame.origin.x - self.borderWidth, 
-                                         0, 
-                                         subview.frame.size.width + (self.borderWidth * 2), 
-                                         cell.gridContainerView.frame.size.height);
+        CGRect vincinityRect = CGRectMake(subview.frame.origin.x - self.borderWidth,
+                                          0,
+                                          subview.frame.size.width + (self.borderWidth * 2),
+                                          cell.gridContainerView.frame.size.height);
         
         if(CGRectContainsPoint(vincinityRect, locationInGridContainer)){
             *view = subview;
@@ -391,6 +393,7 @@
             break;
         }
     }
+    
 }
 
 - (void)didLongPress:(UILongPressGestureRecognizer*)longPress

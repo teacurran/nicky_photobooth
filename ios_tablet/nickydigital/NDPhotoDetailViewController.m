@@ -953,7 +953,7 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 	
 	NSDictionary * params = [NSDictionary dictionaryWithObject:twitterOAuth.oauth_token forKey:@"oauth_token"];
 	
-    NSURL *url = [self generateURL:@"http://api.twitter.com/oauth/authorize" params:params];
+    NSURL *url = [self generateURL:@"https://api.twitter.com/oauth/authorize" params:params];
 	
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
     [webView setDelegate:self];
