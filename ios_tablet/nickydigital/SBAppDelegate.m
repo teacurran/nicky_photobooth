@@ -23,12 +23,12 @@
 {
 
 	// Hockey App
-	[[BITHockeyManager sharedHockeyManager] configureWithBetaIdentifier:@"98a0e8300010c8a9c7e4fcfcd0a3b16a"
-														 liveIdentifier:@"98a0e8300010c8a9c7e4fcfcd0a3b16a"
+	[[BITHockeyManager sharedHockeyManager] configureWithBetaIdentifier:@"2259484855ddb380f84856dfaeaa43aa"
+														 liveIdentifier:@"2259484855ddb380f84856dfaeaa43aa"
 															   delegate:self];
 	[[BITHockeyManager sharedHockeyManager] startManager];
-	
-	
+
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.viewController = [NDMainViewController singleton];

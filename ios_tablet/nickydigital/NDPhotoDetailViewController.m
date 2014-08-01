@@ -310,9 +310,86 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     }
 }
 
+- (void)logout {
+	userEmailAddress = nil;
+	twitterOAuth = nil;
+	tumblrUser = nil;
+	tumblrOAuth = nil;
+	loggedIn = NO;
+	facebookLoggedIn = NO;
+	twitterLoggedIn = NO;
+	tumblrLoggedIn = NO;
+}
 
 
+# pragma mark - Email
 
+- (IBAction)btnEmailShareClick:(id)sender {
+    
+	if (mainViewController.loggedIn) {
+        [self emailShare];
+        return;
+    } else {
+		[self logout];
+    }
+    
+    currentAction = ACTION_EMAIL_EMAIL;
+    nextAction = ACTION_EMAIL_SHARE;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+    
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    [modalDialog.view addSubview:emailView];
+	emailView.frame = modalDialog.view.frame;
+	
+    modalDialog.view.superview.center = centerOfView;
+	
+}
+
+- (IBAction)emailShare {
+    
+    currentAction = ACTION_EMAIL_SHARE;
+    nextAction = nil;
+	
+    UIViewController *modalDialog = [[UIViewController alloc] init];
+    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
+    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+	
+    [self autoModalViewControllerPresent:modalDialog animated:YES];
+	
+    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    CGRect bounds = self.view.bounds;
+    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+	
+    emailShareImageView.image = photoView.image;
+	emailShareFromField.text = userEmailAddress;
+	emailShareToField.text = userEmailAddress;
+	emailShareBodyView.text = [[NDMainViewController singleton] event].emailShare;
+    
+    if (!mainViewController.loggedIn) {
+		userEmailAddress = nil;
+    }
+    
+	[modalDialog.view addSubview:emailShareView];
+    
+	emailShareView.frame = CGRectMake(modalDialog.view.frame.origin.x,
+                                      modalDialog.view.frame.origin.y + 40,
+                                      modalDialog.view.frame.size.width,
+                                      modalDialog.view.frame.size.height);
+	
+    modalDialog.view.superview.center = centerOfView;
+	
+}
+
+
+# pragma mark - Tumblr
 
 - (IBAction)btnTumblrShareClick:(id)sender {
     if (mainViewController.loggedIn && tumblrLoggedIn) {
@@ -335,81 +412,17 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 	
     [self autoModalViewControllerPresent:modalDialog animated:YES];
 	
-    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
-    CGRect bounds = self.view.bounds;
-    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+    //modalDialog.view.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
+    //CGRect bounds = self.view.bounds;
+    //CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
 	
     [modalDialog.view addSubview:emailView];
 	emailView.frame = modalDialog.view.frame;
 	
-    modalDialog.view.superview.center = centerOfView;
+    //modalDialog.view.center = centerOfView;
 
 
 }
-
-- (IBAction)btnEmailShareClick:(id)sender {
-
-	if (mainViewController.loggedIn) {
-        [self emailShare];
-        return;
-    } else {
-		[self logout];
-    }
-
-    currentAction = ACTION_EMAIL_EMAIL;
-    nextAction = ACTION_EMAIL_SHARE;
-	
-    UIViewController *modalDialog = [[UIViewController alloc] init];
-    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
-    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	
-    [self autoModalViewControllerPresent:modalDialog animated:YES];
-	
-    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
-    CGRect bounds = self.view.bounds;
-    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
-	
-    [modalDialog.view addSubview:emailView];
-	emailView.frame = modalDialog.view.frame;
-	
-    modalDialog.view.superview.center = centerOfView;
-	
-	
-}
-
-
-- (IBAction)emailShare {
-
-    currentAction = ACTION_EMAIL_SHARE;
-    nextAction = nil;
-	
-    UIViewController *modalDialog = [[UIViewController alloc] init];
-    modalDialog.modalPresentationStyle = UIModalPresentationFormSheet;
-    modalDialog.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-	
-    [self autoModalViewControllerPresent:modalDialog animated:YES];
-	
-    modalDialog.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
-    CGRect bounds = self.view.bounds;
-    CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
-	
-    emailShareImageView.image = photoView.image;
-	emailShareFromField.text = userEmailAddress;
-	emailShareToField.text = userEmailAddress;
-	emailShareBodyView.text = [[NDMainViewController singleton] event].emailShare;
-    
-    if (!mainViewController.loggedIn) {
-		userEmailAddress = nil;
-    }
-
-	[modalDialog.view addSubview:emailShareView];
-	emailShareView.frame = modalDialog.view.frame;
-	
-    modalDialog.view.superview.center = centerOfView;
-	
-}
-
-
 
 
 
@@ -431,7 +444,12 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     tumblrShareBodyView.text = [[NDMainViewController singleton] event].tumblrShare;
 	
     [modalDialog.view addSubview:tumblrShareView];
-	tumblrShareView.frame = modalDialog.view.frame;
+
+	tumblrShareView.frame = CGRectMake(modalDialog.view.frame.origin.x,
+                                      modalDialog.view.frame.origin.y + 40,
+                                      modalDialog.view.frame.size.width,
+                                      modalDialog.view.frame.size.height);
+
 	
     modalDialog.view.superview.center = centerOfView;
 	
@@ -514,7 +532,7 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     CGRect bounds = self.view.bounds;
     CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
 	
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 400)];
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 440)];
 	
 	NSDictionary * params = [NSDictionary dictionaryWithObject:tumblrOAuth.oauth_token forKey:@"oauth_token"];
 	
@@ -706,17 +724,6 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     [self autoModalViewControllerDismissWithNext:sender];
 }
 
-- (void)logout {
-	userEmailAddress = nil;
-	twitterOAuth = nil;
-	tumblrUser = nil;
-	tumblrOAuth = nil;
-	loggedIn = NO;
-	facebookLoggedIn = NO;
-	twitterLoggedIn = NO;
-	tumblrLoggedIn = NO;
-}
-
 # pragma mark - Facebook
 
 - (void)facebookShare {
@@ -746,7 +753,12 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
 	}
 	
     [modalDialog.view addSubview:shareView];
-	shareView.frame = modalDialog.view.frame;
+    
+    shareView.frame = CGRectMake(modalDialog.view.frame.origin.x,
+                                       modalDialog.view.frame.origin.y + 40,
+                                       modalDialog.view.frame.size.width,
+                                       modalDialog.view.frame.size.height);
+
 	
     modalDialog.view.superview.center = centerOfView;
 	
@@ -777,7 +789,7 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     CGRect bounds = self.view.bounds;
     CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
 	
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 400)];
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 600, 440)];
 	
     NSURL *url = [NSURL URLWithString:facebookOauthUrl];
     NSURLRequest *requestObj = [NSURLRequest requestWithURL:url];
@@ -854,7 +866,11 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
 	
     [modalDialog.view addSubview:emailView];
-	emailView.frame = modalDialog.view.frame;
+
+    emailView.frame = CGRectMake(modalDialog.view.frame.origin.x,
+                                 modalDialog.view.frame.origin.y + 40,
+                                 modalDialog.view.frame.size.width,
+                                 modalDialog.view.frame.size.height);
 	
     modalDialog.view.superview.center = centerOfView;
 	
@@ -1260,10 +1276,14 @@ int facebookLikeOffset = 0;	// an offset of how much we moved the share text box
     }];
 
 
-    nc.view.superview.frame = CGRectMake(0, 0, 600, 440); //it's important to do this after presentModalViewController
+    nc.view.superview.frame = CGRectMake(0, 0, 600, 400); //it's important to do this after presentModalViewController
     CGRect bounds = self.view.bounds;
     CGPoint centerOfView = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
-
+    centerOfView = CGPointMake(0, 0);
+    
+    CGRect superview = nc.view.bounds;
+    
+    //nc.view.superview.center = CGPointMake(CGRectGetMidX(superview), CGRectGetMidY(superview));
     nc.view.superview.center = centerOfView;
 
 }
