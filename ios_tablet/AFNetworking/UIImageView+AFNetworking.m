@@ -104,7 +104,8 @@ static char kAFImageRequestOperationObjectKey;
         self.af_imageRequestOperation = nil;
 
         if (success) {
-            success(nil, nil, cachedImage);
+            // TCURRAN - 2013-03-07, changed to always send back the urlRequest even if it isn't used. We can then use this to reference the request.
+            success(urlRequest, nil, cachedImage);
         } else {
             self.image = cachedImage;
         }
